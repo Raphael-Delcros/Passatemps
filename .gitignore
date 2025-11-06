@@ -1,0 +1,4 @@
+/vendor
+/node_modules
+/config/connexion.php
+/config/constantes.php
