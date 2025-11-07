@@ -2,9 +2,11 @@
 
 //Ajout du code commun à toutes les pages
 require_once 'include.php';
-        
-$template = $twig->load('index.html.twig');
 
+
+
+$template = $twig->load('index.html.twig');
+echo $template->render();
 /*try{
     if (isset($_GET['controleur'])){
     $controleurName =$_GET['controleur'] ;
