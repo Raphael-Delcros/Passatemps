@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="CSS/styles.css">
+        <link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+		<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+		{% block css %}{% endblock %}
+		<title>
+			{% block title %}Passatemps - Accueil
+			{% endblock %}
+		</title>
+	</head>
+	<body>
+		<header>
+			<nav class="navbar navbar-expand-lg bg-body-tertiary">
+				<div class="container-fluid">
+					<a class="navbar-brand" href="#">
+                        <img src="images/logo.svg" width="181" height="41" alt="Passatemps">
+                    </a>
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link {% if menu=='accueil' %} active {% endif %}" aria-current="page" href="#">Accueil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if menu=='vendre' %} active {% endif %}" href="#">Vendre</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if menu=='commandes' %} active {% endif %}" href="#">Commandes</a>
+                        </li>
+						</a>
+						<form class="d-flex" role="search">
+							<input class="form-control" type="search" placeholder="Rechercher un jeu" aria-label="Search"/>
+							<button class="btn btn-outline-success" type="submit" hidden>Search</button>
+						</form>
+                        </ul>
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+						<li class="nav-item">
+							<a class="nav-link {% if menu=='forum' %} active {% endif %}" href="#">Forums</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {% if menu=='messagerie' %} active {% endif %}" href="#">Messagerie</a>
+						</li>
+						<li class="nav-item ms-auto">
+							<a class="nav-link {% if menu=='compte' %} active {% endif %}" href="#">Mon compte</a>
+						</li>
+					    </ul>
+				    </div>
+			    </div>
+		    </nav>
+        </header>
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+        <footer>
+            <div class="footer-content fixed-bottom row">
+
+                <div class="col">
+                    <p>Contactez-nous: contact@passatemps.com (Fausse email)</p>
+                    <p>Suivez-nous sur les réseaux sociaux!</p>
+                    <p>
+                        <a href="#">Facebook</a> |
+                        <a href="#">Twitter</a> |
+                        <a href="#">Instagram</a>
+                    </p>
+                    <p>&copy; 2024 Passatemps. Tous droits réservés.</p>
+                </div>
+                <div class="col">
+                    <p><a href="#">Mentions légales</a></p>
+                    <p><a href="#">Politique de confidentialité</a></p>
+                    <p><a href="#">Conditions d'utilisation</a></p>
+                </div>
+            </div>
+        </footer>
+	</body>
+</html>
