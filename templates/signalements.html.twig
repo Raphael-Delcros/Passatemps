@@ -1,0 +1,10 @@
+<h1>Liste des signalements</h1>
+<ul>
+{% for s in signalements %}
+    <li>
+        <a href="?controleur=Signalement&methode=afficher&id={{ s.idSign }}">
+            Signalement #{{ s.idSign }} - {{ s.type }}
+        </a>
+    </li>
+{% endfor %}
+</ul>
