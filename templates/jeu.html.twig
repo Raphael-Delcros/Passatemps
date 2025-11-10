@@ -5,7 +5,8 @@
 <p>Nombre de nbJoueursMin : {{ jeu.nbJoueursMin }}</p>
 <p>{{ jeu.dateSortie }}</p>
 {% if idJeuPrincipale is not null %}
-<h3>
-    <p>{{ jeu.idJeuPrincipale }}</p>
-</h3>
+
+{% endif %}
+{% if idJeuPrincipale is not null %}
+    <p>Ce jeu est une extention de {{ jeu.idJeuPrincipale }}</p>
 {% endif %}

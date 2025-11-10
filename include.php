@@ -18,6 +18,7 @@ require_once 'controllers/controller_factory.class.php';
 require_once 'controllers/controller_jeu.class.php';
 require_once 'controllers/controller_compte.class.php';
 require_once 'controllers/controller_signalement.class.php';
+//require_once ''
 
 // Ajout des modeles
 require_once 'modeles/bd.class.php';
@@ -29,6 +30,7 @@ require_once 'modeles/compte.class.php';
 require_once 'modeles/compte.dao.php';
 require_once 'modeles/signalement.class.php';
 require_once 'modeles/signalement.dao.php';
-
+require_once 'modeles/cataloguer.class.php';
+require_once 'modeles/cataloguer.dao.php';
 
 ?>

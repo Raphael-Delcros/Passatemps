@@ -11,9 +11,10 @@ class Jeu {
     private ?int $nbJoueursMax ; 
     private ?string $dateSortie ; 
     private ?int $idJeuPrincipale ;
+    private ?array $categories ; // Récupérer les catégories via la table cataloguer
 
     
- // --- Constucteur ---
+// --- Constucteur ---
 
     public function __construct(?int $id = null, ?string $n = null, ?string $desc = null, ?string $cont = null, ?int $nbMin = null, ?int $nbMax = null, ?string $dateSort = null, ?int $idJeuPrin = null)
     {
