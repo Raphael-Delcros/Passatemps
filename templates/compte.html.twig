@@ -1,5 +1,6 @@
 {% extends 'base_template.html.twig' %}
-{% block title %}{{ compte.prenom }} {{ compte.nom }}{% endblock %}
+{% block title %}Passatemps - {{ compte.prenom }} {{ compte.nom }}{% endblock %}
+
 {% block body %}
     <h1>{{ compte.prenom }} {{ compte.nom }}</h1>
     <p><strong>Email :</strong> {{ compte.email }}</p>
