@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Liste des comptes</title>
-</head>
-<body>
+{% extends 'base_template.html.twig' %}
+{% block title %}Passatemps - Liste des comptes{% endblock %}
+
+{% block body %}
     <h1>Liste des comptes</h1>
     <ul>
     {% for compte in comptes %}
         <li>{{ compte.prenom }} {{ compte.nom }} - <a href="index.php?controleur=Compte&methode=afficher&id={{ compte.idCompte }}">Voir</a></li>
     {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}

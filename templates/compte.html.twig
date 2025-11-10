@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ compte.prenom }} {{ compte.nom }}</title>
-</head>
-<body>
+{% extends 'base_template.html.twig' %}
+{% block title %}{{ compte.prenom }} {{ compte.nom }}{% endblock %}
+{% block body %}
     <h1>{{ compte.prenom }} {{ compte.nom }}</h1>
     <p><strong>Email :</strong> {{ compte.email }}</p>
     <p><strong>Date d'inscription :</strong> {{ compte.dateInscription }}</p>
     <p><strong>Note :</strong> {{ compte.note }}</p>
     <p><strong>Rôle :</strong> {{ compte.role }}</p>
-</body>
-</html>
+{% endblock %}
