@@ -2,17 +2,17 @@
 
 class Signalement {
     private ?int $idSign;
-    private string $type;
+    private ?string $type;
     private ?string $dateSign;
-    private string $contenu;
+    private ?string $contenu;
     private ?int $idCompteSignale;
     private ?int $idCompte;
 
     public function __construct(
         ?int $idSign = null,
-        string $type = '',
+        ?string $type = null,
         ?string $dateSign = null,
-        string $contenu = '',
+        ?string $contenu = null,
         ?int $idCompteSignale = null,
         ?int $idCompte = null
     ) {
