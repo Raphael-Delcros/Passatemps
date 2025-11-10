@@ -8,6 +8,9 @@ require_once 'config/constantes.php';
 // Ajout de twig    
 require_once 'config/twig.php';
 
+//Ajout du modèle qui gère la connexion mysql
+require_once 'modeles/bd.class.php';
+
 //Ajout des controlleurs
 require_once 'controllers/controller.class.php';
 require_once 'controllers/controller_categorie.class.php';
