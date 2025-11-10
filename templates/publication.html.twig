@@ -1,0 +1,10 @@
+{% extends 'base_template.html.twig' %}
+{% block title %}Passatemps - {{ publication.idPublication }} {{ publication.sujet }}{% endblock %}
+
+{% block body %}
+    <h1>{{ publication.idPublication }} {{ publication.sujet }}</h1>
+    <p><strong>idPost :</strong> {{ publication.idPublication }}</p>
+    <p><strong>Sujet :</strong> {{ publication.sujet }}</p>
+    <p><strong>Date envoie :</strong> {{ publication.dateEnvoi }}</p>
+    <p><strong>Contenue :</strong> {{ publication.contenu }}</p>
+{% endblock %}
