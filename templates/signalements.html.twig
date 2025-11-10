@@ -1,3 +1,7 @@
+{% extends 'base_template.html.twig' %}
+{% block title %}Passatemps - Signalements{% endblock %}
+
+{% block body %}
 <h1>Liste des signalements</h1>
 <ul>
 {% for s in signalements %}
@@ -8,3 +12,4 @@
     </li>
 {% endfor %}
 </ul>
+{% endblock %}
