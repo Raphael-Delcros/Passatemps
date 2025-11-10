@@ -14,7 +14,6 @@ class ControllerSignalement extends Controller {
         $template = $this->getTwig()->load('signalements.html.twig');
         echo $template->render([
             'signalements' => $signalements,
-            'menu' => 'signalements'
         ]);
     }
 
@@ -27,7 +26,6 @@ class ControllerSignalement extends Controller {
         $template = $this->getTwig()->load('signalement.html.twig');
         echo $template->render([
             'signalement' => $signalement,
-            'menu' => 'signalements'
         ]);
     }
 }
