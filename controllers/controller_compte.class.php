@@ -13,7 +13,6 @@ class ControllerCompte extends Controller {
     $template = $this->getTwig()->load('comptes.html.twig');
     echo $template->render([
         'comptes' => $comptes,
-        'menu' => 'comptes'
     ]);
     }
 
@@ -26,7 +25,6 @@ class ControllerCompte extends Controller {
         $template = $this->getTwig()->load('compte.html.twig');
         echo $template->render([
             'compte' => $compte,
-            'menu' => 'compte'
         ]);
     }
 }

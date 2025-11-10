@@ -1,0 +1,24 @@
+{% extends 'base_template.html.twig' %}
+
+{% block title %}Passatemps - Photo {{ photo.idPhoto }}{% endblock %}
+
+{% block body %}
+<h1>Détails de la photo</h1>
+
+<img src="{{ photo.url }}" alt="Photo {{ photo.idPhoto }}" width="300">
+
+<ul>
+    <li><strong>ID Photo :</strong> {{ photo.idPhoto }}</li>
+    {% if photo.idAnnonce %}
+        <li><strong>Annonce :</strong> {{ photo.idAnnonce }}</li>
+    {% endif %}
+    {% if photo.idMessage %}
+        <li><strong>Message :</strong> {{ photo.idMessage }}</li>
+    {% endif %}
+    {% if photo.idJeu %}
+        <li><strong>Jeu :</strong> {{ photo.idJeu }}</li>
+    {% endif %}
+</ul>
+
+<a href="index.php?controleur=photo&methode=lister">Retour à la liste</a>
+{% endblock %}

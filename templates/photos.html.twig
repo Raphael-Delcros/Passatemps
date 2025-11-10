@@ -1,0 +1,24 @@
+{% extends 'base_template.html.twig' %}
+
+{% block title %}Passatemps - Liste des photos{% endblock %}
+
+{% block body %}
+<h1>Liste des photos</h1>
+
+{% if photos is empty %}
+    <p>Aucune photo disponible.</p>
+{% else %}
+    <ul>
+    {% for photo in photos %}
+        <li>
+            <a href="index.php?controleur=photo&methode=afficher&id={{ photo.idPhoto }}">
+                <img src="{{ photo.url }}" alt="Photo {{ photo.idPhoto }}" width="100">
+            </a>
+            {% if photo.idAnnonce %}(Annonce) {% endif %}
+            {% if photo.idMessage %}(Message) {% endif %}
+            {% if photo.idJeu %}(Jeu) {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}

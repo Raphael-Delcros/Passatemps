@@ -45,7 +45,17 @@ try {
     $controller->call($methode);
 
 } catch (Exception $e) {
-    die("Erreur : " . $e->getMessage());
+    // Chargement de la page d’erreur Twig
+    try {
+        $template = $twig->load('erreur.html.twig');
+        echo $template->render([
+            'message' => $e->getMessage(),
+            'code' => $e->getCode() ?: 500
+        ]);
+    } catch (Exception $twigError) {
+        echo "<h1>Erreur critique</h1>";
+        echo "<p>" . htmlspecialchars($e->getMessage()) . "</p>";
+    }
 }
 */
 

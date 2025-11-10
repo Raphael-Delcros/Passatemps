@@ -2,17 +2,17 @@
 
 class Signalement {
     private ?int $idSign;
-    private string $type;
+    private ?string $type;
     private ?string $dateSign;
-    private string $contenu;
+    private ?string $contenu;
     private ?int $idCompteSignale;
     private ?int $idCompte;
 
     public function __construct(
         ?int $idSign = null,
-        string $type = '',
+        ?string $type = null,
         ?string $dateSign = null,
-        string $contenu = '',
+        ?string $contenu = null,
         ?int $idCompteSignale = null,
         ?int $idCompte = null
     ) {
@@ -27,14 +27,14 @@ class Signalement {
     public function getIdSign(): ?int { return $this->idSign; }
     public function setIdSign(?int $idSign): void { $this->idSign = $idSign; }
 
-    public function getType(): string { return $this->type; }
-    public function setType(string $type): void { $this->type = $type; }
+    public function getType(): ?string { return $this->type; }
+    public function setType(?string $type): void { $this->type = $type; }
 
     public function getDateSign(): ?string { return $this->dateSign; }
     public function setDateSign(?string $dateSign): void { $this->dateSign = $dateSign; }
 
-    public function getContenu(): string { return $this->contenu; }
-    public function setContenu(string $contenu): void { $this->contenu = $contenu; }
+    public function getContenu(): ?string { return $this->contenu; }
+    public function setContenu(?string $contenu): void { $this->contenu = $contenu; }
 
     public function getIdCompteSignale(): ?int { return $this->idCompteSignale; }
     public function setIdCompteSignale(?int $id): void { $this->idCompteSignale = $id; }
