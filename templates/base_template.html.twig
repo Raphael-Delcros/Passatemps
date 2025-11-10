@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang={{constant('WEBSITE_LANGUAGE')}}>
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,15 +8,14 @@
 		<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 		{% block css %}{% endblock %}
 		<title>
-			{% block title %}Passatemps - Accueil
-			{% endblock %}
+			{% block title %}Passatemps - Accueil{% endblock %}
 		</title>
 	</head>
 	<body>
-		<header>
-			<nav class="navbar navbar-expand-lg bg-body-tertiary">
-				<div class="container-fluid">
-					<a class="navbar-brand" href="#">
+		<header class="sticky-top">
+			<nav class="navbar navbar-expand-lg  bg-body-tertiary shadow-sm">
+				<div class="container-fluid ">
+					<a class="navbar-brand" href="index.php">
                         <img src="images/logo.svg" width="181" height="41" alt="Passatemps">
                     </a>
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,13 +24,13 @@
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link {% if menu=='accueil' %} active {% endif %}" aria-current="page" href="#">Accueil</a>
+                            <a class="nav-link {% if menu=='accueil' %} active {% endif %}" aria-current="page" href="index.php">Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if menu=='vendre' %} active {% endif %}" href="#">Vendre</a>
+                            <a class="nav-link {% if menu=='vendre' %} active {% endif %}" href="index.php?controleur=vendre&methode=create">Vendre</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if menu=='commandes' %} active {% endif %}" href="#">Commandes</a>
+                            <a class="nav-link {% if menu=='commandes' %} active {% endif %}" href="index.php?controleur=commande&methode=list">Commandes</a>
                         </li>
 						</a>
 						<form class="d-flex" role="search">
@@ -41,39 +40,35 @@
                         </ul>
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link {% if menu=='forum' %} active {% endif %}" href="#">Forums</a>
+							<a class="nav-link {% if menu=='forum' %} active {% endif %}" href="index.php?controleur=forum&methode=list">Forums</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link {% if menu=='messagerie' %} active {% endif %}" href="#">Messagerie</a>
+							<a class="nav-link {% if menu=='messagerie' %} active {% endif %}" href="index.php?controleur=messagerie&methode=list">Messagerie</a>
 						</li>
-						<li class="nav-item ms-auto">
-							<a class="nav-link {% if menu=='compte' %} active {% endif %}" href="#">Mon compte</a>
+						<li class="nav-item">
+							<a class="nav-link {% if menu=='compte' %} active {% endif %}" href="index.php?controleur=connexion&methode=connect">Mon compte</a>
 						</li>
 					    </ul>
 				    </div>
 			    </div>
 		    </nav>
         </header>
-        <main>
+        <main class="container mt-4 mb-5">
             {% block body %}{% endblock %}
         </main>
         <footer>
-            <div class="footer-content fixed-bottom row">
+            <div class="footer-content row bg-light text-center p-3">
 
                 <div class="col">
                     <p>Contactez-nous: contact@passatemps.com (Fausse email)</p>
-                    <p>Suivez-nous sur les réseaux sociaux!</p>
-                    <p>
-                        <a href="#">Facebook</a> |
-                        <a href="#">Twitter</a> |
-                        <a href="#">Instagram</a>
-                    </p>
+
                     <p>&copy; 2025 Passatemps. Tous droits réservés.</p>
                 </div>
                 <div class="col">
-                    <p><a href="#">Mentions légales</a></p>
-                    <p><a href="#">Politique de confidentialité</a></p>
-                    <p><a href="#">Conditions d'utilisation</a></p>
+                    <p class="mb-0"><a href="legal.php#mentions-legales">Mentions légales</a></p>
+                    <p class="mb-0"><a href="legal.php#politique-confidentialite">Politique de confidentialité</a></p>
+                    <p class="mb-0"><a href="legal.php#conditions-utilisation">Conditions d'utilisation</a></p>
+                    <p class="mb-0"><a href="legal.php#cookies">Politique de cookies</a></p>
                 </div>
             </div>
         </footer>
