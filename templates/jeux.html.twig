@@ -1,0 +1,3 @@
+{% for jeu in jeux %}
+        <li>{{ jeu.nom }} - <a href="index.php?controleur=Jeu&methode=afficher&id={{ jeu.idJeu }}">Voir</a></li>
+{% endfor %}

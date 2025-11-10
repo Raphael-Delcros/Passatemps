@@ -1,0 +1,11 @@
+<h1> {{ jeu.nom}} </h1>
+<p>{{ jeu.description }}</p>
+<p>{{ jeu.contenu }}</p>
+<p>Nombre de nbJoueursMax : {{ jeu.nbJoueursMax }}</p>
+<p>Nombre de nbJoueursMin : {{ jeu.nbJoueursMin }}</p>
+<p>{{ jeu.dateSortie }}</p>
+{% if idJeuPrincipale is not null %}
+<h3>
+    <p>{{ jeu.idJeuPrincipale }}</p>
+</h3>
+{% endif %}
