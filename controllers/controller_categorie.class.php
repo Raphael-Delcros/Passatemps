@@ -1,32 +1,31 @@
 <?php
-class ControllerCategorie  extends Controller {
-    public function __construct( Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader) {
+class ControllerCategorie  extends Controller
+{
+    public function __construct(Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader)
+    {
         parent::__construct($twig, $loader);
     }
 
     public function afficher()
     {
-        echo "afficher categorie";
+         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
+        $dao = new CategorieDao($this->getPdo());
+        $categorie = $dao->find($id);
+
+        $template = $this->getTwig()->load('categorie.html.twig');
+        echo $template->render([
+            'categorie' => $categorie,
+        ]);
     }
 
     public function lister()
     {
-        //recupération des catégories
-        $managerCategorie = new CategorieDAO($this->getPdo());
-        //$tableau = $managerCategorie->find(1);
-        var_dump($managerCategorie->find(1));
-        //$categories = $managerCategorie->hydrateAll($tableau);
+       $dao = new CategorieDao($this->getPdo());
+        $categories = $dao->findAllAssoc(); // récupère tous les jeux en tableau associatif
 
-        //Choix du template
-        //$template = $this->getTwig()->load('index.html.twig');
-
-        //echo $tableau->getNom();
-        //Affichage de la page
-        //echo $template->render(array(
-           // 'categories' => $categories,
-          //  'menu' => 'categories',
-            // 'description' => "Le site des recettes de cuisine de l'IUT de Bayonne"
-        //));
+        $template = $this->getTwig()->load('categories.html.twig');
+        echo $template->render([
+            'categories' => $categories,
+        ]);
     }
-
 }

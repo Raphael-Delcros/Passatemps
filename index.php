@@ -43,37 +43,7 @@ $controleur=ControllerFactory::getController($controleurName, $loader, $twig);
 
 $controleur->call($methode);
 */
-
-// try {
-//     $controleurName = isset($_GET['controller']) ? $_GET['controller'] : 'compte';
-//     $methode = isset($_GET['methode']) ? $_GET['methode'] : 'lister';
-
-//     if ($controleurName == "") {
-//         throw new Exception("Le controleur n'est pas défini");
-//     }
-//     if ($methode == "") {
-//         throw new Exception("La méthode n'est pas définie");
-//     }
-// } catch (Exception $e) {
-//     die("Erreur : " . $e->getMessage());
-// }
-
-// // Instanciation du controller selon le nom
-// switch (strtolower($controleurName)) {
-//     case 'compte':
-//         $controleur = new ControllerCompte($twig, $loader);
-//         break;
-//     // tu peux ajouter d'autres controllers ici
-//     default:
-//         die("Controller inconnu : $controleurName");
-// }
-
-// // Appel de la méthode
-// if (method_exists($controleur, $methode)) {
-//     $controleur->$methode();
-// } else {
-//     die("Méthode inconnue : $methode");
-// }
+/*
 try {
     // Récupération du controller et de la méthode depuis l'URL
     $controllerName = isset($_GET['controller']) ? $_GET['controller'] : 'signalement';
@@ -106,3 +76,43 @@ try {
     echo "<h1>Erreur :</h1>";
     echo "<p>" . $e->getMessage() . "</p>";
 }
+    */
+
+// test pour les jeux
+
+try{
+    if (isset($_GET['controleur'])){
+    $controleurName =$_GET['controleur'] ;
+    }
+    else{
+        $controleurName = "" ;
+    }
+
+    if (isset($_GET['methode'])){
+        $methode =$_GET['methode'] ;
+    }
+    else{
+        $methode = "" ;
+    }
+
+    if ($controleurName == "" && $methode == ""){
+        $controleurName = "Jeu" ;
+        $methode = "lister" ;
+    }
+
+    if ( $controleurName =="" ) {
+        var_dump("ici");
+        throw new Exception("Le controleur n'est pas defini");
+    }
+    if ( $methode == "" ) {
+        var_dump("ici");
+        throw new Exception("Le methode n'est pas defini");
+    }
+}
+catch(Exception $e){
+    die("Erreur : ".$e->getMessage());
+}
+
+$controleur=ControllerFactory::getController($controleurName, $loader, $twig);
+
+$controleur->call($methode);
