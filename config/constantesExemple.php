@@ -6,4 +6,4 @@
     define('DB_PASS', ''); //mot de passe de la bd
     define('PREFIXE_TABLE', ''); //prefixe des tables de la bd
     
-    define('WEBISTE_LANGUAGE', 'fr'); //langue du site (ne pas modifier)
+    define('WEBSITE_LANGUAGE', 'fr'); //langue du site (ne pas modifier)
