@@ -34,5 +34,7 @@ require_once 'modeles/signalement.class.php';
 require_once 'modeles/signalement.dao.php';
 require_once 'modeles/publication.class.php';
 require_once 'modeles/publication.dao.php';
+require_once 'modeles/photo.class.php';
+require_once 'modeles/photo.dao.php';
 
 ?>
