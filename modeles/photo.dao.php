@@ -27,7 +27,6 @@ class PhotoDao {
         $photo->setUrl($data['url'] ?? '');
         $photo->setIdAnnonce($data['idAnnonce'] ?? null);
         $photo->setIdMessage($data['idMessage'] ?? null);
-        $photo->setIdJeu($data['idJeu'] ?? null);
         return $photo;
     }
 

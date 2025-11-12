@@ -12,7 +12,7 @@
     {% for photo in photos %}
         <li>
             <a href="index.php?controleur=photo&methode=afficher&id={{ photo.idPhoto }}">
-                <img src="{{ photo.url }}" alt="Photo {{ photo.idPhoto }}" width="100">
+                <img src="images/{{ photo.url }}" alt="Photo {{ photo.idPhoto }}" width="100">
             </a>
             {% if photo.idAnnonce %}(Annonce) {% endif %}
             {% if photo.idMessage %}(Message) {% endif %}

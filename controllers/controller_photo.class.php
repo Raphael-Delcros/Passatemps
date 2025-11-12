@@ -5,14 +5,17 @@ class ControllerPhoto extends Controller {
         parent::__construct($twig, $loader);
     }
 
+    // Liste toutes les photos
     public function lister() {
         $dao = new PhotoDao($this->getPdo());
-        $photos = $dao->findAllAssoc();
+        $photosAssoc = $dao->findAllAssoc();       
+        $photos = $dao->hydrateAll($photosAssoc);  
 
         $template = $this->getTwig()->load('photos.html.twig');
         echo $template->render(['photos' => $photos]);
     }
 
+    // Affiche une seule photo
     public function afficher() {
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
         if (!$id) {
@@ -20,11 +23,12 @@ class ControllerPhoto extends Controller {
         }
 
         $dao = new PhotoDao($this->getPdo());
-        $photo = $dao->findAssoc($id);
-
-        if (!$photo) {
+        $photoAssoc = $dao->findAssoc($id);
+        if (!$photoAssoc) {
             throw new Exception("Photo introuvable !");
         }
+
+        $photo = $dao->hydrate($photoAssoc);  // transformer en objet Photo
 
         $template = $this->getTwig()->load('photo.html.twig');
         echo $template->render(['photo' => $photo]);
