@@ -5,11 +5,26 @@ class ControllerPublication extends Controller {
         parent::__construct($twig, $loader);
     }
 
-    public function afficher() {
-        echo "afficher publication";
+    public function lister() {
+        $dao = new PublicationDao($this->getPdo());
+        $publications = $dao->findAllAssoc();
+
+        $template = $this->getTwig()->load('publications.html.twig');
+        echo $template->render([
+            'publications' => $publications,
+            'menu' => 'publications'
+        ]);
     }
 
-    public function lister() {
-        echo "lister publication";
+    public function afficher() {
+        $id = isset($_GET['id']) ? intval($_GET['id']) : null;
+        $dao = new PublicationDao($this->getPdo());
+        $publication = $dao->find($id);
+
+        $template = $this->getTwig()->load('publication.html.twig');
+        echo $template->render([
+            'publication' => $publication,
+            'menu' => 'publication'
+        ]);
     }
 }
