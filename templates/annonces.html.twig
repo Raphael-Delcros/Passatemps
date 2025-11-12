@@ -1,0 +1,11 @@
+{% extends 'base_template.html.twig' %}
+{% block title %}Passatemps - Annonces{% endblock %}
+
+{% block body %}
+<h1>Liste des annonces</h1>
+<ul>
+{% for a in annonces %}
+    </li>{{ a.titre }} - <a href="index.php?controleur=Annonce&methode=afficher&id={{ a.idAnnonce }}">Voir</a>
+{% endfor %}
+</ul>
+{% endblock %}

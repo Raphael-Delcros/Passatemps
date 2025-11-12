@@ -1,0 +1,10 @@
+{% extends 'base_template.html.twig' %}
+{% block title %}Passatemps - {{ annonce.titre }} {% endblock %}
+
+{% block body %}
+    <h1>{{ annonce.titre }} </h1>
+    <p><strong>Description :</strong> {{ annonce.description }}</p>
+    <p><strong>Prix :</strong> {{ annonce.prix }}</p>
+    <p><strong>Etat du jeu :</strong> {{ annonce.etatJeu }}</p>
+    <p><strong>Date de la publication :</strong> {{ annonce.datePub }}</p>
+{% endblock %}
