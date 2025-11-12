@@ -1,12 +1,20 @@
-<h1> {{ jeu.nom}} </h1>
+<h1>
+	{{ jeu.nom}}
+</h1>
 <p>{{ jeu.description }}</p>
 <p>{{ jeu.contenu }}</p>
-<p>Nombre de nbJoueursMax : {{ jeu.nbJoueursMax }}</p>
-<p>Nombre de nbJoueursMin : {{ jeu.nbJoueursMin }}</p>
+<p>Nombre de nbJoueursMax :
+	{{ jeu.nbJoueursMax }}</p>
+<p>Nombre de nbJoueursMin :
+	{{ jeu.nbJoueursMin }}</p>
 <p>{{ jeu.dateSortie }}</p>
-{% if idJeuPrincipale is not null %}
-
+{% if idJeuPrincipal is not null %}
+	<p>Ce jeu est une extention de
+		{{ jeu.idJeuPrincipal }}</p>
 {% endif %}
-{% if idJeuPrincipale is not null %}
-    <p>Ce jeu est une extention de {{ jeu.idJeuPrincipale }}</p>
+{% if jeu.categories == 0 %}
+    <p>Catégories :</p>
+	{% for categorie in jeu.categories %}
+		<li>{{ categorie }}</li>
+	{% endfor %}
 {% endif %}

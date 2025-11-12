@@ -7,24 +7,17 @@ class CategorieDao{
         $this->pdo = $pdo;
     }
 
-    /**
-     * Get the value of pdo
-     */ 
+ // --- Getters & Setters ---
     public function getPdo(): ?PDO
     {
         return $this->pdo;
     }
-
-    /**
-     * Set the value of pdo
-     *
-     */ 
     public function setPdo($pdo): void
     {
         $this->pdo = $pdo;
     }
 
-
+ // --- Fonctions ---
     public function find(?int $id): ?Categorie
     {
         $sql="SELECT * FROM ".PREFIXE_TABLE."categorie WHERE idCategorie= :id";

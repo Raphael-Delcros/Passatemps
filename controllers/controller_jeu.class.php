@@ -14,6 +14,7 @@ class ControllerJeu extends Controller {
     echo $template->render([
         'jeux' => $jeux,
     ]);
+    
     }
 
     // Affiche un seul jeu
