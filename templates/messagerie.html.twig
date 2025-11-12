@@ -1,0 +1,17 @@
+{% extends "base_template.html.twig" %}
+{% block title %}Passatemps - Messagerie{% endblock %}
+
+{% block body %}
+    <h1>Messagerie</h1>
+    <ul>
+        {% for message in messages %}
+            <li>
+                <a href="index.php?controleur=messagerie&methode=afficher&id={{ message.idMessage }}">
+                    {{ message.contenu }} - de {{ message.idCompteExpediteur }} à {{ message.idCompteDestinataire }}
+                </a>
+            </li>
+        {% else %}
+            <li>Aucun message trouvé.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
