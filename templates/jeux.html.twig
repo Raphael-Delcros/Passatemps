@@ -1,3 +1,38 @@
-{% for jeu in jeux %}
-        <li>{{ jeu.nom }} - <a href="index.php?controleur=Jeu&methode=afficher&id={{ jeu.idJeu }}">Voir</a></li>
-{% endfor %}
+{% extends 'base_template.html.twig' %}
+
+{% block title %}PassaTemps - Jeux disponibles{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Jeux disponibles</h1>
+
+    {% if jeux is empty %}
+        <p class="text-center text-muted">Aucun jeu disponible pour le moment.</p>
+    {% else %}
+        <div class="row g-4">
+            {% for jeu in jeux %}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="card h-100 shadow-sm">
+                        {% if jeu.url is defined and jeu.url %}
+                            <img src="images/{{ jeu.url }}" class="card-img-top" alt="{{ jeu.nom }}">
+                        {% endif %}
+
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-center">{{ jeu.nom }}</h5>
+
+                            <p class="card-text text-muted small text-center">
+                                {{ jeu.nbJoueursMin }} à {{ jeu.nbJoueursMax }} joueurs
+                            </p>
+
+                            <a href="index.php?controleur=Jeu&methode=afficher&id={{ jeu.idJeu }}"
+                               class="btn btn-primary mt-auto w-100">
+                                Voir plus
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

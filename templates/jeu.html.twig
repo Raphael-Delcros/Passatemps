@@ -1,20 +1,32 @@
-<h1>
-	{{ jeu.nom}}
-</h1>
-<p>{{ jeu.description }}</p>
-<p>{{ jeu.contenu }}</p>
-<p>Nombre de nbJoueursMax :
-	{{ jeu.nbJoueursMax }}</p>
-<p>Nombre de nbJoueursMin :
-	{{ jeu.nbJoueursMin }}</p>
-<p>{{ jeu.dateSortie }}</p>
-{% if idJeuPrincipal is not null %}
-	<p>Ce jeu est une extention de
-		{{ jeu.idJeuPrincipal }}</p>
-{% endif %}
-{% if jeu.categories == 0 %}
-    <p>Catégories :</p>
-	{% for categorie in jeu.categories %}
-		<li>{{ categorie }}</li>
-	{% endfor %}
-{% endif %}
+{% extends 'base_template.html.twig' %}
+
+{% block title %}{{ jeu.nom }} - Détails du jeu{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="card shadow-lg border-0">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="images/{{ jeu.urlPhoto }}" class="img-fluid rounded-start" alt="{{ jeu.nom }}">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h3 class="card-title">{{ jeu.nom }}</h3>
+                    <p class="card-text">{{ jeu.description }}</p>
+
+                    <ul class="list-unstyled mt-3">
+                        <li><strong>Nombre de joueurs :</strong> {{ jeu.nbJoueursMin }} - {{ jeu.nbJoueursMax }}</li>
+                        <li><strong>Durée :</strong> {{ jeu.DureePartie }} min</li>
+                        <li><strong>Date de sortie :</strong> {{ jeu.dateSortie }}</li>
+                        {% if jeu.categories %}
+                            <li><strong>Catégories :</strong> {{ jeu.categories|join(', ') }}</li>
+                        {% endif %}
+                    </ul>
+
+                    <a href="index.php?controleur=Jeu&methode=lister" class="btn btn-secondary mt-3">← Retour à la liste</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
