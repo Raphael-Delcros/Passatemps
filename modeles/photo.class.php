@@ -5,20 +5,17 @@ class Photo {
     private ?string $url;
     private ?int $idAnnonce;
     private ?int $idMessage;
-    private ?int $idJeu;
 
     public function __construct(
         ?int $idPhoto = null,
         ?string $url = null,
         ?int $idAnnonce = null,
-        ?int $idMessage = null,
-        ?int $idJeu = null
+        ?int $idMessage = null
     ) {
         $this->idPhoto = $idPhoto;
         $this->url = $url;
         $this->idAnnonce = $idAnnonce;
         $this->idMessage = $idMessage;
-        $this->idJeu = $idJeu;
     }
 
     public function getIdPhoto(): ?int { return $this->idPhoto; }
@@ -32,7 +29,4 @@ class Photo {
 
     public function getIdMessage(): ?int { return $this->idMessage; }
     public function setIdMessage(?int $idMessage): void { $this->idMessage = $idMessage; }
-
-    public function getIdJeu(): ?int { return $this->idJeu; }
-    public function setIdJeu(?int $idJeu): void { $this->idJeu = $idJeu; }
 }
