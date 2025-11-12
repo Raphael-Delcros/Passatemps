@@ -22,6 +22,7 @@ require_once 'controllers/controller_signalement.class.php';
 require_once 'controllers/controller_publication.class.php';
 require_once 'controllers/controller_photo.class.php';
 require_once 'controllers/controller_annonce.class.php';
+require_once 'controllers/controller_bannissement.class.php';
 
 // Ajout des modeles
 require_once 'modeles/bd.class.php';
