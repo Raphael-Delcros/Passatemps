@@ -1,0 +1,11 @@
+{% extends 'base_template.html.twig' %}
+{% block title %}Passatemps - Liste des bannissements{% endblock %}
+
+{% block body %}
+    <h1>Liste des bannissements</h1>
+    <ul>
+    {% for bannissement in bannissements %}
+        <li>{{ bannissement.idBannissement }} {{ bannissement.sujet }} - <a href="index.php?controleur=bannissement&methode=afficher&id={{ bannissement.idBannissement }}">Voir</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}

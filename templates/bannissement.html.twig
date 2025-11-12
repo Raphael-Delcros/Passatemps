@@ -1,0 +1,13 @@
+{% extends 'base_template.html.twig' %}
+{% block title %}Passatemps - {{ bannissement.idBannissement }} {{ bannissement.sujet }}{% endblock %}
+
+{% block body %}
+    <h1>{{ bannissement.idBannissement }} {{ bannissement.sujet }}</h1>
+    <p><strong>idBannissement :</strong> {{ bannissement.idBannissement }}</p>
+    <p><strong>idBanni :</strong> {{ bannissement.idBanni }}</p>
+    <p><strong>idBannisseur :</strong> {{ bannissement.idBannisseur }}</p>
+    <p><strong>Date début :</strong> {{ bannissement.dateDeb }}</p>
+    <p><strong>Date fin :</strong> {{ bannissement.dateFin }}</p>
+    <p><strong>Sujet :</strong> {{ publication.sujet }}</p>
+    <p><strong>Raison :</strong> {{ publication.raison }}</p>
+{% endblock %}
