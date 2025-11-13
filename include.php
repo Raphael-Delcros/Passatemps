@@ -24,6 +24,7 @@ require_once 'controllers/controller_photo.class.php';
 require_once 'controllers/controller_annonce.class.php';
 require_once 'controllers/controller_bannissement.class.php';
 require_once 'controllers/controller_messagerie.class.php';
+require_once 'controllers/controller_vendre.class.php';
 
 // Ajout des modeles
 require_once 'modeles/bd.class.php';
