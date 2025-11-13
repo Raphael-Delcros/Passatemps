@@ -4,11 +4,12 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="CSS/styles.css">
-        <link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+		<link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
 		<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 		{% block css %}{% endblock %}
 		<title>
-			{% block title %}Passatemps - Accueil{% endblock %}
+			{% block title %}Passatemps - Accueil
+			{% endblock %}
 		</title>
 	</head>
 	<body>
@@ -16,32 +17,36 @@
 			<nav class="navbar navbar-expand-lg  bg-body-tertiary shadow-sm">
 				<div class="container-fluid ">
 					<a class="navbar-brand" href="index.php">
-                        <img src="images/logo.svg" width="181" height="41" alt="Passatemps">
-                    </a>
+						<img src="images/logo.svg" width="181" height="41" alt="Passatemps">
+					</a>
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link {% if menu=='accueil' %} active {% endif %}" aria-current="page" href="index.php">Accueil</a>
-                        </li>
-						<li class="nav-item">
-                            <a class="nav-link {% if menu=='annonce' %} active {% endif %}" href="index.php?controleur=annonce&methode=lister">Annonces</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if menu=='vendre' %} active {% endif %}" href="index.php?controleur=vendre&methode=create">Vendre</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if menu=='commandes' %} active {% endif %}" href="index.php?controleur=commande&methode=lister">Commandes</a>
-                        </li>
+							<li class="nav-item">
+								<a class="nav-link {% if menu=='accueil' %} active {% endif %}" aria-current="page" href="index.php">Accueil</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link {% if menu=='annonce' %} active {% endif %}" href="index.php?controleur=annonce&methode=lister">Annonces</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link {% if menu=='vendre' %} active {% endif %}" href="index.php?controleur=vendre&methode=create">Vendre</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link {% if menu=='commandes' %} active {% endif %}" href="index.php?controleur=commande&methode=lister">Commandes</a>
+							</li>
 						</a>
-						<form class="d-flex" role="search">
-							<input class="form-control" type="search" placeholder="Rechercher un jeu" aria-label="Search"/>
+						<form class="d-flex position-relative" role="search" id="form-recherche-jeux" autocomplete="off">
+							<input class="form-control" type="search" placeholder="Rechercher un jeu" aria-label="Search" id="recherche-jeux"/>
 							<button class="btn btn-outline-success" type="submit" hidden>Search</button>
+
+							<!-- Menu déroulant -->
+							<ul id="resultats-autocomplete" class="list-group position-absolute w-100" style="z-index:1000; display:none;"></ul>
 						</form>
-                        </ul>
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+					</ul>
+					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 						<li class="nav-item">
 							<a class="nav-link {% if menu=='forum' %} active {% endif %}" href="index.php?controleur=forum&methode=lister">Forums</a>
 						</li>
@@ -51,29 +56,84 @@
 						<li class="nav-item">
 							<a class="nav-link {% if menu=='compte' %} active {% endif %}" href="index.php?controleur=connexion&methode=connect">Mon compte</a>
 						</li>
-					    </ul>
-				    </div>
-			    </div>
-		    </nav>
-        </header>
-        <main class="container mt-4 mb-5">
-            {% block body %}{% endblock %}
-        </main>
-        <footer>
-            <div class="footer-content row bg-light text-center p-3">
-
-                <div class="col">
-                    <p>Contactez-nous: contact@passatemps.com (Fausse email)</p>
-
-                    <p>&copy; 2025 Passatemps. Tous droits réservés.</p>
-                </div>
-                <div class="col">
-                    <p class="mb-0"><a href="legal.php#mentions-legales">Mentions légales</a></p>
-                    <p class="mb-0"><a href="legal.php#politique-confidentialite">Politique de confidentialité</a></p>
-                    <p class="mb-0"><a href="legal.php#conditions-utilisation">Conditions d'utilisation</a></p>
-                    <p class="mb-0"><a href="legal.php#cookies">Politique de cookies</a></p>
-                </div>
-            </div>
-        </footer>
+					</ul>
+				</div>
+			</div>
+		</nav>
 	</body>
+</html></header><main class="container mt-4 mb-5"> {% block body %}{% endblock %}
+</main>
+<footer>
+	<div class="footer-content row bg-light text-center p-3">
+
+		<div class="col">
+			<p>Contactez-nous: contact@passatemps.com (Fausse email)</p>
+
+			<p>&copy; 2025 Passatemps. Tous droits réservés.</p>
+		</div>
+		<div class="col">
+			<p class="mb-0">
+				<a href="legal.php#mentions-legales">Mentions légales</a>
+			</p>
+			<p class="mb-0">
+				<a href="legal.php#politique-confidentialite">Politique de confidentialité</a>
+			</p>
+			<p class="mb-0">
+				<a href="legal.php#conditions-utilisation">Conditions d'utilisation</a>
+			</p>
+			<p class="mb-0">
+				<a href="legal.php#cookies">Politique de cookies</a>
+			</p>
+		</div>
+	</div>
+</footer></body>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('recherche-jeux');
+    const resultats = document.getElementById('resultats-autocomplete');
+
+    input.addEventListener('input', function() {
+        const valeur = this.value.trim();
+
+        if (valeur === '') {
+            resultats.style.display = 'none';
+            return;
+        }
+
+        fetch(`index.php?controleur=Jeu&methode=autocomplete&q=${encodeURIComponent(valeur)}`)
+            .then(res => res.json())
+            .then(data => {
+                resultats.innerHTML = '';
+
+                if (data.length === 0) {
+                    resultats.style.display = 'none';
+                    return;
+                }
+
+                data.forEach(jeu => {
+                    const li = document.createElement('li');
+                    li.className = 'list-group-item list-group-item-action';
+                    li.textContent = jeu.nom;
+                    li.style.cursor = 'pointer';
+
+                    // quand on clique, on va sur la page du jeu
+                    li.addEventListener('click', () => {
+                        window.location.href = `index.php?controleur=Jeu&methode=afficher&id=${jeu.idJeu}`;
+                    });
+
+                    resultats.appendChild(li);
+                });
+
+                resultats.style.display = 'block';
+            });
+    });
+
+    // cacher le menu si clic en dehors
+    document.addEventListener('click', function(e) {
+        if (!input.contains(e.target) && !resultats.contains(e.target)) {
+            resultats.style.display = 'none';
+        }
+    });
+});
+</script>
 </html>

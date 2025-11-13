@@ -227,4 +227,17 @@ class JeuDao
         }
         return $jeux;
     }
+
+    public function rechercherParNom(string $q): array
+    {
+        $sql = "SELECT idJeu, nom
+            FROM jeu
+            WHERE LOWER(nom) LIKE :q
+            ORDER BY nom
+            LIMIT 10"; // on limite à 10 résultats
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['q' => '%' . strtolower($q) . '%']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
