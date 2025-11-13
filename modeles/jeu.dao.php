@@ -28,7 +28,7 @@ class JeuDao
                    J.nbJoueursMin, J.nbJoueursMax, J.dateSortie, 
                    J.idJeuPrincipal, categorie.nom AS nomCategorie, J.idPhoto,
                     photo.url, J.DureePartie
-            FROM JEU J
+            FROM jeu J
             LEFT JOIN cataloguer ON J.idJeu = cataloguer.idJeu 
             LEFT JOIN categorie ON cataloguer.idCategorie = categorie.idCategorie 
             LEFT JOIN photo ON J.idPhoto = photo.idPhoto
@@ -74,7 +74,7 @@ class JeuDao
                    J.nbJoueursMin, J.nbJoueursMax, J.dateSortie, 
                    J.idJeuPrincipal, categorie.nom AS nomCategorie, J.idPhoto,
                     photo.url, J.DureePartie
-            FROM JEU J
+            FROM jeu J
             LEFT JOIN cataloguer ON J.idJeu = cataloguer.idJeu 
             LEFT JOIN categorie ON cataloguer.idCategorie = categorie.idCategorie 
             LEFT JOIN photo ON J.idPhoto = photo.idPhoto
@@ -136,7 +136,7 @@ class JeuDao
                    J.nbJoueursMin, J.nbJoueursMax, J.dateSortie, 
                    J.idJeuPrincipal, categorie.nom AS nomCategorie, J.idPhoto,
                     photo.url, J.DureePartie
-            FROM JEU J
+            FROM jeu J
             LEFT JOIN cataloguer ON J.idJeu = cataloguer.idJeu 
             LEFT JOIN categorie ON cataloguer.idCategorie = categorie.idCategorie 
             LEFT JOIN photo ON J.idPhoto = photo.idPhoto
@@ -169,7 +169,7 @@ class JeuDao
                    J.nbJoueursMin, J.nbJoueursMax, J.dateSortie, 
                    J.idJeuPrincipal, categorie.nom AS nomCategorie, J.idPhoto,
                     photo.url, J.DureePartie
-            FROM JEU J
+            FROM jeu J
             LEFT JOIN cataloguer ON J.idJeu = cataloguer.idJeu 
             LEFT JOIN categorie ON cataloguer.idCategorie = categorie.idCategorie 
             LEFT JOIN photo ON J.idPhoto = photo.idPhoto
