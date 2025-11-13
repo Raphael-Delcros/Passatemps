@@ -1,0 +1,42 @@
+{% extends 'base_template.html.twig' %}
+
+{% block title %}
+	Vente
+{% endblock %}
+
+{% block body %}
+	<main>
+		<form type="GET" class="row g-3">
+			<h1>Vendre</h1>
+
+			<label for="nomJeu" class="form-label">Nom du jeu</label>
+			<input type="text" class="form-control" id="nomJeu" placeholder="Entrez le nom du jeu">
+
+			<label for="descriptionAnnonce" class="form-label">description</label>
+			<input type="text" class="form-control" id="nomJeu" placeholder="Desciption de l'annonce">
+
+			<label for="nomJeu" class="form-label">Prix</label>
+			<input type="int" class="form-control" id="nomJeu" placeholder="12.50">
+
+			<label for="inputState" class="form-label">Etat du jeu</label>
+			<select id="inputState" class="form-select">
+				<option selected>Choisir</option>
+				<option>Neuf</option>
+				<option>Très bon état</option>
+				<option>Bon état</option>
+				<option>Abimé</option>
+				<option>Manque des pieces</option>
+			</select>
+
+			<label for="photoAnnonce" class="form-label">Photos de l'annonce</label>
+			<input type="file" class="form-label" id="photoAnnonce" placeholder="Ajouter des photos" accept=".png,.jpeg,.jpg,.pdf,.webp,.svg,.gif">
+
+			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+				<button type="submit" class="btn btn-primary me-md-2">Publier l'annonce</button>
+                <button type="submit" class="btn btn-primary me-md-2">Annuler</button>
+			</div>
+		</form>
+
+
+	</main>
+{% endblock %}
