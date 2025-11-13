@@ -10,13 +10,16 @@ class Jeu {
     private ?int $nbJoueursMin ;
     private ?int $nbJoueursMax ; 
     private ?string $dateSortie ; 
-    private ?int $idJeuPrincipale ;
-    private ?array $categories ; // Récupérer les catégories via la table cataloguer
-
+    private ?int $idJeuPrincipal ;
+    private ?array $categories; // Récupérer les catégories via la table cataloguer
+    private ?int $idPhoto ;
+    private ?string $urlPhoto ;
+    private ?int $DureePartie ; 
     
 // --- Constucteur ---
 
-    public function __construct(?int $id = null, ?string $n = null, ?string $desc = null, ?string $cont = null, ?int $nbMin = null, ?int $nbMax = null, ?string $dateSort = null, ?int $idJeuPrin = null)
+    public function __construct(?int $id = null, ?string $n = null, ?string $desc = null, ?string $cont = null, ?int $nbMin = null, ?int $nbMax = null,
+    ?string $dateSort = null, ?int $idJeuPrin = null, ?int $idPhoto = null, ?int $DureePartie = null, ?string $urlPhoto = null, ?array $categories = null)
     {
         $this->idJeu = $id;
         $this->nom = $n;
@@ -25,7 +28,11 @@ class Jeu {
         $this->nbJoueursMin = $nbMin;
         $this->nbJoueursMax = $nbMax;
         $this->dateSortie = $dateSort;
-        $this->idJeuPrincipale = $idJeuPrin;
+        $this->idJeuPrincipal = $idJeuPrin;
+        $this->categories = $categories;
+        $this->idPhoto = $idPhoto;
+        $this->DureePartie = $DureePartie;
+        $this->urlPhoto = $urlPhoto;
     }
 
 
@@ -35,7 +42,7 @@ class Jeu {
     {
         return $this->idJeu;
     }
-    public function setIdJeu($idJeu) : void
+    public function setIdJeu( ?int $idJeu) : void
     {
         $this->idJeu = $idJeu;
     }
@@ -45,7 +52,7 @@ class Jeu {
     {
         return $this->nom;
     }
-    public function setNom($nom) : void
+    public function setNom(?string $nom) : void
     {
         $this->nom = $nom;
     }
@@ -55,7 +62,7 @@ class Jeu {
     {
         return $this->description;
     }
-    public function setDescription($desciption) : void
+    public function setDescription(?string $desciption) : void
     {
         $this->description = $desciption;
     }
@@ -64,7 +71,7 @@ class Jeu {
     {
         return $this->contenu;
     }
-    public function setContenu($contenu) : void
+    public function setContenu(?string $contenu) : void
     {
         $this->contenu = $contenu;
     }
@@ -74,7 +81,7 @@ class Jeu {
     {
         return $this->nbJoueursMin;
     }
-    public function setNbJoueursMin($nbJoueursMin) : void
+    public function setNbJoueursMin(?int $nbJoueursMin) : void
     {
         $this->nbJoueursMin = $nbJoueursMin;
     }
@@ -84,7 +91,7 @@ class Jeu {
     {
         return $this->nbJoueursMax;
     }
-    public function setNbJoueursMax($nbJoueursMax) : void
+    public function setNbJoueursMax(?int $nbJoueursMax) : void
     {
         $this->nbJoueursMax = $nbJoueursMax;
     }
@@ -93,18 +100,57 @@ class Jeu {
     {
         return $this->dateSortie;
     }
-    public function setDateSortie($dateSortie) : void
+    public function setDateSortie(?string $dateSortie) : void
     {
         $this->dateSortie = $dateSortie;
     }
 
-    public function getIdJeuPrincipale() : ?int
+    public function getIdJeuPrincipal() : ?int
     {
-        return $this->idJeuPrincipale;
+        return $this->idJeuPrincipal;
     }
-    public function setIdJeuPrincipale($idJeuPrincipale) : void
+    public function setIdJeuPrincipal(?int $idJeuPrincipal) : void
     {
-        $this->idJeuPrincipale = $idJeuPrincipale;
+        $this->idJeuPrincipal = $idJeuPrincipal;
+    }
+
+
+    public function getCategories() : ?array
+    {
+        return $this->categories;
+    }
+    public function setCategories(?array $categories) : void
+    {
+        $this->categories = $categories;
+    }
+
+    public function getIdPhoto() : ?int
+    {
+        return $this->idPhoto;
+    }
+    public function setIdPhoto($idPhoto) : void
+    {
+        $this->idPhoto = $idPhoto;
+    }
+
+    public function getDureePartie() : ?int
+    {
+        return $this->DureePartie;
+    }
+    public function setDureePartie($DureePartie) : void
+    {
+        $this->DureePartie = $DureePartie;
+    }
+
+    public function getUrlPhoto()
+    {
+        return $this->urlPhoto;
+    } 
+    public function setUrlPhoto($urlPhoto)
+    {
+        $this->urlPhoto = $urlPhoto;
+
+        return $this;
     }
 }
 

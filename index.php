@@ -21,7 +21,7 @@ try {
 
     // Gestion de la page d'accueil par défaut
     if ($controllerName == '' && $methode == '') {
-        $controllerName = 'signalement'; 
+        $controllerName = 'jeu'; 
         $methode = 'lister';
     }
 
