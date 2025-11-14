@@ -240,4 +240,16 @@ class JeuDao
         $stmt->execute(['q' => '%' . strtolower($q) . '%']);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function rechercher(string $q): array
+    {
+        $sql = "SELECT idJeu, nom
+            FROM jeu
+            WHERE LOWER(nom) LIKE :q
+            ORDER BY nom";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['q' => '%' . strtolower($q) . '%']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
