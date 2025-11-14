@@ -38,12 +38,15 @@
                             <a class="nav-link {% if menu=='commandes' %} active {% endif %}" href="index.php?controleur=commande&methode=lister">Commandes</a>
                         </li>
 						<form class="d-flex position-relative" role="search" id="form-recherche-jeux" autocomplete="off">
-							<input class="form-control" type="search" placeholder="Rechercher un jeu" aria-label="Search" id="recherche-jeux"/>
-							<button class="btn btn-outline-success" type="submit" hidden>Search</button>
+    						<input class="form-control" type="search" placeholder="Rechercher un jeu" aria-label="Search" id="recherche-jeux"/>
+    						<button class="btn btn-outline-success" type="submit" hidden>Search</button>
 
-							<!-- Menu déroulant -->
-							<ul id="resultats-autocomplete" class="list-group position-absolute w-100" style="z-index:1000; display:none;"></ul>
+   							 <ul id="resultats-autocomplete"
+        						class="list-group position-absolute w-100"
+        						style="top: 100%; left: 0; z-index: 1000; display: none;">
+    						</ul>
 						</form>
+
 
 					</ul>
 					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -88,19 +91,18 @@
 	</div>
 </footer></body>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const input = document.getElementById('recherche-jeux');
-    const resultats = document.getElementById('resultats-autocomplete');
+    let input = document.getElementById('recherche-jeux');
+    let resultats = document.getElementById('resultats-autocomplete');
 
     input.addEventListener('input', function() {
-        const valeur = this.value.trim();
+        let valeur = this.value.trim();
 
         if (valeur === '') {
             resultats.style.display = 'none';
             return;
         }
 
-        fetch(`index.php?controleur=Jeu&methode=autocomplete&q=${encodeURIComponent(valeur)}`)
+        fetch(`index.php?controleur=Jeu&methode=autocomplete&q=${(valeur)}`)
             .then(res => res.json())
             .then(data => {
                 resultats.innerHTML = '';
@@ -111,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 data.forEach(jeu => {
-                    const li = document.createElement('li');
+                    let li = document.createElement('li');
                     li.className = 'list-group-item list-group-item-action';
                     li.textContent = jeu.nom;
                     li.style.cursor = 'pointer';
@@ -134,6 +136,24 @@ document.addEventListener('DOMContentLoaded', function() {
             resultats.style.display = 'none';
         }
     });
-});
+
+	// APPUI SUR ENTREE
+    input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault(); // empêche le submit
+        lancerRecherche();
+    }
+	});
+
+	function lancerRecherche() {
+    let valeur = input.value.trim();
+
+    if (valeur === '') return;
+
+    // Redirection vers la page de recherche classique
+    window.location.href = `index.php?controleur=Jeu&methode=rechercherPage&q=${(valeur)}`;
+	}
+
+
 </script>
 </html>
