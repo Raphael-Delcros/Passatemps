@@ -28,7 +28,7 @@ class JeuDao
                    J.nbJoueursMin, J.nbJoueursMax, J.dateSortie, 
                    J.idJeuPrincipal, categorie.nom AS nomCategorie, J.idPhoto,
                     photo.url, J.DureePartie
-            FROM JEU J
+            FROM jeu J
             LEFT JOIN cataloguer ON J.idJeu = cataloguer.idJeu 
             LEFT JOIN categorie ON cataloguer.idCategorie = categorie.idCategorie 
             LEFT JOIN photo ON J.idPhoto = photo.idPhoto
@@ -74,7 +74,7 @@ class JeuDao
                    J.nbJoueursMin, J.nbJoueursMax, J.dateSortie, 
                    J.idJeuPrincipal, categorie.nom AS nomCategorie, J.idPhoto,
                     photo.url, J.DureePartie
-            FROM JEU J
+            FROM jeu J
             LEFT JOIN cataloguer ON J.idJeu = cataloguer.idJeu 
             LEFT JOIN categorie ON cataloguer.idCategorie = categorie.idCategorie 
             LEFT JOIN photo ON J.idPhoto = photo.idPhoto
@@ -136,7 +136,7 @@ class JeuDao
                    J.nbJoueursMin, J.nbJoueursMax, J.dateSortie, 
                    J.idJeuPrincipal, categorie.nom AS nomCategorie, J.idPhoto,
                     photo.url, J.DureePartie
-            FROM JEU J
+            FROM jeu J
             LEFT JOIN cataloguer ON J.idJeu = cataloguer.idJeu 
             LEFT JOIN categorie ON cataloguer.idCategorie = categorie.idCategorie 
             LEFT JOIN photo ON J.idPhoto = photo.idPhoto
@@ -169,7 +169,7 @@ class JeuDao
                    J.nbJoueursMin, J.nbJoueursMax, J.dateSortie, 
                    J.idJeuPrincipal, categorie.nom AS nomCategorie, J.idPhoto,
                     photo.url, J.DureePartie
-            FROM JEU J
+            FROM jeu J
             LEFT JOIN cataloguer ON J.idJeu = cataloguer.idJeu 
             LEFT JOIN categorie ON cataloguer.idCategorie = categorie.idCategorie 
             LEFT JOIN photo ON J.idPhoto = photo.idPhoto
@@ -226,5 +226,30 @@ class JeuDao
             $jeux[] = $jeu;
         }
         return $jeux;
+    }
+
+    public function rechercherParNom(string $q): array
+    {
+        $sql = "SELECT idJeu, nom
+            FROM jeu
+            WHERE LOWER(nom) LIKE :q
+            ORDER BY nom
+            LIMIT 10"; // on limite à 10 résultats
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['q' => '%' . strtolower($q) . '%']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function rechercher(string $q): array
+    {
+        $sql = "SELECT idJeu, nom
+            FROM jeu
+            WHERE LOWER(nom) LIKE :q
+            ORDER BY nom";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['q' => '%' . strtolower($q) . '%']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
