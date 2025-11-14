@@ -42,7 +42,7 @@ class ControllerJeu extends Controller
             exit;
         }
 
-        $jeux = $dao->rechercherParNom($q); // retourne un tableau associatif
+        $jeux = $dao->findWithName($q); // retourne un tableau associatif
 
         // On envoie seulement les infos utiles
         $resultats = array_map(function ($jeu) {
@@ -55,5 +55,19 @@ class ControllerJeu extends Controller
         header('Content-Type: application/json');
         echo json_encode($resultats);
         exit;
+    }
+
+    public function rechercherPage()
+    {
+        $q = $_GET['q'] ?? '';
+        $dao = new JeuDao($this->getPdo());
+
+        $jeux = ($q === '') ? [] : $dao->research($q);
+
+        $template = $this->getTwig()->load('recherche.html.twig');
+        echo $template->render([
+            'q' => $q,
+            'jeux' => $jeux
+        ]);
     }
 }

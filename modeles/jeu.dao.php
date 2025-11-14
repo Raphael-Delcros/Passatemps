@@ -228,7 +228,7 @@ class JeuDao
         return $jeux;
     }
 
-    public function rechercherParNom(string $q): array
+    public function findWithName(string $q): array
     {
         $sql = "SELECT idJeu, nom
             FROM jeu
@@ -241,15 +241,17 @@ class JeuDao
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function rechercher(string $q): array
+    public function research(string $q): array
     {
-        $sql = "SELECT idJeu, nom
-            FROM jeu
-            WHERE LOWER(nom) LIKE :q
-            ORDER BY nom";
+    $sql = "SELECT J.idJeu, J.nom, J.nbJoueursMin, J.nbJoueursMax, P.url
+            FROM jeu J
+            LEFT JOIN photo P ON J.idPhoto = P.idPhoto
+            WHERE LOWER(J.nom) LIKE :q
+            ORDER BY J.nom";
 
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['q' => '%' . strtolower($q) . '%']);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute(['q' => '%' . strtolower($q) . '%']);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 }

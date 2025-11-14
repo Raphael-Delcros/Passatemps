@@ -1,0 +1,42 @@
+{% extends 'base_template.html.twig' %}
+
+{% block title %}PassaTemps - Résultats{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Résultats pour "{{ q }}"</h1>
+
+    {% if jeux is empty %}
+        <p class="text-center text-muted">Aucun jeu ne correspond à "{{ q }}".</p>
+    {% else %}
+        <div class="row g-4">
+
+            {% for jeu in jeux %}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="card h-100 shadow-sm d-flex flex-column">
+                        {% if jeu.url is defined and jeu.url %}
+                            <div class="pt-4 d-flex flex-column align-items-center"> 
+                                <img src="images/{{ jeu.url }}" class="card-img-top" alt="{{ jeu.nom }}">
+                            </div>
+                        {% endif %}
+
+                        <div class="card-body d-flex flex-column justify-content-end">
+                            <h5 class="card-title text-center">{{ jeu.nom }}</h5>
+
+                            <p class="card-text text-muted small text-center mb-3">
+                                {{ jeu.nbJoueursMin }} à {{ jeu.nbJoueursMax }} joueurs
+                            </p>
+
+                            <a href="index.php?controleur=Jeu&methode=afficher&id={{ jeu.idJeu }}"
+                               class="btn btn-primary w-100">
+                                Voir plus
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

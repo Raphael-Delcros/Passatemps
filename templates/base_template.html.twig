@@ -136,6 +136,24 @@
             resultats.style.display = 'none';
         }
     });
-;
+
+	// APPUI SUR ENTREE
+    input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault(); // empêche le submit
+        lancerRecherche();
+    }
+	});
+
+	function lancerRecherche() {
+    let valeur = input.value.trim();
+
+    if (valeur === '') return;
+
+    // Redirection vers la page de recherche classique
+    window.location.href = `index.php?controleur=Jeu&methode=rechercherPage&q=${(valeur)}`;
+	}
+
+
 </script>
 </html>
