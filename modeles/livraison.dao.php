@@ -60,4 +60,16 @@ class LivraisonDao {
             return $commandes;
         }
 
+        public function getTitreAnnonceByLivraisonId(int $idLivraison): ?array
+        {
+            $sql = "SELECT a.titre, a.prix FROM ". PREFIXE_TABLE. "annonce a
+                    JOIN ". PREFIXE_TABLE. "livraison l ON a.idAnnonce = l.idAnnonce
+                    WHERE l.idLivraison = :idLivraison";
+            $pdoStatement = $this->pdo->prepare($sql);
+            $pdoStatement->execute(array("idLivraison" => $idLivraison));
+            $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
+            $annonce = $pdoStatement->fetch();
+            return $annonce;
+        }
+
 }

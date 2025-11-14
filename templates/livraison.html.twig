@@ -1,12 +1,13 @@
 {% extends "base_template.html.twig" %}
+
 {% block title %}Passatemps - Commande n°{{commande.idLivraison}}{% endblock %}
 
 {% block body %}
 <h1>Détails de la commande n°{{ commande.idLivraison }}</h1>
 <ul>
-    <li>Jeu commandé : <a href="index.php?controleur=Annonce&methode=afficher&id={{ commande.idAnnonce }}">{{ commande.idAnnonce}}</a></li>
+    <li>Jeu commandé : <a href="index.php?controleur=Annonce&methode=afficher&id={{ commande.idAnnonce }}">{{ annonce.titre}}</a></li>
     <li>Date de la commande : {{ commande.dateCommande|date('d/m/Y') }}</li>
     <li>Numéro de suivi : {{ commande.numeroDeSuivi }}</li>
-    <li>Prix : {{ commande.total }} €</li>
+    <li>Prix : {{ annonce.prix }} €</li>
 </ul>
 {% endblock %}
