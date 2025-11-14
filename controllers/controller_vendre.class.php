@@ -21,7 +21,9 @@ class ControllerVendre extends controller
 
        // Logique pour confirmer la vente (par exemple, enregistrer les données dans la base de données)
        $template = $this->getTwig()->load('vendre.html.twig');
-       echo $template->render();
+       echo $template->render(
+
+       );
    }
 
 }
