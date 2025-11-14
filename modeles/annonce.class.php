@@ -10,6 +10,7 @@ Class Annonce {
     private ?string $etatVente;
     private ?int $idJeu;
     private ?int $idCompteVendeur;
+    private ?string $urlPhoto;
 
     public function __construct(
         ?int $idAnnonce = null,
@@ -20,7 +21,8 @@ Class Annonce {
         ?string $etatJeu = null,
         ?string $etatVente = null,
         ?int $idJeu = null,
-        ?int $idCompteVendeur = null
+        ?int $idCompteVendeur = null,
+        ?string $urlPhoto = null
     ) {
         $this->idAnnonce = $idAnnonce;
         $this->titre = $titre;
@@ -31,6 +33,7 @@ Class Annonce {
         $this->etatVente = $etatVente;
         $this->idJeu = $idJeu;
         $this->idCompteVendeur = $idCompteVendeur;
+        $this->urlPhoto = $urlPhoto;
     }
 
     // Getters et Setters
@@ -99,5 +102,12 @@ Class Annonce {
         $this->idCompteVendeur = $idCompteVendeur; 
     }
 
+    public function getUrlPhoto(): ?string {
+        return $this->urlPhoto;
+    }
+
+    public function setUrlPhoto(?string $urlPhoto): void {
+        $this->urlPhoto = $urlPhoto;
+    }
     
 }

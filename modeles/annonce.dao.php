@@ -36,7 +36,10 @@ Class AnnonceDao
 
     public function findAssoc(?int $id)
     {
-        $sql = "SELECT * FROM " . PREFIXE_TABLE . "annonce WHERE idAnnonce = :id";
+        $sql = "SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub, a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur, p.url
+        FROM annonce a
+        LEFT JOIN photo p ON photo.idAnnonce = a.idAnnonce
+        WHERE a.idAnnonce = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -45,7 +48,10 @@ Class AnnonceDao
 
     public function findAllAssoc(): array
     {
-        $sql = "SELECT * FROM " . PREFIXE_TABLE . "annonce";
+        $sql = "SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub, a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur, p.url
+        FROM annonce a
+        LEFT JOIN photo p ON p.idAnnonce = a.idAnnonce
+        ORDER BY a.idAnnonce";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -64,6 +70,7 @@ Class AnnonceDao
         $annonce->setEtatVente($tableauAssoc['etatVente'] ?? null);
         $annonce->setIdJeu($tableauAssoc['idJeu'] ?? null);
         $annonce->setIdCompteVendeur($tableauAssoc['idCompteVendeur'] ?? null);
+        $annonce->setUrlPhoto($tableauAssoc['urlPhoto'] ?? null );
         return $annonce;
     }
 

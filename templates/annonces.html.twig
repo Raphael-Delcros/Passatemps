@@ -5,7 +5,10 @@
 <h1>Liste des annonces</h1>
 <ul>
 {% for a in annonces %}
-    </li>{{ a.titre }} - <a href="index.php?controleur=Annonce&methode=afficher&id={{ a.idAnnonce }}">Voir</a>
+    <li>
+        <img src="images/{{ a.url }}" alt="Photo {{ a.idAnnonce }}" width="100">
+        {{ a.titre }} - <a href="index.php?controleur=Annonce&methode=afficher&id={{ a.idAnnonce }}">Voir</a>
+    </li>
 {% endfor %}
 </ul>
 {% endblock %}
