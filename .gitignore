@@ -1,4 +1,5 @@
 /vendor
 /node_modules
+CSS
 /config/connexion.php
 /config/constantes.php
