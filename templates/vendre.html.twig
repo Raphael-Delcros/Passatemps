@@ -6,17 +6,17 @@
 
 {% block body %}
 	<main>
-		<form type="GET" class="row g-3">
+		<form methode="GET" class="row g-3" action="index.php?controleur=vendre&methode=confirmerVente">
 			<h1>Vendre</h1>
 
 			<label for="nomJeu" class="form-label">Nom du jeu</label>
-			<input type="text" class="form-control" id="nomJeu" placeholder="Entrez le nom du jeu">
+			<input type="text" class="form-control" id="nomJeu" placeholder="Entrez le nom du jeu" required>
 
 			<label for="descriptionAnnonce" class="form-label">description</label>
-			<input type="text" class="form-control" id="nomJeu" placeholder="Desciption de l'annonce">
+			<input type="text" class="form-control" id="nomJeu" placeholder="Desciption de l'annonce" required>
 
 			<label for="nomJeu" class="form-label">Prix</label>
-			<input type="int" class="form-control" id="nomJeu" placeholder="12.50">
+			<input type="int" class="form-control" id="nomJeu" placeholder="12.50" required>
 
 			<label for="inputState" class="form-label">Etat du jeu</label>
 			<select id="inputState" class="form-select">
@@ -29,14 +29,13 @@
 			</select>
 
 			<label for="photoAnnonce" class="form-label">Photos de l'annonce</label>
-			<input type="file" class="form-label" id="photoAnnonce" placeholder="Ajouter des photos" accept=".png,.jpeg,.jpg,.pdf,.webp,.svg,.gif">
+			<input type="file" class="form-label" id="photoAnnonce" placeholder="Ajouter des photos" accept=".png,.jpeg,.jpg,.pdf,.webp,.svg,.gif" multiple="webkitdirectory" required>
 
 			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
 				<button type="submit" class="btn btn-primary me-md-2">Publier l'annonce</button>
-                <button type="submit" class="btn btn-primary me-md-2">Annuler</button>
+				{# <button type="submit" class="btn btn-primary me-md-2">Annuler</button> #}
 			</div>
 		</form>
-
-
 	</main>
+
 {% endblock %}
