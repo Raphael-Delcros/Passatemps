@@ -1,6 +1,6 @@
 <?php
 
-class ControllerCommande  extends Controller
+class ControllerLivraison extends Controller
 {
     public function __construct(Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader)
     {
@@ -10,10 +10,10 @@ class ControllerCommande  extends Controller
     public function afficher()
     {
          $id = isset($_GET['id']) ? intval($_GET['id']) : null;
-        $dao = new CommandeDao($this->getPdo());
+        $dao = new LivraisonDao($this->getPdo());
         $commande = $dao->find($id);
 
-        $template = $this->getTwig()->load('commande.html.twig');
+        $template = $this->getTwig()->load('livraison.html.twig');
         echo $template->render([
             'commande' => $commande,
         ]);
@@ -21,10 +21,11 @@ class ControllerCommande  extends Controller
 
     public function lister()
     {
-       $dao = new CommandeDao($this->getPdo());
+        $dao = new LivraisonDao($this->getPdo());
         $commandes = $dao->findAllAssoc(); // récupère toutes le commandes en tableau associatif
 
-        $template = $this->getTwig()->load('commandes.html.twig');
+
+        $template = $this->getTwig()->load('livraisons.html.twig');
         echo $template->render([
             'commandes' => $commandes,
         ]);

@@ -1,6 +1,6 @@
 <?php
 
-class Commande
+class Livraison
 {
 
     // --- Attributs ---
@@ -9,6 +9,7 @@ class Commande
     private ?string $pays;
     private ?string $adresse;
     private ?string $codePostal;
+    private ?string $dateCommande;
     private ?string $dateLivraison;
     private ?string $dateReception;
     private ?int $idAnnonce;
@@ -22,6 +23,7 @@ class Commande
         ?string $pays = null,
         ?string $adresse = null,
         ?string $codePostal = null,
+        ?string $dateCommande = null,
         ?string $dateLivraison = null,
         ?string $dateReception = null,
         ?int $idAnnonce = null,
@@ -121,6 +123,22 @@ class Commande
     {
         $this->codePostal = $codePostal;
 
+    }
+
+     /**
+     * Get the value of dateCommande
+     */
+    public function getDateCommande(): ?string
+    {
+        return $this->dateCommande;
+    }
+
+    /**
+     * Set the value of dateCommande
+     */
+    public function setDateCommande($dateCommande): void
+    {
+        $this->dateCommande = $dateCommande;
     }
 
     /**

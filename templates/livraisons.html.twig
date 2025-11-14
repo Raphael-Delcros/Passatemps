@@ -1,0 +1,8 @@
+{% extends "base_template.html.twig" %}
+{% block title %}Passatemps - Gestion des commandes{% endblock %}
+
+{% block body %}
+    {% for commande in commandes %}
+        <li>Commande n°{{ commande.idLivraison }} - {{ commande.dateCommande|date('d/m/Y') }} - <a href="index.php?controleur=livraison&methode=afficher&id={{ commande.idLivraison }}">Voir</a></li>
+    {% endfor %}
+{% endblock %}
