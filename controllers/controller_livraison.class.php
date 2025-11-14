@@ -33,8 +33,6 @@ class ControllerLivraison extends Controller
             $commande['jeuCommande'] = $dao->getTitreAnnonceByLivraisonId($commande['idLivraison']);
         }
 
-        var_dump($commandes);
-        var_dump($commande);
         $template = $this->getTwig()->load('livraisons.html.twig');
         echo $template->render([
             'commandes' => $commandes,
