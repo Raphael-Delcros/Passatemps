@@ -24,18 +24,18 @@
 					</button>
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-							<li class="nav-item">
-								<a class="nav-link {% if menu=='accueil' %} active {% endif %}" aria-current="page" href="index.php">Accueil</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link {% if menu=='annonce' %} active {% endif %}" href="index.php?controleur=annonce&methode=lister">Annonces</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link {% if menu=='vendre' %} active {% endif %}" href="index.php?controleur=vendre&methode=create">Vendre</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link {% if menu=='commandes' %} active {% endif %}" href="index.php?controleur=commande&methode=lister">Commandes</a>
-							</li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if menu=='accueil' %} active {% endif %}" aria-current="page" href="index.php">Accueil</a>
+                        </li>
+						<li class="nav-item">
+                            <a class="nav-link {% if menu=='annonce' %} active {% endif %}" href="index.php?controleur=annonce&methode=lister">Annonces</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if menu=='vendre' %} active {% endif %}" href="index.php?controleur=vendre&methode=create">Vendre</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if menu=='commandes' %} active {% endif %}" href="index.php?controleur=livraison&methode=lister">Commandes</a>
+                        </li>
 						</a>
 						<form class="d-flex position-relative" role="search" id="form-recherche-jeux" autocomplete="off">
     						<input class="form-control" type="search" placeholder="Rechercher un jeu" aria-label="Search" id="recherche-jeux"/>
