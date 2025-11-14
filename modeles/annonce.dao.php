@@ -38,8 +38,10 @@ Class AnnonceDao
     {
         $sql = "SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub, a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur, p.url
         FROM annonce a
-        LEFT JOIN photo p ON photo.idAnnonce = a.idAnnonce
+        LEFT JOIN photo p ON p.idAnnonce = a.idAnnonce
         WHERE a.idAnnonce = :id";
+
+        
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
