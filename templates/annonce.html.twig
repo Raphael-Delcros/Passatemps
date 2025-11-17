@@ -2,9 +2,22 @@
 {% block title %}{{constantes.application.website_name}} - {{ annonce.titre }} {% endblock %}
 
 {% block body %}
-    <h1>{{ annonce.titre }} </h1>
-    <p><strong>Description :</strong> {{ annonce.description }}</p>
-    <p><strong>Prix :</strong> {{ annonce.prix }}</p>
-    <p><strong>Etat du jeu :</strong> {{ annonce.etatJeu }}</p>
-    <p><strong>Date de la publication :</strong> {{ annonce.datePub }}</p>
+<div class="container mt-5">
+    <div class="row align-items-center">
+        <div class="col-md-4">
+            <div class="card" style="width: 300px">
+                <img src="{{ 'images/' ~ annonce.urlPhoto }}" class="card-img-top" h="300" alt="Photo {{ annonce.idAnnonce }}">
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card h-100 p-3">
+                <h2 class="card-title">{{ annonce.titre }}</h2>
+                <p><strong>Prix :</strong> {{ annonce.prix }} €</p>
+                <p><strong>Etat du jeu :</strong> {{ annonce.etatJeu }}</p>
+                <p><strong>Date de la publication :</strong> {{ annonce.datePub }}</p>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

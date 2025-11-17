@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="CSS/style.css">
+		<link href="images/iconeOnglet.png" rel="shortcut icon" type="image/x-icon">
 		<link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
 		<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 		{% block css %}<link rel="stylesheet" type="text/css" href="CSS/style.css">{% endblock %}
@@ -47,7 +48,7 @@
 					</ul>
 					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link {% if menu=='forum' %} active {% endif %}" href="index.php?controleur=forum&methode=lister">Forums</a>
+							<a class="nav-link {% if menu=='forum' %} active {% endif %}" href="index.php?controleur=forum&methode=lister">Forum</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link {% if menu=='messagerie' %} active {% endif %}" href="index.php?controleur=messagerie&methode=lister">Messagerie</a>
@@ -59,14 +60,14 @@
 				</div>
 			</div>
 		</nav>
-	
+
 </header>
 <main class="container mt-4 mb-5"> {% block body %}{% endblock %}</main>
 <footer>
 	<div class="footer-content row bg-light text-center p-3 m-0">
 
 		<div class="col">
-			<p>Contactez-nous: contact@passatemps.com (Fausse email)</p>
+			<p>Contactez-nous : contact@passatemps.com (fausse adresse email)</p>
 
 			<p>&copy; 2025 Passatemps. Tous droits réservés.</p>
 		</div>

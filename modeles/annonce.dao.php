@@ -72,17 +72,45 @@ Class AnnonceDao
         $annonce->setEtatVente($tableauAssoc['etatVente'] ?? null);
         $annonce->setIdJeu($tableauAssoc['idJeu'] ?? null);
         $annonce->setIdCompteVendeur($tableauAssoc['idCompteVendeur'] ?? null);
-        $annonce->setUrlPhoto($tableauAssoc['urlPhoto'] ?? null );
+        $annonce->setUrlPhoto($tableauAssoc['url'] ?? null );
         return $annonce;
     }
 
     public function hydrateAll()
     {
         $annonces = [];
-        foreach ($tableau as $tableauAssoc) {
+        foreach ($tableauAssoc as $tableau) {
             $annonces[] = $this->hydrate($tableauAssoc);
         }
         return $annonces;
+    }
+
+    public function InsertInto(Annonce $annonce): bool
+    {
+        $sql = "INSERT INTO " . PREFIXE_TABLE . "annonce (idAnnonce, titre, description, prix, datePub, etatJeu, etatVente, idJeu, idCompteVendeur) 
+                VALUES (:idAnnone, :titre, :description, :prix, :datePub, :etatJeu, :etatVente, :idJeu, :idCompteVendeur)";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            'titre' => $annonce->getTitre(),
+            'description' => $annonce->getDescription(),
+            'prix' => $annonce->getPrix(),
+            'datePub' => $annonce->getDatePub(),
+            'etatJeu' => $annonce->getEtatJeu(),
+            'etatVente' => $annonce->getEtatVente(),
+            'idJeu' => $annonce->getIdJeu(),
+            'idCompteVendeur' => $annonce->getIdCompteVendeur(),
+            'idAnnonce' => $annonce->getIdAnnonce()
+        ]);
+    }
+
+    public function lastId(): int
+    {
+        $sql = "SELECT MAX(idAnnonce) AS max_id FROM annonce";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $id = $stmt->fetch() ?: null;
+        $idAnnonce = $id['max_id'] + 1;
+        return $idAnnonce;
     }
 
 
