@@ -3,10 +3,10 @@
 // Ajout de l'autoload de composer
 require_once 'vendor/autoload.php';
 
-require_once 'config/constantes.php';
 
 // Ajout de twig
 require_once 'config/twig.php';
+require_once 'config/config.php';
 
 //Ajout du modèle qui gère la connexion mysql
 require_once 'modeles/bd.class.php';

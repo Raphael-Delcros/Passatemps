@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang={{constant('WEBSITE_LANGUAGE')}}>
+<html lang={{ constantes.application.website_language }}>
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +9,7 @@
 		<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 		{% block css %}<link rel="stylesheet" type="text/css" href="CSS/style.css">{% endblock %}
 		<title>
-			{% block title %}Passatemps - Accueil
-			{% endblock %}
+			{% block title %}{{constantes.application.website_name}} - Accueil{% endblock %}
 		</title>
 	</head>
 	<body>
@@ -25,9 +24,6 @@
 					</button>
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link {% if menu=='accueil' %} active {% endif %}" aria-current="page" href="index.php">Accueil</a>
-                        </li>
 						<li class="nav-item">
                             <a class="nav-link {% if menu=='annonce' %} active {% endif %}" href="index.php?controleur=annonce&methode=lister">Annonces</a>
                         </li>

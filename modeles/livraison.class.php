@@ -15,6 +15,7 @@ class Livraison
     private ?int $idAnnonce;
     private ?int $idCompteAcheteur;
     private ?string $numeroDeSuivi;
+    private ?string $status;
 
     // --- Constructeur ---
     public function __construct(
@@ -28,18 +29,21 @@ class Livraison
         ?string $dateReception = null,
         ?int $idAnnonce = null,
         ?int $idCompteAcheteur = null,
-        ?string $numeroDeSuivi = null
+        ?string $numeroDeSuivi = null,
+        ?string $status = null
     ) {
         $this->idLivraison = $idLivraison;
         $this->ville = $ville;
         $this->pays = $pays;
         $this->adresse = $adresse;
         $this->codePostal = $codePostal;
+        $this->dateCommande = $dateCommande;
         $this->dateLivraison = $dateLivraison;
         $this->dateReception = $dateReception;
         $this->idAnnonce = $idAnnonce;
         $this->idCompteAcheteur = $idCompteAcheteur;
         $this->numeroDeSuivi = $numeroDeSuivi;
+        $this->status = $status;
     }
 
     // --- Getters & Setters ---
@@ -224,5 +228,21 @@ class Livraison
     {
         $this->numeroDeSuivi = $numeroDeSuivi;
 
+    }
+
+    /**
+     * Get the value of status
+     */ 
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set the value of status
+     */
+    public function setStatus($status): void
+    {
+        $this->status = $status;
     }
 }

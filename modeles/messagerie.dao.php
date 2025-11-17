@@ -8,14 +8,14 @@ class MessagerieDao {
     }
 
     public function findAllAssoc(): array {
-        $sql = "SELECT * FROM " . PREFIXE_TABLE . "message";
+        $sql = "SELECT * FROM " . Config::get()['database']['prefixe_table'] . "message";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function findAssoc(?int $id): ?array {
-        $sql = "SELECT * FROM " . PREFIXE_TABLE . "message WHERE idMessage = :id";
+        $sql = "SELECT * FROM " . Config::get()['database']['prefixe_table'] . "message WHERE idMessage = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;

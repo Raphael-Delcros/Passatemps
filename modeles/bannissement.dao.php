@@ -30,7 +30,7 @@ class bannissementDAO{
     }
 
     public function findAssoc(?int $id): ?array{
-        $sql = "SELECT * FROM ".PREFIXE_TABLE."bannissement WHERE idBannissement = :idBannissement";
+        $sql = "SELECT * FROM ".Config::get()['database']['prefixe_table']."bannissement WHERE idBannissement = :idBannissement";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['idBannissement' => $id]);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -38,7 +38,7 @@ class bannissementDAO{
     }
 
     public function findAllAssoc(): array{
-        $sql = "SELECT * FROM ".PREFIXE_TABLE."bannissement";
+        $sql = "SELECT * FROM ".Config::get()['database']['prefixe_table']."bannissement";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC);

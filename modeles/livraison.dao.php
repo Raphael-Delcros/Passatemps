@@ -1,14 +1,16 @@
 <?php
 
-class LivraisonDao {
+class LivraisonDao
+{
 
     private ?PDO $pdo;
 
-    public function __construct(?PDO $pdo=null){
+    public function __construct(?PDO $pdo = null)
+    {
         $this->pdo = $pdo;
     }
 
- // --- Getters & Setters ---
+    // --- Getters & Setters ---
     public function getPdo(): ?PDO
     {
         return $this->pdo;
@@ -20,56 +22,55 @@ class LivraisonDao {
 
     // --- Functions ---
 
-        public function find(?int $id): ?Livraison
-        {
-            $sql = "SELECT * FROM ". PREFIXE_TABLE. "livraison WHERE idLivraison = :id";
-            $pdoStatement = $this->pdo->prepare($sql);
-            $pdoStatement->execute(array("id"=>$id));
-            $pdoStatement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Livraison');
-            $commande = $pdoStatement->fetch();
-            return $commande;
-        }
+    public function find(?int $id): ?Livraison
+    {
+        $sql = "SELECT * FROM " . Config::get()['database']['prefixe_table'] . "livraison WHERE idLivraison = :id";
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute(array("id" => $id));
+        $pdoStatement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Livraison');
+        $commande = $pdoStatement->fetch();
+        return $commande;
+    }
 
-        public function findAllAssoc(): array
-        {
-            $sql = "SELECT * FROM ". PREFIXE_TABLE. "livraison";
-            $pdoStatement = $this->pdo->prepare($sql);
-            $pdoStatement->execute();
-            $commandes = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
-            return $commandes;
-        }
+    public function findAllAssoc(): array
+    {
+        $sql = "SELECT * FROM " . Config::get()['database']['prefixe_table'] . "livraison";
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute();
+        $commandes = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+        return $commandes;
+    }
 
-        public function hydrate(array $data): Livraison
-        {
-            $commande = new Livraison();
-            foreach ($data as $key => $value) {
-                $method = 'set' . ucfirst($key);
-                if (method_exists($commande, $method)) {
-                    $commande->$method($value);
-                }
+    public function hydrate(array $data): Livraison
+    {
+        $commande = new Livraison();
+        foreach ($data as $key => $value) {
+            $method = 'set' . ucfirst($key);
+            if (method_exists($commande, $method)) {
+                $commande->$method($value);
             }
-            return $commande;
         }
+        return $commande;
+    }
 
-        public function hydrateAll(array $dataArray): array
-        {
-            $commandes = [];
-            foreach ($dataArray as $data) {
-                $commandes[] = $this->hydrate($data);
-            }
-            return $commandes;
+    public function hydrateAll(array $dataArray): array
+    {
+        $commandes = [];
+        foreach ($dataArray as $data) {
+            $commandes[] = $this->hydrate($data);
         }
+        return $commandes;
+    }
 
-        public function getTitreAnnonceByLivraisonId(int $idLivraison): ?array
-        {
-            $sql = "SELECT a.titre, a.prix FROM ". PREFIXE_TABLE. "annonce a
-                    JOIN ". PREFIXE_TABLE. "livraison l ON a.idAnnonce = l.idAnnonce
+    public function getTitreAnnonceByLivraisonId(int $idLivraison): ?array
+    {
+        $sql = "SELECT a.titre, a.prix FROM " . Config::get()['database']['prefixe_table'] . "annonce a
+                    JOIN " . Config::get()['database']['prefixe_table'] . "livraison l ON a.idAnnonce = l.idAnnonce
                     WHERE l.idLivraison = :idLivraison";
-            $pdoStatement = $this->pdo->prepare($sql);
-            $pdoStatement->execute(array("idLivraison" => $idLivraison));
-            $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
-            $annonce = $pdoStatement->fetch();
-            return $annonce;
-        }
-
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute(array("idLivraison" => $idLivraison));
+        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $annonce = $pdoStatement->fetch();
+        return $annonce;
+    }
 }
