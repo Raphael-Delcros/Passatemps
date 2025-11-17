@@ -1,5 +1,5 @@
 {% extends 'base_template.html.twig' %}
-{% block title %}Passatemps - {{ bannissement.idBannissement }} {{ bannissement.sujet }}{% endblock %}
+{% block title %}{{constantes.application.website_name}} - {{ bannissement.idBannissement }} {{ bannissement.sujet }}{% endblock %}
 
 {% block body %}
     <h1>{{ bannissement.idBannissement }} {{ bannissement.sujet }}</h1>

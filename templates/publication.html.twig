@@ -1,5 +1,5 @@
 {% extends 'base_template.html.twig' %}
-{% block title %}Passatemps - {{ publication.idPublication }} {{ publication.sujet }}{% endblock %}
+{% block title %}{{constantes.application.website_name}} - {{ publication.idPublication }} {{ publication.sujet }}{% endblock %}
 
 {% block body %}
     <h1>{{ publication.idPublication }} {{ publication.sujet }}</h1>

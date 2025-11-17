@@ -8,14 +8,14 @@ class PhotoDao {
     }
 
     public function findAllAssoc(): array {
-        $sql = "SELECT * FROM " . PREFIXE_TABLE . "photo";
+        $sql = "SELECT * FROM " . Config::get()['database']['prefixe_table'] . "photo";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function findAssoc(?int $id): ?array {
-        $sql = "SELECT * FROM " . PREFIXE_TABLE . "photo WHERE idPhoto = :id";
+        $sql = "SELECT * FROM " . Config::get()['database']['prefixe_table'] . "photo WHERE idPhoto = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;

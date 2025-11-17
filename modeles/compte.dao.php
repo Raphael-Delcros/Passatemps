@@ -38,7 +38,7 @@ class CompteDao
     // Récupérer un compte en tableau associatif
     public function findAssoc(?int $id): ?array
     {
-        $sql = "SELECT * FROM " . PREFIXE_TABLE . "compte WHERE idCompte = :id";
+        $sql = "SELECT * FROM " . Config::get()['database']['prefixe_table'] . "compte WHERE idCompte = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -48,7 +48,7 @@ class CompteDao
     // Récupérer tous les comptes en tableau associatif
     public function findAllAssoc(): array
     {
-        $sql = "SELECT * FROM " . PREFIXE_TABLE . "compte";
+        $sql = "SELECT * FROM " . Config::get()['database']['prefixe_table'] . "compte";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC);

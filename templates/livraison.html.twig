@@ -1,6 +1,6 @@
 {% extends "base_template.html.twig" %}
 
-{% block title %}Passatemps - Commande n°{{commande.idLivraison}}{% endblock %}
+{% block title %}{{constantes.application.website_name}} - Commande n°{{commande.idLivraison}}{% endblock %}
 
 {% block body %}
 <h1>Détails de la commande n°{{ commande.idLivraison }}</h1>
