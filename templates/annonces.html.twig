@@ -5,7 +5,7 @@
 <h1>Liste des annonces</h1>
 <ul>
 {% for a in annonces %}
-    <div class="card shadow-lg border-0 p-4">
+    <div class="card shadow-lg border-0 p-4 list-unstyled">
         <li>
             <img src="images/{{ a.url }}" alt="Photo {{ a.idAnnonce }}" width="100">
             {{ a.titre }} - <a href="index.php?controleur=Annonce&methode=afficher&id={{ a.idAnnonce }}">Voir plus</a>
