@@ -72,14 +72,14 @@ Class AnnonceDao
         $annonce->setEtatVente($tableauAssoc['etatVente'] ?? null);
         $annonce->setIdJeu($tableauAssoc['idJeu'] ?? null);
         $annonce->setIdCompteVendeur($tableauAssoc['idCompteVendeur'] ?? null);
-        $annonce->setUrlPhoto($tableauAssoc['urlPhoto'] ?? null );
+        $annonce->setUrlPhoto($tableauAssoc['url'] ?? null );
         return $annonce;
     }
 
     public function hydrateAll()
     {
         $annonces = [];
-        foreach ($tableau as $tableauAssoc) {
+        foreach ($tableauAssoc as $tableau) {
             $annonces[] = $this->hydrate($tableauAssoc);
         }
         return $annonces;
