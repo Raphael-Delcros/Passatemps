@@ -11,8 +11,8 @@ class Publication{
         ?int $idPost = null,
         ?string $sujet = null,
         ?string $contenu = null,
-        ?string $datePublication = null,
-    ) {
+        ?string $datePublication = null)
+    {
         $this->idPost = $idPost;
         $this->sujet = $sujet;
         $this->contenu = $contenu;
