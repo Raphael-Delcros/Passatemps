@@ -3,10 +3,15 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
+		<link rel="stylesheet" type="text/css" href="CSS/styles.css">
+=======
 		<link rel="stylesheet" type="text/css" href="CSS/style.css">
+		<link href="images/iconeOnglet.png" rel="shortcut icon" type="image/x-icon">
+>>>>>>> b902be1d17756339418687b9685f111bb93f3a90
 		<link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
 		<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
-		{% block css %}<link rel="stylesheet" type="text/css" href="CSS/style.css">{% endblock %}
+		{% block css %}{% endblock %}
 		<title>
 			{% block title %}Passatemps - Accueil
 			{% endblock %}
@@ -49,7 +54,7 @@
 					</ul>
 					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link {% if menu=='forum' %} active {% endif %}" href="index.php?controleur=forum&methode=lister">Forums</a>
+							<a class="nav-link {% if menu=='forum' %} active {% endif %}" href="index.php?controleur=publication&methode=lister">Forums</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link {% if menu=='messagerie' %} active {% endif %}" href="index.php?controleur=messagerie&methode=lister">Messagerie</a>
@@ -61,11 +66,11 @@
 				</div>
 			</div>
 		</nav>
-	
-</header>
-<main class="container mt-4 mb-5"> {% block body %}{% endblock %}</main>
+	</body>
+</html></header><main class="container mt-4 mb-5"> {% block body %}{% endblock %}
+</main>
 <footer>
-	<div class="footer-content row bg-light text-center p-3 m-0">
+	<div class="footer-content row bg-light text-center p-3">
 
 		<div class="col">
 			<p>Contactez-nous: contact@passatemps.com (Fausse email)</p>
@@ -74,21 +79,20 @@
 		</div>
 		<div class="col">
 			<p class="mb-0">
-				<a href="legal.php#mentions-legales" class="text-secondary">Mentions légales</a>
+				<a href="legal.php#mentions-legales">Mentions légales</a>
 			</p>
 			<p class="mb-0">
-				<a href="legal.php#politique-confidentialite" class="text-secondary">Politique de confidentialité</a>
+				<a href="legal.php#politique-confidentialite">Politique de confidentialité</a>
 			</p>
 			<p class="mb-0">
-				<a href="legal.php#conditions-utilisation" class="text-secondary">Conditions d'utilisation</a>
+				<a href="legal.php#conditions-utilisation">Conditions d'utilisation</a>
 			</p>
 			<p class="mb-0">
-				<a href="legal.php#cookies" class="text-secondary">Politique de cookies</a>
+				<a href="legal.php#cookies">Politique de cookies</a>
 			</p>
 		</div>
 	</div>
-</footer>
-</body>
+</footer></body>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const input = document.getElementById('recherche-jeux');
