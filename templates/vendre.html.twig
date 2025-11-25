@@ -1,42 +1,147 @@
 {% extends 'base_template.html.twig' %}
 
-{% block title %}
-	Vente
-{% endblock %}
+{% block title %}Vente{% endblock %}
 
 {% block body %}
-	<main>
-		<form method="GET" action="index.php?controleur=vendre&methode=confirmerVente" class="row g-3">
-			<h1>Vendre</h1>
-			<input type="hidden" name="controleur" value="vendre">
-			<input type="hidden" name="methode" value="confirmerVente">
+<main>
+    <form method="GET" action="index.php?controleur=vendre&methode=confirmerVente" class="row g-3 position-relative" autocomplete="off">
+        <h1>Vendre</h1>
+        <input type="hidden" name="controleur" value="vendre">
+        <input type="hidden" name="methode" value="confirmerVente">
 
-			<label for="titre" class="form-label">Titre</label>
-			<input type="text" class="form-control" name="titre" placeholder="Entrez le nom du jeu" required>
+        <label for="titre" class="form-label">Titre</label>
+        <input type="text" class="form-control" name="titre" placeholder="Entrez le nom de l'annonce" required>
 
-			<label for="description" class="form-label">description</label>
-			<input type="text" class="form-control" name="description" placeholder="Desciption de l'annonce" required>
+        <label for="jeu" class="form-label">Jeu</label>
+		<div class="position-relative">
+    		<input type="text" id="jeu" class="form-control" name="jeu" placeholder="Entrez le nom du jeu" required>
 
-			<label for="prix" class="form-label">Prix</label>
-			<input type="int" class="form-control" name="prix" placeholder="12.50" required>
+    		<ul id="resultats"
+        		class="list-group position-absolute w-100"
+        		style="z-index:2000; display:none; max-height:300px; overflow:auto; top:100%; left:0;">
+    		</ul>
+		</div>
 
-			<label for="etatJeu" class="form-label">Etat du jeu</label>
-			<select class="form-select" name="etatJeu" required>
-				<option selected>Choisir</option>
-				<option>Neuf</option>
-				<option>Très bon état</option>
-				<option>Bon état</option>
-				<option>Abimé</option>
-				<option>Manque des pieces</option>
-			</select>
+        <label for="description" class="form-label">Description</label>
+        <input type="text" class="form-control" name="description" placeholder="Description de l'annonce" required>
 
-			<label for="photos" class="form-label">Photos de l'annonce</label>
-			<input type="file" class="form-label" name="photos" placeholder="Ajouter des photos" accept=".png,.jpeg,.jpg,.pdf,.webp,.svg,.gif" multiple="webkitdirectory" required>
+        <label for="prix" class="form-label">Prix</label>
+        <input type="text" class="form-control" name="prix" placeholder="12.50" required>
 
-			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-				<button type="submit" class="btn btn-primary me-md-2">Publier l'annonce</button>
-			</div>
-			{{message}}
-		</form>
-	</main>
+        <label for="etatJeu" class="form-label">Etat du jeu</label>
+        <select class="form-select" name="etatJeu" required>
+            <option selected>Choisir</option>
+            <option>Neuf</option>
+            <option>Très bon état</option>
+            <option>Bon état</option>
+            <option>Abimé</option>
+            <option>Manque des pieces</option>
+        </select>
+
+        <label for="photos" class="form-label">Photos de l'annonce</label>
+        <input type="file" class="form-label" name="photos" accept=".png,.jpeg,.jpg,.webp,.svg,.gif" multiple required>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="submit" class="btn btn-primary me-md-2">Publier l'annonce</button>
+        </div>
+
+        {{ message }}
+    </form>
+</main>
+{% endblock %}
+
+{% block script %}
+<script>
+(() => {
+    let inputJeu = document.getElementById('jeu');
+    let resultats = document.getElementById('resultats');
+
+
+    // vider et cacher
+    function clearResults() {
+        resultats.innerHTML = '';
+        resultats.style.display = 'none';
+    }
+
+    // Affiche les résultats (tableau d'objets {idJeu, nom})
+    function showResults(items) {
+        resultats.innerHTML = '';
+        if (!items.length) {
+            clearResults();
+            return;
+        }
+        items.forEach(it => {
+            let li = document.createElement('li');
+            li.className = 'list-group-item list-group-item-action';
+            li.textContent = it.nom;
+            li.style.cursor = 'pointer';
+            li.addEventListener('click', () => {
+                inputJeu.value = it.nom;
+                // éventuellement stocker id dans un champ caché si tu veux l'envoyer au serveur
+                clearResults();
+            });
+            resultats.appendChild(li);
+        });
+        resultats.style.display = 'block';
+    }
+
+    // Requête au serveur (debounce simple)
+    let timer = null;
+    inputJeu.addEventListener('input', () => {
+        let q = inputJeu.value.trim();
+        if (q.length === 0) { clearResults(); return; }
+
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+            fetch(`index.php?controleur=Jeu&methode=autocomplete&q=${encodeURIComponent(q)}`)
+                .then(resp => {
+                    if (!resp.ok) throw new Error('Réponse réseau : ' + resp.status);
+                    return resp.json();
+                })
+                .then(data => {
+                    // data doit être un tableau d'obj {idJeu, nom}
+                    showResults(Array.isArray(data) ? data : []);
+                })
+                .catch(err => {
+                    console.error('Autocomplete fetch error:', err);
+                    clearResults();
+                });
+        }, 180); // 180ms debounce
+    });
+
+    // Gestion appui sur Entrée
+	inputJeu.addEventListener('keydown', (e) => {
+
+    // navigation clavier (flèche haut/bas)
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        let items = Array.from(resultats.querySelectorAll('li'));
+        if (!items.length) return;
+        e.preventDefault();
+        let idx = items.findIndex(i => i.classList.contains('active'));
+        if (e.key === 'ArrowDown') idx = (idx + 1) % items.length;
+        else idx = (idx - 1 + items.length) % items.length;
+        items.forEach(i => i.classList.remove('active'));
+        items[idx].classList.add('active');
+        items[idx].scrollIntoView({ block: 'nearest' });
+    }
+
+    // sélection avec Entrée
+    if (e.key === 'Enter') {
+        let active = resultats.querySelector('li.active');
+        if (active) {
+            e.preventDefault(); // empêcher l'envoi du formulaire
+            active.click();
+        }
+    }
+	});
+
+
+    // Clic en dehors : fermer
+    document.addEventListener('click', (ev) => {
+        if (!inputJeu.contains(ev.target) && !resultats.contains(ev.target)) {
+            clearResults();
+        }
+    });
+})();
+</script>
 {% endblock %}
