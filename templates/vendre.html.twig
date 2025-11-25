@@ -1,0 +1,42 @@
+{% extends 'base_template.html.twig' %}
+
+{% block title %}
+	Vente
+{% endblock %}
+
+{% block body %}
+	<main>
+		<form method="GET" action="index.php?controleur=vendre&methode=confirmerVente" class="row g-3">
+			<h1>Vendre</h1>
+			<input type="hidden" name="controleur" value="vendre">
+			<input type="hidden" name="methode" value="confirmerVente">
+
+			<label for="titre" class="form-label">Titre</label>
+			<input type="text" class="form-control" name="titre" placeholder="Entrez le nom du jeu" required>
+
+			<label for="description" class="form-label">description</label>
+			<input type="text" class="form-control" name="description" placeholder="Desciption de l'annonce" required>
+
+			<label for="prix" class="form-label">Prix</label>
+			<input type="int" class="form-control" name="prix" placeholder="12.50" required>
+
+			<label for="etatJeu" class="form-label">Etat du jeu</label>
+			<select class="form-select" name="etatJeu" required>
+				<option selected>Choisir</option>
+				<option>Neuf</option>
+				<option>Très bon état</option>
+				<option>Bon état</option>
+				<option>Abimé</option>
+				<option>Manque des pieces</option>
+			</select>
+
+			<label for="photos" class="form-label">Photos de l'annonce</label>
+			<input type="file" class="form-label" name="photos" placeholder="Ajouter des photos" accept=".png,.jpeg,.jpg,.pdf,.webp,.svg,.gif" multiple="webkitdirectory" required>
+
+			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+				<button type="submit" class="btn btn-primary me-md-2">Publier l'annonce</button>
+			</div>
+			{{message}}
+		</form>
+	</main>
+{% endblock %}

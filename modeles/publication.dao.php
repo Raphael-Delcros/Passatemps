@@ -29,7 +29,7 @@ class publicationDAO{
     }
 
     public function findAssoc(?int $id): ?array{
-        $sql = "SELECT * FROM ".PREFIXE_TABLE."publication WHERE idPost = :idPost";
+        $sql = "SELECT * FROM ".Config::get()['database']['prefixe_table']."publication WHERE idPost = :idPost";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -37,7 +37,7 @@ class publicationDAO{
     }
 
     public function findAllAssoc(): array{
-        $sql = "SELECT * FROM ".PREFIXE_TABLE."publication";
+        $sql = "SELECT * FROM ".Config::get()['database']['prefixe_table']."publication";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC);

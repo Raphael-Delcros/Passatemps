@@ -1,0 +1,12 @@
+# Configuration de la base de données
+database:
+    host:
+    name:
+    user:
+    password:
+    prefixe_table:
+
+# Configuration de l'application
+application:
+    language: 
+    website_name: 

@@ -7,14 +7,14 @@ class SignalementDao {
     }
 
     public function findAllAssoc(): array {
-        $sql = "SELECT * FROM " . PREFIXE_TABLE . "signalement";
+        $sql = "SELECT * FROM " . Config::get()['database']['prefixe_table'] . "signalement";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function findAssoc(?int $id): ?array {
-        $sql = "SELECT * FROM " . PREFIXE_TABLE . "signalement WHERE idSign = :id";
+        $sql = "SELECT * FROM " . Config::get()['database']['prefixe_table'] . "signalement WHERE idSign = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;

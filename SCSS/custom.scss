@@ -1,0 +1,38 @@
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+// Include any default variable overrides here (though functions won't be available)
+
+// Required
+@import "../node_modules/bootstrap/scss/functions";
+$primary: #ee8132;
+$secondary: #0065a3;
+$tertiary: #93c3fa;
+
+
+// Required
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables-dark";
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "tertiary": $tertiary,
+);
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/root";
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+.primaire {
+  color: $primary;
+}
+.secondaire {
+  color: $secondary;
+}
+.tertiaire {
+  color: $tertiary;
+}
+body {
+  background-color: lighten($primary, 40%);
+}

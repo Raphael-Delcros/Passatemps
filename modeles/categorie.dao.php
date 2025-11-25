@@ -20,7 +20,7 @@ class CategorieDao{
  // --- Fonctions ---
     public function find(?int $id): ?Categorie
     {
-        $sql="SELECT * FROM ".PREFIXE_TABLE."categorie WHERE idCategorie= :id";
+        $sql="SELECT * FROM ".Config::get()['database']['prefixe_table']."categorie WHERE idCategorie= :id";
         $pdoStatement = $this->pdo->prepare($sql);
         $pdoStatement->execute(array("id"=>$id));
         $pdoStatement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Categorie');
@@ -29,7 +29,7 @@ class CategorieDao{
     }
 
     public function findAll(){
-        $sql="SELECT * FROM ".PREFIXE_TABLE."categorie";
+        $sql="SELECT * FROM ".Config::get()['database']['prefixe_table']."categorie";
         $pdoStatement = $this->pdo->prepare($sql);
         $pdoStatement->execute();
         $pdoStatement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Categorie');
@@ -39,7 +39,7 @@ class CategorieDao{
 
     public function findAssoc(?int $id): ?array
     {
-        $sql="SELECT * FROM ".PREFIXE_TABLE."categorie WHERE idCategorie= :id";
+        $sql="SELECT * FROM ".Config::get()['database']['prefixe_table']."categorie WHERE idCategorie= :id";
         $pdoStatement = $this->pdo->prepare($sql);
         $pdoStatement->execute(array("id"=>$id));
         $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
@@ -48,7 +48,7 @@ class CategorieDao{
     }
 
     public function findAllAssoc(){
-        $sql="SELECT * FROM ".PREFIXE_TABLE."categorie";
+        $sql="SELECT * FROM ".Config::get()['database']['prefixe_table']."categorie";
         $pdoStatement = $this->pdo->prepare($sql);
         $pdoStatement->execute();
         $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
