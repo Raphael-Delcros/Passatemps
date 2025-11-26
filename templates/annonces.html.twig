@@ -3,6 +3,16 @@
 {% block title %}{{ constantes.application.website_name }} - Annonces{% endblock %}
 
 {% block body %}
+    <form class="d-flex position-relative" role="search" id="form-recherche-annonces" autocomplete="off">
+    <input class="form-control" type="search" placeholder="Rechercher une annonce" aria-label="Search" id="recherche-annonce"/>
+    <button class="btn btn-outline-success" type="submit" hidden>Search</button>
+
+   		<ul id="resultats-autocomplete"
+        	class="list-group position-absolute w-100"
+        	style="top: 100%; left: 0; z-index: 1000; display: none;">
+    	</ul>
+	</form>
+
 <h1>Liste des annonces</h1>
 
 <div class="row row-cols-2 row-cols-md-4 g-4">
