@@ -1,10 +1,31 @@
 {% extends 'base_template.html.twig' %}
-{% block title %}{{constantes.application.website_name}} - {{ publication.idPublication }} {{ publication.sujet }}{% endblock %}
+{% block title %}
+	{{constantes.application.website_name}}
+	-
+	{{ publication.idPublication }}
+	{{ publication.sujet }}
+{% endblock %}
 
 {% block body %}
-    <h1>{{ publication.idPublication }} {{ publication.sujet }}</h1>
-    <p><strong>idPost :</strong> {{ publication.idPublication }}</p>
-    <p><strong>Sujet :</strong> {{ publication.sujet }}</p>
-    <p><strong>Date envoie :</strong> {{ publication.dateEnvoi }}</p>
-    <p><strong>Contenue :</strong> {{ publication.contenu }}</p>
+	<main class="text-center container">
+		<div class="list-group-item list-group-item-action" aria-current="true">
+			<div class="d-flex w-100 justify-content-between">
+				<h5 class="mb-1">{{ publication.sujet }}</h5>
+				<small>{{publication.dateEnvoi}}</small>
+				<p class="mb-1">{{publication.contenu}}</p>
+			</div>
+		</div>
+		<p>
+			<strong>idPost :</strong>
+			{{ publication.idPublication }}</p>
+		<p>
+			<strong>Sujet :</strong>
+			{{ publication.sujet }}</p>
+		<p>
+			<strong>Date envoie :</strong>
+			{{ publication.dateEnvoi }}</p>
+		<p>
+			<strong>Contenue :</strong>
+			{{ publication.contenu }}</p>
+	</main>
 {% endblock %}

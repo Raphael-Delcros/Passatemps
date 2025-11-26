@@ -1,4 +1,8 @@
 <?php
+/** 
+ * Dao de la classe Publication
+ */
+
 
 class publicationDAO{
     private ?PDO $pdo;
@@ -49,7 +53,9 @@ class publicationDAO{
             $tableauAssoc['idPost'] ?? null,
             $tableauAssoc['sujet'] ?? null,
             $tableauAssoc['contenu'] ?? null,
-            $tableauAssoc['datePublication'] ?? null
+            $tableauAssoc['datePublication'] ?? null,
+            $tableauAssoc['idPostPrincipale'] ?? null,
+            $tableauAssoc['idCompte'] ?? null
         );
     }
 

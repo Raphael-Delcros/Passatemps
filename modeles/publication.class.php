@@ -3,20 +3,34 @@ class Publication{
     //--- Attributs ---
     private?int $idPost;
     private?string $sujet;
+    private?string $dateEnvoi;
     private?string $contenu;
-    private?string $datePublication;
+    private ?int $idPostPrincipale = null;
+    private ?int $idCompte = null;
+    
 
     //--- Constructeur ---
-    public function __construct(
+    /**
+     * Constructor
+     * @param ?int $idPost
+     * @param ?string $sujet
+     * @param ?string $contenu
+     * @param ?string $datePublication
+     * @param ?int $idPostPrincipale vide si la publication n'est pas un commentaire d'une autre publication
+     * @param ?int $idCompte id du compte ayant posté la publication
+     */
+        public function __construct(
         ?int $idPost = null,
         ?string $sujet = null,
         ?string $contenu = null,
-        ?string $datePublication = null)
+        ?string $datePublication = null,
+        ?int $idPostPrincipale = null)
     {
         $this->idPost = $idPost;
         $this->sujet = $sujet;
         $this->contenu = $contenu;
-        $this->datePublication = $datePublication;
+        $this->dateEnvoi = $datePublication;
+        $this->idPostPrincipale = $idPostPrincipale;
     }
 
     // --- Getters & Setters ---
@@ -39,9 +53,43 @@ class Publication{
         $this->contenu = $contenu;
     }
     public function getDatePublication(): ?string {
-        return $this->datePublication;
+        return $this->dateEnvoi;
     }
     public function setDatePublication(?string $datePublication): void {
-        $this->datePublication = $datePublication;
+        $this->dateEnvoi = $datePublication;
+    }
+
+    /**
+     * Récupere la valeur d'idPostPrincipale
+     */ 
+    public function getIdPostPrincipale() : ?int
+    {
+        return $this->idPostPrincipale;
+    }
+
+    /**
+     * Set la valeur d'idPostPrincipale
+     */ 
+    public function setIdPostPrincipale($idPostPrincipale) : void
+    {
+        $this->idPostPrincipale = $idPostPrincipale;
+    }
+
+    /**
+     * récupere la valeur d'idCompte
+     */ 
+    public function getIdCompte()
+    {
+        return $this->idCompte;
+    }
+
+    /**
+     * Set la valeur d'idCompte
+     */ 
+    public function setIdCompte($idCompte)
+    {
+        $this->idCompte = $idCompte;
+
+        return $this;
     }
 }
