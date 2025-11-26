@@ -15,9 +15,8 @@
                     <div class="card h-100 shadow-sm d-flex flex-column">
                         {% if jeu.url is defined and jeu.url %}
                             <div class="pt-4 d-flex flex-column align-items-center">
-                                {# utilise la vignette si fournie, sinon fallback vers images/ #}
-                                <img src="{{ jeu.vignette is defined ? jeu.vignette : ('images/' ~ jeu.url) }}"
-                                     class="card-img-top" alt="{{ jeu.nom }}">
+                                <img src="{{ constantes.application.thumbnail_image_path  }}{{ jeu.url }}" class="card-img-top" alt="{{ jeu.nom }}">
+
                             </div>
                         {% endif %}
 
