@@ -8,6 +8,7 @@
         <h1>Vendre</h1>
         <input type="hidden" name="controleur" value="vendre">
         <input type="hidden" name="methode" value="confirmerVente">
+        <input type="hidden" name="idJeu" id="idJeu">
 
         <label for="titre" class="form-label">Titre</label>
         <div class="position-relative">
@@ -82,7 +83,7 @@
             li.style.cursor = 'pointer';
             li.addEventListener('click', () => {
                 inputJeu.value = it.nom;
-                // éventuellement stocker id dans un champ caché si tu veux l'envoyer au serveur
+                document.getElementById('idJeu').value = it.idJeu;
                 clearResults();
             });
             resultats.appendChild(li);

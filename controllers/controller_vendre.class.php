@@ -25,9 +25,20 @@ class ControllerVendre extends controller
         $stringdate =  $date['year'] . '-' . $date['mon'] . '-' . $date['mday'];
         
         $dao = new AnnonceDao($this->getPdo());
-        $idAnnonce = $dao->lastId() + 1;
+        $idAnnonce = $dao->lastId();
 
-        $annonce = new Annonce($idAnnonce, $_GET['titre'], $_GET['description'], $_GET['prix'], $stringdate, $_GET['etatJeu'], 'achete', null, null);
+        $annonce = new Annonce(
+            $idAnnonce,
+            $_GET['titre'],
+            $_GET['description'],
+            $_GET['prix'],
+            $stringdate,
+            $_GET['etatJeu'],
+            'en Vente',
+            $_GET['idJeu'],
+            1             // idCompteVendeur → à remplacer plus tard
+            
+        );
         //à changer IdCompteVendeur quand les comptes seront faits
         //Faire id jeu quand la recherche et la récupération d'id serai faite
 
