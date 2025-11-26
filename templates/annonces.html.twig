@@ -1,16 +1,21 @@
 {% extends 'base_template.html.twig' %}
-{% block title %}{{constantes.application.website_name}} - Annonces{% endblock %}
+
+{% block title %}{{ constantes.application.website_name }} - Annonces{% endblock %}
 
 {% block body %}
 <h1>Liste des annonces</h1>
-<ul>
-{% for a in annonces %}
-    <div class="card shadow-lg border-0 p-4 list-unstyled">
-        <li>
-            <img src="{{ constantes.application.game_image_path }}{{ a.url }}" alt="Photo {{ a.idAnnonce }}" width="100">
-            {{ a.titre }} - <a href="index.php?controleur=Annonce&methode=afficher&id={{ a.idAnnonce }}">Voir plus</a>
-        </li>
-    </div>
-{% endfor %}
-</ul>
+
+<div class="row row-cols-2 row-cols-md-4 g-4">
+    {% for a in annonces %}
+        <div class="col">
+            <div class="card h-100 shadow-lg border-0 p-4 text-center list-unstyled">
+                <li><img src="{{ constantes.application.game_image_path }}{{ a.url }}" alt="Photo {{ a.idAnnonce }}" width="100"></li>
+                </br>
+                <strong>{{ a.titre }}</strong></br>
+                <a href="index.php?controleur=Annonce&methode=afficher&id={{ a.idAnnonce }}">Voir plus</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
 {% endblock %}
