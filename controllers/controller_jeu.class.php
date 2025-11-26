@@ -14,9 +14,8 @@ class ControllerJeu extends Controller
         $jeux = $dao->findAllAssoc(); // récupère tous les jeux en tableau associatif
 
         // Génération automatique des vignettes dans images/vignette/
-        $projectRoot = realpath(__DIR__ . '/..'); // /Applications/MAMP/htdocs/Passatemps
-        $imagesDir = $projectRoot . '/images';
-        $vignetteDir = $imagesDir . '/vignette';
+        $imagesDir = Config::get()['application']['game_image_path'];
+        $vignetteDir = Config::get()['application']['thumbnail_image_path'];
 
         if (!is_dir($vignetteDir)) {
             @mkdir($vignetteDir, 0755, true);
@@ -28,8 +27,8 @@ class ControllerJeu extends Controller
             }
 
             $filename = basename($jeu['url']);
-            $srcPath = $imagesDir . '/' . $filename;
-            $destPath = $vignetteDir . '/' . $filename;
+            $srcPath = Config::get()['application']['game_image_path'] . $filename;
+            $destPath = Config::get()['application']['thumbnail_image_path'] . $filename;
 
             if (!file_exists($srcPath)) {
                 // source manquante : on peut sauter ou définir une vignette par défaut
@@ -40,9 +39,6 @@ class ControllerJeu extends Controller
             if (!file_exists($destPath) || filemtime($srcPath) > filemtime($destPath)) {
                 $this->generateThumbnail($srcPath, $destPath, 300, 200);
             }
-
-            // Optionnel : ajuster le chemin renvoyé au template si besoin
-            $jeux[$index]['vignette'] = 'images/vignette/' . $filename;
         }
 
         $template = $this->getTwig()->load('jeux.html.twig');
@@ -128,11 +124,6 @@ class ControllerJeu extends Controller
                 $saveFunc = 'imagepng';
                 $saveQuality = 6;
                 break;
-            case IMAGETYPE_GIF:
-                $srcImg = @imagecreatefromgif($srcPath);
-                $saveFunc = 'imagegif';
-                $saveQuality = null;
-                break;
             default:
                 return false;
         }
@@ -150,7 +141,7 @@ class ControllerJeu extends Controller
         $inter = imagecreatetruecolor($interW, $interH);
 
         // gestion transparence pour PNG/GIF sur l'image intermédiaire
-        if ($type == IMAGETYPE_PNG || $type == IMAGETYPE_GIF) {
+        if ($type == IMAGETYPE_PNG) {
             imagecolortransparent($inter, imagecolorallocatealpha($inter, 255, 255, 255, 127));
             imagealphablending($inter, false);
             imagesavealpha($inter, true);
@@ -181,9 +172,6 @@ class ControllerJeu extends Controller
                 break;
             case IMAGETYPE_PNG:
                 $saved = $saveFunc($thumb, $destPath, $saveQuality);
-                break;
-            case IMAGETYPE_GIF:
-                $saved = $saveFunc($thumb, $destPath);
                 break;
         }
 
