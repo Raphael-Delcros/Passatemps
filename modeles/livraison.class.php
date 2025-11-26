@@ -4,7 +4,9 @@
  * @brief Gère les paramètres d'une livraison.
  */
 
-
+/**
+ * @brief Gère les paramètres d'une livraison.
+ */
 class Livraison
 {
 
