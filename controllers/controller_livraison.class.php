@@ -1,12 +1,34 @@
 <?php
+/**
+ * @file controller_livraison.class.php
+ * @author Raphaël Delcros
+ * 
+ * @brief Contrôleur des livraisons
+ * @details Ce contrôleur gère l'affichage et la liste des livraisons.
+ * 
+ */
 
+/**
+ * @brief Classe Controller pour les Livraison
+ */
 class ControllerLivraison extends Controller
 {
+    /**
+     * @brief Constructeur de ControllerLivraison
+     *
+     * @param Twig\Environment $twig
+     * @param Twig\Loader\FilesystemLoader $loader
+     */
     public function __construct(Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
     }
 
+    /**
+     * @brief Affiche la page d'une livraison
+     *
+     * @return void
+     */
     public function afficher()
     {
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
@@ -14,7 +36,7 @@ class ControllerLivraison extends Controller
         $commande = $dao->find($id);
 
         // On récupère le titre & prix du jeu pour cette commande
-        $annonce = $dao->getTitreAnnonceByLivraisonId($commande->getIdLivraison());
+        $annonce = $dao->getInfoAnnonceByLivraisonId($commande->getIdLivraison());
 
         $template = $this->getTwig()->load('livraison.html.twig');
         echo $template->render([
@@ -23,6 +45,11 @@ class ControllerLivraison extends Controller
         ]);
     }
 
+    /**
+     * @brief Affiche la liste des livraisons
+     *
+     * @return void
+     */
     public function lister()
     {
         $dao = new LivraisonDao($this->getPdo());
@@ -30,7 +57,7 @@ class ControllerLivraison extends Controller
 
         // On récupère le titre & prix du jeu pour chaque commande
         foreach ($commandes as $commande) {
-            $commande['jeuCommande'] = $dao->getTitreAnnonceByLivraisonId($commande['idLivraison']);
+            $commande['jeuCommande'] = $dao->getInfoAnnonceByLivraisonId($commande['idLivraison']);
         }
 
         $template = $this->getTwig()->load('livraisons.html.twig');

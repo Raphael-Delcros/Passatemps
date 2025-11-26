@@ -1,10 +1,18 @@
-# Passatemps
+# Informations générales
 
-Passatemps est un site de vente d'occasion de jeux de société. Ceci est un exercice fait en S3 et S4 à l'IUT de Bayonne et du Pays Basque par un groupe de six élèves..
+Passatemps est un site de vente d'occasion de jeux de société. Ceci est un exercice fait en S3 et S4 à l'IUT de Bayonne et du Pays Basque par un groupe de six élèves.
 
-# Installation requises
+# Installations requises
 
-Bootstrap : npm i bootstrap@5.3.8
-Twig :
-composer require "twig/twig"
-composer require "twig/intl-extra"
+```bash
+npm install
+```
+```bash
+composer install
+```
+
+# Configuration de la base de données
+
+Modifier le fichier `constantesExemple.yaml` qui se trouve dans le dossier `config` pour configurer votre base de données.
+
+Renommer ensuite ce fichier en `constantes.yaml`.

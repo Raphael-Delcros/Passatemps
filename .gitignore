@@ -1,6 +1,6 @@
 /vendor
 /node_modules
-CSS
-/config/connexion.php
-/config/constantes.php
+/CSS
+/config/config.php
 /config/constantes.yaml
+/docs

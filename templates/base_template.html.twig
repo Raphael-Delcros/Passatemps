@@ -4,7 +4,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="CSS/style.css">
-		<link href="images/iconeOnglet.png" rel="shortcut icon" type="image/x-icon">
+		<link href="{{ constantes.application.website_icon}}" rel="shortcut icon" type="image/x-icon">
 		<link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
 		<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 		{% block css %}<link rel="stylesheet" type="text/css" href="CSS/style.css">{% endblock %}
@@ -17,7 +17,7 @@
 			<nav class="navbar navbar-expand-lg  bg-body-tertiary shadow-sm">
 				<div class="container-fluid ">
 					<a class="navbar-brand" href="index.php">
-						<img src="images/logo.svg" width="181" height="41" alt="Passatemps">
+						<img src="{{ constantes.application.website_logo }}" width="181" height="41" alt="Passatemps">
 					</a>
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
@@ -28,7 +28,7 @@
                             <a class="nav-link {% if menu=='annonce' %} active {% endif %}" href="index.php?controleur=annonce&methode=lister">Annonces</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if menu=='vendre' %} active {% endif %}" href="index.php?controleur=vendre&methode=create">Vendre</a>
+                            <a class="nav-link {% if menu=='vendre' %} active {% endif %}" href="index.php?controleur=vendre&methode=creer">Vendre</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if menu=='commandes' %} active {% endif %}" href="index.php?controleur=livraison&methode=lister">Commandes</a>
@@ -88,6 +88,7 @@
 	</div>
 </footer>
 </body>
+{% block script %}{% endblock %}
 <script>
     let input = document.getElementById('recherche-jeux');
     let resultats = document.getElementById('resultats-autocomplete');
