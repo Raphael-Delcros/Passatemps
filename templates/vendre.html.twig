@@ -10,8 +10,9 @@
         <input type="hidden" name="methode" value="confirmerVente">
 
         <label for="titre" class="form-label">Titre</label>
-        <input type="text" class="form-control" name="titre" placeholder="Entrez le nom de l'annonce" required>
-
+        <div class="position-relative">
+            <input type="text" class="form-control" name="titre" placeholder="Entrez le nom de l'annonce" required>
+        </div>
         <label for="jeu" class="form-label">Jeu</label>
 		<div class="position-relative">
     		<input type="text" id="jeu" class="form-control" name="jeu" placeholder="Entrez le nom du jeu" required>
@@ -23,20 +24,24 @@
 		</div>
 
         <label for="description" class="form-label">Description</label>
-        <input type="text" class="form-control" name="description" placeholder="Description de l'annonce" required>
-
+        <div class="position-relative">
+            <input type="text" class="form-control" name="description" placeholder="Description de l'annonce" required>
+        </div>
         <label for="prix" class="form-label">Prix</label>
-        <input type="text" class="form-control" name="prix" placeholder="12.50" required>
-
+        <div class="position-relative">
+            <input type="text" class="form-control" name="prix" placeholder="12.50" required>
+        </div>
         <label for="etatJeu" class="form-label">Etat du jeu</label>
-        <select class="form-select" name="etatJeu" required>
-            <option selected>Choisir</option>
-            <option>Neuf</option>
-            <option>Très bon état</option>
-            <option>Bon état</option>
-            <option>Abimé</option>
-            <option>Manque des pieces</option>
-        </select>
+        <div class="position-relative">
+            <select class="form-select" name="etatJeu" required>
+                <option selected>Choisir</option>
+                <option>Neuf</option>
+                <option>Très bon état</option>
+                <option>Bon état</option>
+                <option>Abimé</option>
+                <option>Manque des pieces</option>
+            </select>
+        </div>
 
         <label for="photos" class="form-label">Photos de l'annonce</label>
         <input type="file" class="form-label" name="photos" accept=".png,.jpeg,.jpg,.webp,.svg,.gif" multiple required>
