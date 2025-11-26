@@ -1,5 +1,12 @@
 <?php
+/**
+ * @file livraison.class.php
+ * @brief Gère les paramètres d'une livraison.
+ */
 
+/**
+ * @brief Gère les paramètres d'une livraison.
+ */
 class Livraison
 {
 
@@ -18,6 +25,22 @@ class Livraison
     private ?string $status;
 
     // --- Constructeur ---
+    /**
+     * Constructeur de Livraison
+     *
+     * @param integer|null $idLivraison Identifiant de la livraison
+     * @param string|null $ville Ville de livraison
+     * @param string|null $pays Pays de livraison
+     * @param string|null $adresse Adresse de livraison
+     * @param string|null $codePostal Code postal de livraison
+     * @param string|null $dateCommande Date de la commande
+     * @param string|null $dateLivraison Date où le paquet à été expédié
+     * @param string|null $dateReception Date de réception
+     * @param integer|null $idAnnonce Identifiant de l'annonce
+     * @param integer|null $idCompteAcheteur Identifiant du compte acheteur
+     * @param string|null $numeroDeSuivi Numéro de suivi de la livraison
+     * @param string|null $status Statut de la livraison
+     */
     public function __construct(
         ?int $idLivraison = null,
         ?string $ville = null,
@@ -49,7 +72,9 @@ class Livraison
     // --- Getters & Setters ---
 
     /**
-     * Get the value of idLivraison
+     * Récupère la valeur de idLivraison.
+     *
+     * @return integer|null
      */
     public function getIdLivraison(): ?int
     {
@@ -57,9 +82,12 @@ class Livraison
     }
 
     /**
-     * Set the value of idLivraison
+     * Change la valeur de idLivraison.
+     *
+     * @param int|null $idLivraison
+     * @return void
      */
-    public function setIdLivraison($idLivraison): void
+    public function setIdLivraison(?int $idLivraison): void
     {
         $this->idLivraison = $idLivraison;
     }
@@ -75,7 +103,7 @@ class Livraison
     /**
      * Set the value of ville
      */
-    public function setVille($ville): void
+    public function setVille(?string $ville): void
     {
         $this->ville = $ville;
     }
@@ -91,7 +119,7 @@ class Livraison
     /**
      * Set the value of pays
      */
-    public function setPays($pays): void
+    public function setPays(?string $pays): void
     {
         $this->pays = $pays;
     }
@@ -107,7 +135,7 @@ class Livraison
     /**
      * Set the value of adresse
      */
-    public function setAdresse($adresse): void
+    public function setAdresse(?string $adresse): void
     {
         $this->adresse = $adresse;
     }
@@ -121,32 +149,42 @@ class Livraison
     }
 
     /**
-     * Set the value of codePostal
+     * Change la valeur de codePostal.
+     *
+     * @param string $codePostal Le code postal à définir.
+     * @return void
      */
-    public function setCodePostal($codePostal): void
+    public function setCodePostal(?string $codePostal): void
     {
         $this->codePostal = $codePostal;
 
     }
 
      /**
-     * Get the value of dateCommande
-     */
+      * Récupère la valeur de dateCommande.
+      *
+      * @return string|null
+      */
     public function getDateCommande(): ?string
     {
         return $this->dateCommande;
     }
 
     /**
-     * Set the value of dateCommande
+     * Change la valeur de dateCommande.
+     *
+     * @param  $dateCommande
+     * @return void
      */
-    public function setDateCommande($dateCommande): void
+    public function setDateCommande(?string $dateCommande): void
     {
         $this->dateCommande = $dateCommande;
     }
 
     /**
-     * Get the value of dateLivraison
+     * Récupère la valeur de dateLivraison.
+     *
+     * @return string|null
      */
     public function getDateLivraison(): ?string
     {
@@ -154,16 +192,21 @@ class Livraison
     }
 
     /**
-     * Set the value of dateLivraison
+     * Change la valeur de dateLivraison.
+     *
+     * @param string|null $dateLivraison
+     * @return void
      */
-    public function setDateLivraison($dateLivraison): void
+    public function setDateLivraison(?string $dateLivraison): void
     {
         $this->dateLivraison = $dateLivraison;
 
     }
 
     /**
-     * Get the value of dateReception
+     * Récupère la valeur de dateReception.
+     *
+     * @return string|null
      */
     public function getDateReception(): ?string
     {
@@ -171,16 +214,21 @@ class Livraison
     }
 
     /**
-     * Set the value of dateReception
+     * Change la valeur de dateReception.
+     *
+     * @param string|null $dateReception
+     * @return void
      */
-    public function setDateReception($dateReception): void
+    public function setDateReception(?string $dateReception): void
     {
         $this->dateReception = $dateReception;
 
     }
 
     /**
-     * Get the value of idAnnonce
+     * Récupère la valeur de idAnnonce.
+     *
+     * @return integer|null
      */
     public function getIdAnnonce(): ?int
     {
@@ -188,16 +236,21 @@ class Livraison
     }
 
     /**
-     * Set the value of idAnnonce
+     * Change la valeur de idAnnonce
+     *
+     * @param integer|null $idAnnonce
+     * @return void
      */
-    public function setIdAnnonce($idAnnonce): void
+    public function setIdAnnonce(?int $idAnnonce): void
     {
         $this->idAnnonce = $idAnnonce;
 
     }
 
     /**
-     * Get the value of idCompteAcheteur
+     * Récupère la valeur de idCompteAcheteur.
+     *
+     * @return integer|null
      */
     public function getIdCompteAcheteur(): ?int
     {
@@ -205,16 +258,21 @@ class Livraison
     }
 
     /**
-     * Set the value of idCompteAcheteur
+     * Change la valeur de idCompteAcheteur.
+     *
+     * @param integer|null $idCompteAcheteur
+     * @return void
      */
-    public function setIdCompteAcheteur($idCompteAcheteur): void
+    public function setIdCompteAcheteur(?int $idCompteAcheteur): void
     {
         $this->idCompteAcheteur = $idCompteAcheteur;
 
     }
 
     /**
-     * Get the value of numeroDeSuivi
+     * Rrécupère la valeur de numeroDeSuivi
+     *
+     * @return string|null
      */
     public function getNumeroDeSuivi(): ?string
     {
@@ -222,26 +280,34 @@ class Livraison
     }
 
     /**
-     * Set the value of numeroDeSuivi
+     * Change la valeur de numeroDeSuivi
+     *
+     * @param string|null $numeroDeSuivi
+     * @return void
      */
-    public function setNumeroDeSuivi($numeroDeSuivi): void
+    public function setNumeroDeSuivi(?string $numeroDeSuivi): void
     {
         $this->numeroDeSuivi = $numeroDeSuivi;
 
     }
 
     /**
-     * Get the value of status
-     */ 
+     * Récupère la valeur de status.
+     *
+     * @return string|null
+     */
     public function getStatus(): ?string
     {
         return $this->status;
     }
 
     /**
-     * Set the value of status
+     * Change la valeur de status.
+     *
+     * @param string|null $status
+     * @return void
      */
-    public function setStatus($status): void
+    public function setStatus(?string $status): void
     {
         $this->status = $status;
     }
