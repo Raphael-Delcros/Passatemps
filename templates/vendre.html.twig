@@ -1,13 +1,14 @@
 {% extends 'base_template.html.twig' %}
 
-{% block title %}Vente{% endblock %}
+{% block title %}{{constantes.application.website_name}} - Vente{% endblock %}
 
 {% block body %}
 <main>
-    <form method="GET" action="index.php?controleur=vendre&methode=confirmerVente" class="row g-3 position-relative" autocomplete="off">
+    <form method="POST" action="index.php?controleur=vendre&methode=recap" class="row g-3 position-relative" autocomplete="off">
         <h1>Vendre</h1>
         <input type="hidden" name="controleur" value="vendre">
         <input type="hidden" name="methode" value="confirmerVente">
+        <input type="hidden" name="idJeu" id="idJeu">
 
         <label for="titre" class="form-label">Titre</label>
         <div class="position-relative">
@@ -82,7 +83,7 @@
             li.style.cursor = 'pointer';
             li.addEventListener('click', () => {
                 inputJeu.value = it.nom;
-                // éventuellement stocker id dans un champ caché si tu veux l'envoyer au serveur
+                document.getElementById('idJeu').value = it.idJeu;
                 clearResults();
             });
             resultats.appendChild(li);
