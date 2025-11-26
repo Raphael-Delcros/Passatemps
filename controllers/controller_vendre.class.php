@@ -13,41 +13,46 @@ class ControllerVendre extends controller
         echo $template->render();
     }
 
-   public function confirmerVente()
-   {
-        // bla bla bla faut faire le formulaire bouh bouh créer une annonce tout ca tout ca
-        extract($_GET,EXTR_OVERWRITE);
-       // Logique pour confirmer la vente (par exemple, enregistrer les données dans la base de données)
-        $template = $this->getTwig()->load('vendre.html.twig');
-        echo $template->render();
+    public function confirmerVente()
+    {
+        $data = $_POST;
 
-        $date= getdate();
+        $date = getdate();
         $stringdate =  $date['year'] . '-' . $date['mon'] . '-' . $date['mday'];
-        
+
         $dao = new AnnonceDao($this->getPdo());
         $idAnnonce = $dao->lastId();
 
         $annonce = new Annonce(
-            $idAnnonce,
-            $_GET['titre'],
-            $_GET['description'],
-            $_GET['prix'],
-            $stringdate,
-            $_GET['etatJeu'],
-            'en Vente',
-            $_GET['idJeu'],
-            1             // idCompteVendeur → à remplacer plus tard
-            
-        );
+        $idAnnonce,
+        $data['titre'] ,
+        $data['description'] ,
+        $data['prix'] ,
+        $stringdate,
+        $data['etatJeu'] ,
+        'en Vente', //etatVente
+        $data['idJeu'] ,
+        1             // idCompteVendeur → à remplacer plus tard
+    );
         //à changer IdCompteVendeur quand les comptes seront faits
         //Faire id jeu quand la recherche et la récupération d'id serai faite
 
         $result = $dao->InsertInto($annonce);
-        if ($result) {
-            echo "Annonce insérée avec succès.";
-        } else {
-            echo "Erreur lors de l'insertion de l'annonce.";
-        }
-   }
+        $template = $this->getTwig()->load('confirmation.html.twig');
+        echo $template->render([
+            'success' => $result
+        ]);
+    }
 
+    public function recap()
+    {
+        // On récupère tout le formulaire
+        $data = $_POST;
+
+        // On envoie à Twig pour affichage du résumé
+        $template = $this->getTwig()->load('recapVente.html.twig');
+        echo $template->render([
+            'annonce' => $data
+        ]);
+    }
 }

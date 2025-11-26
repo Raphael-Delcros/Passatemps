@@ -1,0 +1,24 @@
+{% extends 'base_template.html.twig' %}
+
+{% block title %}Annonce publiée{% endblock %}
+
+{% block body %}
+<main class="container mt-5">
+
+    {% if success %}
+        <div class="alert alert-success">
+            Votre annonce a été publiée avec succès !
+        </div>
+    {% else %}
+        <div class="alert alert-danger">
+            Une erreur est survenue lors de la publication.
+        </div>
+    {% endif %}
+
+    <div class="mt-4">
+        <a href="index.php" class="btn btn-primary">Retour à l'accueil</a>
+        <a href="index.php?controleur=vendre&methode=creer" class="btn btn-secondary">Publier une autre annonce</a>
+    </div>
+
+</main>
+{% endblock %}
