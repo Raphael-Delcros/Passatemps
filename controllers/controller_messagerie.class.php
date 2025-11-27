@@ -7,7 +7,7 @@
  */
 
 /**
- * @brief Classe Controller pour les Livraison
+ * @brief Classe Controller pour la Messagerie
  */
 class ControllerMessagerie extends Controller
 {
