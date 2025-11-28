@@ -254,6 +254,12 @@ class JeuDao
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @brief Ajoute un jeu dans la base de données
+     * *
+     * @param Jeu $jeu Jeu à ajouter
+     * @return boolean True si l'ajout a réussi, false sinon
+     */
     public function addToDatabase(Jeu $jeu): bool
     {
         $sql = "INSERT INTO jeu (nom, description, contenu, nbJoueursMin, nbJoueursMax, dateSortie, idJeuPrincipal, idPhoto, dureePartie)
