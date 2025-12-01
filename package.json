@@ -6,6 +6,8 @@
     "sass": "^1.94.0"
   },
   "scripts": {
-    "build-css": "sass SCSS/custom.scss CSS/style.css"
+    "build-css": "sass SCSS/custom.scss CSS/style.css",
+    "build-doxygen": "doxygen Doxyfile",
+    "build-all": "npm run build-css && npm run build-doxygen"
   }
 }

@@ -1,15 +1,32 @@
 <?php
+/**
+ * @file messagerie.class.php
+ * @brief Définit la classe Messagerie représentant un message entre utilisateurs.
+ * 
+ */
 
+/**
+ * @brief Classe représentant un message entre utilisateurs
+ */
 class Messagerie{
     // Attributs
     private ?int $idMessage;
-    private ?int $contenu;
+    private ?string $contenu;
     private ?string $dateEnvoi;
     private ?int $idCompteExpediteur;
     private ?int $idCompteDestinataire;
 
     // Constructeur
-    public function __construct(?int $idMessage = null, ?int $contenu = null, ?string $dateEnvoi = null, ?int $idCompteExpediteur = null, ?int $idCompteDestinataire = null) {
+    /**
+     * Constructeur de la classe Messagerie
+     *
+     * @param integer|null $idMessage Identifiant du message
+     * @param string|null $contenu Contenu du message
+     * @param string|null $dateEnvoi Date d'envoi du message
+     * @param integer|null $idCompteExpediteur Identifiant du compte expéditeur
+     * @param integer|null $idCompteDestinataire Identifiant du compte destinataire
+     */
+    public function __construct(?int $idMessage = null, ?string $contenu = null, ?string $dateEnvoi = null, ?int $idCompteExpediteur = null, ?int $idCompteDestinataire = null) {
         $this->idMessage = $idMessage;
         $this->contenu = $contenu;
         $this->dateEnvoi = $dateEnvoi;
@@ -20,7 +37,9 @@ class Messagerie{
     // Getters et Setters
 
     /**
-     * Get the value of idMessage
+     * @brief Récupère la valeur de idMessage
+     * 
+     * @return integer|null L'identifiant du message
      */
     public function getIdMessage(): ?int
     {
@@ -28,34 +47,41 @@ class Messagerie{
     }
 
     /**
-     * Set the value of idMessage
-     *
+     * Change la valleur de idMessage
+     * 
+     * @param integer|null $idMessage L'identifiant du message
      */
-    public function setIdMessage($idMessage): void
+    public function setIdMessage(?int $idMessage): void
     {
         $this->idMessage = $idMessage;
 
     }
 
     /**
-     * Get the value of contenu
+     * @brief Récupère la valeur de contenu
+     * 
+     * @return string|null Le contenu du message
      */
-    public function getContenu(): ?int
+    public function getContenu(): ?string
     {
         return $this->contenu;
     }
 
     /**
-     * Set the value of contenu
+     * @brief Change la valeur de contenu
+     * 
+     * @param string|null Contenu du message
      */
-    public function setContenu($contenu): void
+    public function setContenu(?string $contenu): void
     {
         $this->contenu = $contenu;
 
     }
 
     /**
-     * Get the value of dateEnvoi
+     * @brief Récupère la valeur de dateEnvoi
+     * 
+     * @return string|null Date où le message à été envoyé
      */
     public function getDateEnvoi(): ?string
     {
@@ -63,16 +89,20 @@ class Messagerie{
     }
 
     /**
-     * Set the value of dateEnvoi
+     * @brief Change la valeur de dateEnvoi
+     * 
+     * @param string|null $dateEnvoi Date où le message à été envoyé
      */
-    public function setDateEnvoi($dateEnvoi): void
+    public function setDateEnvoi(?string $dateEnvoi): void
     {
         $this->dateEnvoi = $dateEnvoi;
 
     }
 
     /**
-     * Get the value of idCompteExpediteur
+     * @brief Récupère la valeur de idCompteExpediteur
+     * 
+     * @return integer|null L'identifiant du compte expéditeur
      */
     public function getIdCompteExpediteur(): ?int
     {
@@ -80,7 +110,9 @@ class Messagerie{
     }
 
     /**
-     * Set the value of idCompteExpediteur
+     * @brief Change la valeur de idCompteExpediteur
+     * 
+     * @param integer|null $idCompteExpediteur L'identifiant du compte expéditeur
      */
     public function setIdCompteExpediteur($idCompteExpediteur): void
     {
@@ -89,7 +121,9 @@ class Messagerie{
     }
 
     /**
-     * Get the value of idCompteDestinataire
+     * @brief Récupère la valeur de idCompteDestinataire
+     * 
+     * @return integer|null L'identifiant du compte destinataire
      */
     public function getIdCompteDestinataire(): ?int
     {
@@ -97,7 +131,9 @@ class Messagerie{
     }
 
     /**
-     * Set the value of idCompteDestinataire
+     * @brief Change la valeur de idCompteDestinataire
+     * 
+     * @param integer|null $idCompteDestinataire L'identifiant du compte destinataire
      */
     public function setIdCompteDestinataire($idCompteDestinataire): void
     {

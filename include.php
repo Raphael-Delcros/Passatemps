@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file include.php
+ * @brief Fichier d'inclusion des dépendances de l'application.
+ * 
+ */
 
 // Ajout de l'autoload de composer
 require_once 'vendor/autoload.php';

@@ -76,7 +76,7 @@ Class AnnonceDao
         return $annonce;
     }
 
-    public function hydrateAll()
+    public function hydrateAll(?array $tableauAssoc): array
     {
         $annonces = [];
         foreach ($tableauAssoc as $tableau) {
@@ -86,22 +86,26 @@ Class AnnonceDao
     }
 
     public function InsertInto(Annonce $annonce): bool
-    {
-        $sql = "INSERT INTO " . PREFIXE_TABLE . "annonce (idAnnonce, titre, description, prix, datePub, etatJeu, etatVente, idJeu, idCompteVendeur) 
-                VALUES (:idAnnone, :titre, :description, :prix, :datePub, :etatJeu, :etatVente, :idJeu, :idCompteVendeur)";
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([
-            'titre' => $annonce->getTitre(),
-            'description' => $annonce->getDescription(),
-            'prix' => $annonce->getPrix(),
-            'datePub' => $annonce->getDatePub(),
-            'etatJeu' => $annonce->getEtatJeu(),
-            'etatVente' => $annonce->getEtatVente(),
-            'idJeu' => $annonce->getIdJeu(),
-            'idCompteVendeur' => $annonce->getIdCompteVendeur(),
-            'idAnnonce' => $annonce->getIdAnnonce()
-        ]);
-    }
+{
+    $sql = "INSERT INTO " . Config::get()['database']['prefixe_table'] . "annonce 
+            (idAnnonce, titre, description, prix, datePub, etatJeu, etatVente, idJeu, idCompteVendeur) 
+            VALUES (:idAnnonce, :titre, :description, :prix, :datePub, :etatJeu, :etatVente, :idJeu, :idCompteVendeur)";
+
+    $stmt = $this->pdo->prepare($sql);
+
+    return $stmt->execute([
+        'idAnnonce'      => $annonce->getIdAnnonce(),
+        'titre'          => $annonce->getTitre(),
+        'description'    => $annonce->getDescription(),
+        'prix'           => $annonce->getPrix(),
+        'datePub'        => $annonce->getDatePub(),
+        'etatJeu'        => $annonce->getEtatJeu(),
+        'etatVente'      => $annonce->getEtatVente(),
+        'idJeu'          => $annonce->getIdJeu(),
+        'idCompteVendeur'=> $annonce->getIdCompteVendeur()
+    ]);
+}
+
 
     public function lastId(): int
     {

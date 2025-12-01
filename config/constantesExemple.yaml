@@ -13,4 +13,5 @@ application:
     website_logo: "images/logo.svg" # Chemin vers le logo du site, sera affiché sur le navbar
     website_icon: "images/icon.png" # Chemin vers l'icône du site, sera affiché dans l'onglet du navigateur
     game_image_path: "images/jeux/" # Chemin vers les images des jeux
+    thumbnail_image_path: "images/vignettes/" # Chemin vers les vignettes des jeux
     image_upload_path: "uploads/images/" # Chemin vers le dossier de téléchargement des images par les utilisateurs
