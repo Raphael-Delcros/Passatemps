@@ -25,73 +25,85 @@
 				</div>
 			</div>
 
-			{# Contenu d'une boite standard #}
-			<div class="row mt-2">
-				<label for="contenu" class="form-label">Contenu</label>
-				<div class="position-relative">
-					<input type="text" class="form-control" name="contenu" placeholder="Contenu de l'annonce" required>
-				</div>
-			</div>
-
-			{# Nombre de joueurs #}
 			<div
 				class="row mt-2">
-				{# Minimum #}
-				<div class="col">
-					<label for="nbJoueursMin" class="form-label">Nombre de joueurs minimum</label>
+				{# Contenu d'une boite standard #}
+				<div class="col mt-2">
+					<label for="contenu" class="form-label">Contenu</label>
 					<div class="position-relative">
-						<input type="number" class="form-control" name="nbJoueursMin" placeholder="2" required>
-					</div>
-				</div>
-				{# Maximum #}
-				<div class="col">
-					<label for="nbJoueursMax" class="form-label">Nombre de joueurs maximum</label>
-					<div class="position-relative">
-						<input type="number" class="form-control" name="nbJoueursMax" placeholder="10" required>
-					</div>
-				</div>
-			</div>
-
-			{# Date de sortie #}
-			<div class="row mt-2">
-				<div class="col">
-					<label for="dateSortie" class="form-label">Date de sortie</label>
-					<div class="position-relative">
-						<input type="date" class="form-control" name="dateSortie" required>
+						<input type="text" class="form-control" name="contenu" placeholder="Contenu de l'annonce" required>
 					</div>
 				</div>
 
-				{# Extension? #}
-				{# AJOUTER LA RECHERCHE ICI #}
-				<div class="col">
-					<label for="extensionDe" class="form-label">Jeu principal (si extension)</label>
+				{# Catégories #}
+				<div class="col mt-2">
+					<label for="categories" class="form-label">Catégorie(s)</label>
 					<div class="position-relative">
-						<input type="text" class="form-control" name="extensionDe" placeholder="Monopoly" required>
+						<input type="text" class="form-control" name="categories" placeholder="Catégories du jeu" required>
 					</div>
 				</div>
 
-				{# Durée de la partie #}
-				<div class="col">
-					<label for="dureePartie" class="form-label">Durée d'une partie (en minutes)</label>
-					<div class="position-relative">
-						<input type="number" class="form-control" name="dureePartie" placeholder="15" required>
+
+				{# Nombre de joueurs #}
+				<div
+					class="row mt-2">
+					{# Minimum #}
+					<div class="col">
+						<label for="nbJoueursMin" class="form-label">Nombre de joueurs minimum</label>
+						<div class="position-relative">
+							<input type="number" class="form-control" name="nbJoueursMin" placeholder="2" required>
+						</div>
+					</div>
+					{# Maximum #}
+					<div class="col">
+						<label for="nbJoueursMax" class="form-label">Nombre de joueurs maximum</label>
+						<div class="position-relative">
+							<input type="number" class="form-control" name="nbJoueursMax" placeholder="10" required>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			{# Photos #}
-			<div class="row mt-2">
-				<label for="photos" class="form-label">Image du jeu</label>
-				<input type="file" class="form-label" name="photos" accept=".png,.jpeg,.jpg" required>
-			
+				{# Date de sortie #}
+				<div class="row mt-2">
+					<div class="col">
+						<label for="dateSortie" class="form-label">Date de sortie</label>
+						<div class="position-relative">
+							<input type="date" class="form-control" name="dateSortie" required>
+						</div>
+					</div>
 
-			{# Bouton d'ajout #}
-			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-				<button type="submit" class="btn btn-primary me-md-2">Ajouter le jeu</button>
-			</div>
-            </div>
+					{# Extension? #}
+					{# AJOUTER LA RECHERCHE ICI #}
+					<div class="col">
+						<label for="extensionDe" class="form-label">Jeu principal (si extension)</label>
+						<div class="position-relative">
+							<input type="text" class="form-control" name="extensionDe" placeholder="Monopoly" required>
+						</div>
+					</div>
 
-			{{ message }}
-		</form>
-	</main>
-{% endblock %}
+					{# Durée de la partie #}
+					<div class="col">
+						<label for="dureePartie" class="form-label">Durée d'une partie (en minutes)</label>
+						<div class="position-relative">
+							<input type="number" class="form-control" name="dureePartie" placeholder="15" required>
+						</div>
+					</div>
+				</div>
+
+				{# Photos #}
+				<div class="row mt-2">
+					<label for="photos" class="form-label">Image du jeu</label>
+					<input
+					type="file" class="form-label" name="photos" accept=".png,.jpeg,.jpg" required>
+
+
+					{# Bouton d'ajout #}
+					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+						<button type="submit" class="btn btn-primary me-md-2">Ajouter le jeu</button>
+					</div>
+				</div>
+
+				{{ message }}
+			</form>
+		</main>
+	{% endblock %}
