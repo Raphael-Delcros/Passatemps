@@ -27,4 +27,9 @@ class ControllerCompte extends Controller {
             'compte' => $compte,
         ]);
     }
+    
+    public function connexion() {
+        $template = $this->getTwig()->load('connexion.html.twig');
+        echo $template->render();
+    }
 }
