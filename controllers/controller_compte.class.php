@@ -27,9 +27,23 @@ class ControllerCompte extends Controller {
             'compte' => $compte,
         ]);
     }
-    
+    /**
+     * @brief Affiche la page de connexion
+     *
+     * @return void
+     */
     public function connexion() {
         $template = $this->getTwig()->load('connexion.html.twig');
+        echo $template->render();
+    }
+    
+    /**
+     * @brief Affiche la page d'inscription
+     *
+     * @return void
+     */
+    public function inscription() {
+        $template = $this->getTwig()->load('inscription.html.twig');
         echo $template->render();
     }
 }
