@@ -46,4 +46,15 @@ class ControllerCompte extends Controller {
         $template = $this->getTwig()->load('inscription.html.twig');
         echo $template->render();
     }
+    
+    /**
+     * @brief Affiche la page de mot de passe oublié
+     *
+     * @bug Dans mdpOublie.html.twig, le footer est sur-élevé
+     * @return void
+     */
+    public function mdpOublie() {
+        $template = $this->getTwig()->load('mdpOublie.html.twig');
+        echo $template->render();
+    }
 }
