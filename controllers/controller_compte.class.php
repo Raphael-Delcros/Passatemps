@@ -28,4 +28,34 @@ class ControllerCompte extends Controller {
             'compte' => $compte,
         ]);
     }
+    /**
+     * @brief Affiche la page de connexion
+     *
+     * @return void
+     */
+    public function connexion() {
+        $template = $this->getTwig()->load('connexion.html.twig');
+        echo $template->render();
+    }
+    
+    /**
+     * @brief Affiche la page d'inscription
+     *
+     * @return void
+     */
+    public function inscription() {
+        $template = $this->getTwig()->load('inscription.html.twig');
+        echo $template->render();
+    }
+    
+    /**
+     * @brief Affiche la page de mot de passe oublié
+     *
+     * @bug Dans mdpOublie.html.twig, le footer est sur-élevé
+     * @return void
+     */
+    public function mdpOublie() {
+        $template = $this->getTwig()->load('mdpOublie.html.twig');
+        echo $template->render();
+    }
 }

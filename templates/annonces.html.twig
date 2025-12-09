@@ -3,14 +3,12 @@
 
 {% block body %}
 <h1>Liste des annonces</h1>
-<ul>
+<ul class="list-group">
 {% for a in annonces %}
-    <div class="card shadow-lg border-0 p-4">
-        <li>
+        <li class="list-group-item">
             <img src="{{ constantes.application.game_image_path }}{{ a.url }}" alt="Photo {{ a.idAnnonce }}" width="100">
             {{ a.titre }} - <a href="index.php?controleur=Annonce&methode=afficher&id={{ a.idAnnonce }}">Voir plus</a>
         </li>
-    </div>
 {% endfor %}
 </ul>
 {% endblock %}

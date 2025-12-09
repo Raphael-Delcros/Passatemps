@@ -14,12 +14,12 @@ class Jeu {
     private ?array $categories; // Récupérer les catégories via la table cataloguer
     private ?int $idPhoto ;
     private ?string $urlPhoto ;
-    private ?int $DureePartie ; 
+    private ?int $dureePartie ; 
     
 // --- Constucteur ---
 
     public function __construct(?int $id = null, ?string $n = null, ?string $desc = null, ?string $cont = null, ?int $nbMin = null, ?int $nbMax = null,
-    ?string $dateSort = null, ?int $idJeuPrin = null, ?int $idPhoto = null, ?int $DureePartie = null, ?string $urlPhoto = null, ?array $categories = null)
+    ?string $dateSort = null, ?int $idJeuPrin = null, ?int $idPhoto = null, ?int $dureePartie = null, ?string $urlPhoto = null, ?array $categories = null)
     {
         $this->idJeu = $id;
         $this->nom = $n;
@@ -31,7 +31,7 @@ class Jeu {
         $this->idJeuPrincipal = $idJeuPrin;
         $this->categories = $categories;
         $this->idPhoto = $idPhoto;
-        $this->DureePartie = $DureePartie;
+        $this->dureePartie = $dureePartie;
         $this->urlPhoto = $urlPhoto;
     }
 
@@ -133,13 +133,13 @@ class Jeu {
         $this->idPhoto = $idPhoto;
     }
 
-    public function getDureePartie() : ?int
+    public function getdureePartie() : ?int
     {
-        return $this->DureePartie;
+        return $this->dureePartie;
     }
-    public function setDureePartie($DureePartie) : void
+    public function setdureePartie($dureePartie) : void
     {
-        $this->DureePartie = $DureePartie;
+        $this->dureePartie = $dureePartie;
     }
 
     public function getUrlPhoto()

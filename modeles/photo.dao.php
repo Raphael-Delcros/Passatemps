@@ -37,4 +37,24 @@ class PhotoDao {
         }
         return $photos;
     }
+    
+    /**
+     * @brief Ajoute une photo à la base de données
+     * 
+     * Note : L'ID de la photo est auto-incrémenté par la base de données
+     * 
+     * @param Photo $photo Photo à ajouter
+     * @return boolean True si l'ajout a réussi, false sinon
+     */
+    public function addToDatabase(Photo $photo): bool {
+        $sql = "INSERT INTO " . Config::get()['database']['prefixe_table'] . "photo (url, idAnnonce, idMessage) 
+                VALUES (:url, :idAnnonce, :idMessage)";
+        $stmt = $this->pdo->prepare($sql);
+        $params = [
+            'url' => $photo->getUrl(),
+            'idAnnonce' => $photo->getIdAnnonce(),
+            'idMessage' => $photo->getIdMessage()
+        ];
+        return $stmt->execute($params);
+    }
 }
