@@ -20,6 +20,7 @@ class ControllerCompte extends Controller {
     public function afficher() {
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
         $dao = new CompteDao($this->getPdo());
+        var_dump($id);
         $compte = $dao->find($id);
 
         $template = $this->getTwig()->load('compte.html.twig');

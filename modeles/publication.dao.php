@@ -20,11 +20,12 @@ class publicationDAO{
     }
 
     public function find(?int $id): ?Publication{
-        $tableauAssoc = $this->findAssoc($id);
-        if($tableauAssoc){
-            return $this->hydrate($tableauAssoc);
-        }
-        return null;
+        $sql="SELECT * FROM ".Config::get()['database']['prefixe_table']."publication WHERE idPost= :id";
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute(array("id"=>$id));
+        $pdoStatement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Publication');
+        $publication = $pdoStatement->fetch();
+        return $publication;
     }
 
     public function findAll(): array{

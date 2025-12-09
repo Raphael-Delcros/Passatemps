@@ -23,13 +23,13 @@ class Publication{
         ?int $idPost = null,
         ?string $sujet = null,
         ?string $contenu = null,
-        ?string $datePublication = null,
+        ?string $envoi = null,
         ?int $idPostPrincipale = null)
     {
         $this->idPost = $idPost;
         $this->sujet = $sujet;
         $this->contenu = $contenu;
-        $this->dateEnvoi = $datePublication;
+        $this->dateEnvoi = $envoi;
         $this->idPostPrincipale = $idPostPrincipale;
     }
 
@@ -51,12 +51,6 @@ class Publication{
     }
     public function setContenu(?string $contenu): void {
         $this->contenu = $contenu;
-    }
-    public function getDatePublication(): ?string {
-        return $this->dateEnvoi;
-    }
-    public function setDatePublication(?string $datePublication): void {
-        $this->dateEnvoi = $datePublication;
     }
 
     /**
@@ -89,6 +83,25 @@ class Publication{
     public function setIdCompte($idCompte)
     {
         $this->idCompte = $idCompte;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of dateEnvoi
+     */ 
+    public function getDateEnvoi()
+    {
+        return $this->dateEnvoi;
+    }
+
+    /**
+     * Set the value of dateEnvoi
+     *
+     */ 
+    public function setDateEnvoi($dateEnvoi)
+    {
+        $this->dateEnvoi = $dateEnvoi;
 
         return $this;
     }

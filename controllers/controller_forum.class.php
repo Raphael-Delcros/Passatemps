@@ -20,9 +20,7 @@ class ControllerForum extends Controller {
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
         $dao = new PublicationDao($this->getPdo());
         $publication = $dao->find($id);
-
         $template = $this->getTwig()->load('publication.html.twig');
-        var_dump($publication);
         echo $template->render([
             'publication' => $publication,
             'menu' => 'publication'
