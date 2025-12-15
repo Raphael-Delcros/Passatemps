@@ -36,3 +36,6 @@ $theme-colors: (
 body {
   background-color: lighten($primary, 40%);
 }
+.form-check-input{
+  border: 1px solid $primary;
+}
