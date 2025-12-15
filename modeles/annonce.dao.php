@@ -1,6 +1,6 @@
 <?php
 
-Class AnnonceDao 
+class AnnonceDao
 {
     private ?PDO $pdo;
 
@@ -41,7 +41,7 @@ Class AnnonceDao
         LEFT JOIN photo p ON p.idAnnonce = a.idAnnonce
         WHERE a.idAnnonce = :id";
 
-        
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -72,7 +72,7 @@ Class AnnonceDao
         $annonce->setEtatVente($tableauAssoc['etatVente'] ?? null);
         $annonce->setIdJeu($tableauAssoc['idJeu'] ?? null);
         $annonce->setIdCompteVendeur($tableauAssoc['idCompteVendeur'] ?? null);
-        $annonce->setUrlPhoto($tableauAssoc['url'] ?? null );
+        $annonce->setUrlPhoto($tableauAssoc['url'] ?? null);
         return $annonce;
     }
 
@@ -80,31 +80,31 @@ Class AnnonceDao
     {
         $annonces = [];
         foreach ($tableauAssoc as $tableau) {
-            $annonces[] = $this->hydrate($tableauAssoc);
+            $annonces[] = $this->hydrate($tableau);
         }
         return $annonces;
     }
 
     public function InsertInto(Annonce $annonce): bool
-{
-    $sql = "INSERT INTO " . Config::get()['database']['prefixe_table'] . "annonce 
+    {
+        $sql = "INSERT INTO " . Config::get()['database']['prefixe_table'] . "annonce 
             (idAnnonce, titre, description, prix, datePub, etatJeu, etatVente, idJeu, idCompteVendeur) 
             VALUES (:idAnnonce, :titre, :description, :prix, :datePub, :etatJeu, :etatVente, :idJeu, :idCompteVendeur)";
 
-    $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
 
-    return $stmt->execute([
-        'idAnnonce'      => $annonce->getIdAnnonce(),
-        'titre'          => $annonce->getTitre(),
-        'description'    => $annonce->getDescription(),
-        'prix'           => $annonce->getPrix(),
-        'datePub'        => $annonce->getDatePub(),
-        'etatJeu'        => $annonce->getEtatJeu(),
-        'etatVente'      => $annonce->getEtatVente(),
-        'idJeu'          => $annonce->getIdJeu(),
-        'idCompteVendeur'=> $annonce->getIdCompteVendeur()
-    ]);
-}
+        return $stmt->execute([
+            'idAnnonce'      => $annonce->getIdAnnonce(),
+            'titre'          => $annonce->getTitre(),
+            'description'    => $annonce->getDescription(),
+            'prix'           => $annonce->getPrix(),
+            'datePub'        => $annonce->getDatePub(),
+            'etatJeu'        => $annonce->getEtatJeu(),
+            'etatVente'      => $annonce->getEtatVente(),
+            'idJeu'          => $annonce->getIdJeu(),
+            'idCompteVendeur' => $annonce->getIdCompteVendeur()
+        ]);
+    }
 
 
     public function lastId(): int
@@ -117,17 +117,41 @@ Class AnnonceDao
         return $idAnnonce;
     }
 
+    /**
+     * Récupère les annonces associées à un jeu
+     *
+     * @param int $idJeu Identifiant du jeu
+     * @return Annonce[] Liste des annonces du jeu
+     */
+    public function findByJeu(int $idJeu): array
+    {
+        $sql = "
+        SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub,
+               a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur, p.url
+        FROM annonce a
+        LEFT JOIN photo p ON p.idAnnonce = a.idAnnonce
+        WHERE a.idJeu = :idJeu
+          
+        ORDER BY a.datePub DESC
+    ";
+        //AND a.etatVente = 'en Vente'
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['idJeu' => $idJeu]);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        return $this->hydrateAll($stmt->fetchAll());
+    }
+
     public function researchAnnonces(string $q): array
     {
-    $sql = "SELECT A.idAnnonce, A.titre, A.description, A.prix, A.datePub, A.etatJeu, A.etatVente, A.idJeu, A.idCompteVendeur, P.url
+        $sql = "SELECT A.idAnnonce, A.titre, A.description, A.prix, A.datePub, A.etatJeu, A.etatVente, A.idJeu, A.idCompteVendeur, P.url
             FROM annonce A
             LEFT JOIN photo P ON A.idPhoto = P.idPhoto
             WHERE LOWER(A.titre) LIKE :q
             ORDER BY A.titre";
 
-    $stmt = $this->pdo->prepare($sql);
-    $stmt->execute(['q' => '%' . strtolower($q) . '%']);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['q' => '%' . strtolower($q) . '%']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
 }
