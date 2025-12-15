@@ -27,7 +27,7 @@ class JeuDao
         $sql = "SELECT J.idJeu, J.nom, J.description, J.contenu, 
                    J.nbJoueursMin, J.nbJoueursMax, J.dateSortie, 
                    J.idJeuPrincipal, categorie.nom AS nomCategorie, J.idPhoto,
-                    photo.url, J.DureePartie
+                    photo.url, J.dureePartie
             FROM jeu J
             LEFT JOIN cataloguer ON J.idJeu = cataloguer.idJeu 
             LEFT JOIN categorie ON cataloguer.idCategorie = categorie.idCategorie 
@@ -53,7 +53,7 @@ class JeuDao
             $first['dateSortie'],
             $first['idJeuPrincipal'],
             $first['idPhoto'],
-            $first['DureePartie'],
+            $first['dureePartie'],
             $first['url']
         );
         // On récupère toutes les catégories du jeu
@@ -73,7 +73,7 @@ class JeuDao
         $sql = "SELECT J.idJeu, J.nom, J.description, J.contenu, 
                    J.nbJoueursMin, J.nbJoueursMax, J.dateSortie, 
                    J.idJeuPrincipal, categorie.nom AS nomCategorie, J.idPhoto,
-                    photo.url, J.DureePartie
+                    photo.url, J.dureePartie
             FROM jeu J
             LEFT JOIN cataloguer ON J.idJeu = cataloguer.idJeu 
             LEFT JOIN categorie ON cataloguer.idCategorie = categorie.idCategorie 
@@ -107,7 +107,7 @@ class JeuDao
                     $row['dateSortie'],
                     $row['idJeuPrincipal'],
                     $row['idPhoto'],
-                    $row['DureePartie'],
+                    $row['dureePartie'],
                     $row['url']
                 );
                 $jeuxTemp[$idJeu]->setCategories([]);
@@ -135,7 +135,7 @@ class JeuDao
         $sql = "SELECT J.idJeu, J.nom, J.description, J.contenu, 
                    J.nbJoueursMin, J.nbJoueursMax, J.dateSortie, 
                    J.idJeuPrincipal, categorie.nom AS nomCategorie, J.idPhoto,
-                    photo.url, J.DureePartie
+                    photo.url, J.dureePartie
             FROM jeu J
             LEFT JOIN cataloguer ON J.idJeu = cataloguer.idJeu 
             LEFT JOIN categorie ON cataloguer.idCategorie = categorie.idCategorie 
@@ -168,7 +168,7 @@ class JeuDao
         $sql = "SELECT J.idJeu, J.nom, J.description, J.contenu, 
                    J.nbJoueursMin, J.nbJoueursMax, J.dateSortie, 
                    J.idJeuPrincipal, categorie.nom AS nomCategorie, J.idPhoto,
-                    photo.url, J.DureePartie
+                    photo.url, J.dureePartie
             FROM jeu J
             LEFT JOIN cataloguer ON J.idJeu = cataloguer.idJeu 
             LEFT JOIN categorie ON cataloguer.idCategorie = categorie.idCategorie 
@@ -212,7 +212,7 @@ class JeuDao
         $jeu->setIdJeuPrincipal($tableauAssoc['idJeuPrincipal']);
         $jeu->setCategories($tableauAssoc['categories'] ?? []);
         $jeu->setIdPhoto($tableauAssoc['idPhoto']);
-        $jeu->setDureePartie($tableauAssoc['DureePartie']);
+        $jeu->setdureePartie($tableauAssoc['dureePartie']);
         $jeu->setUrlPhoto($tableauAssoc['url']);
         return $jeu;
     }
@@ -254,4 +254,28 @@ class JeuDao
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @brief Ajoute un jeu dans la base de données
+     * *
+     * @param Jeu $jeu Jeu à ajouter
+     * @return boolean True si l'ajout a réussi, false sinon
+     */
+    public function addToDatabase(Jeu $jeu): bool
+    {
+        $sql = "INSERT INTO jeu (nom, description, contenu, nbJoueursMin, nbJoueursMax, dateSortie, idJeuPrincipal, idPhoto, dureePartie)
+                VALUES (:nom, :description, :contenu, :nbJoueursMin, :nbJoueursMax, :dateSortie, :idJeuPrincipal, :idPhoto, :dureePartie)";
+
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            'nom' => $jeu->getNom(),
+            'description' => $jeu->getDescription(),
+            'contenu' => $jeu->getContenu(),
+            'nbJoueursMin' => $jeu->getNbJoueursMin(),
+            'nbJoueursMax' => $jeu->getNbJoueursMax(),
+            'dateSortie' => $jeu->getDateSortie(),
+            'idJeuPrincipal' => $jeu->getIdJeuPrincipal(),
+            'idPhoto' => $jeu->getIdPhoto(),
+            'dureePartie' => $jeu->getdureePartie()
+        ]);
+    }
 }

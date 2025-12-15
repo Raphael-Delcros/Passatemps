@@ -181,4 +181,21 @@ class ControllerJeu extends Controller
 
         return $saved;
     }
+    
+    public function ajouter()
+    {
+        $template = $this->getTwig()->load('backOffice.html.twig');
+        echo $template->render();
+    }
+    
+    /**
+     * Ajoute à la base de données le jeu ajouté
+     *
+     * @todo Ajouter la recherche du jeu pour l'extension comme dans la boite de Vendre
+     * @return void
+     */
+    public function enregistrer()
+    {
+        
+    }
 }
