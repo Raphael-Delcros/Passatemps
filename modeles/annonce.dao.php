@@ -135,6 +135,18 @@ class AnnonceDao
         ORDER BY a.datePub DESC
     ";
     //AND a.etatVente = 'en Vente'
+    public function researchAnnonces(string $q): array
+    {
+    $sql = "SELECT A.idAnnonce, A.titre, A.description, A.prix, A.datePub, A.etatJeu, A.etatVente, A.idJeu, A.idCompteVendeur, P.url
+            FROM annonce A
+            LEFT JOIN photo P ON A.idPhoto = P.idPhoto
+            WHERE LOWER(A.titre) LIKE :q
+            ORDER BY A.titre";
+
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute(['q' => '%' . strtolower($q) . '%']);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['idJeu' => $idJeu]);
