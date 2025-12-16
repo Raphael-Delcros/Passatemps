@@ -17,7 +17,7 @@ class ControllerConnexion extends controller
     public function connexion()
     {
         if (isset($_SESSION['idCompte'])) {
-            $id = $_SESSION['idCompte'] ;
+            $id = $_SESSION['idCompte'];
             $dao = new CompteDao($this->getPdo());
             $compte = $dao->find($id);
 
@@ -31,6 +31,11 @@ class ControllerConnexion extends controller
         }
     }
 
+    /**
+     * @brief Authentifie l'utilisateur en fonction des données du formulaire de connexion
+     *
+     * @return void
+     */
     public function authentification()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -42,7 +47,7 @@ class ControllerConnexion extends controller
             $dao = new CompteDao($this->getPdo());
             $result = $dao->findEmailPass($email, $password);
             if ($result) {
-                $reusite = true;
+                $reussite = true;
 
                 //Création d'un utilisateur 
                 $arrayUtilisateur = $dao->findAssoc($result['idCompte']);
@@ -53,19 +58,35 @@ class ControllerConnexion extends controller
                 $_SESSION['idCompte'] = $utilisateur->getIdCompte();
                 $_SESSION['role'] = $utilisateur->getRole();
 
-                var_dump($_SESSION);
+                header('Location: index.php');
             } else {
-                $reusite = false;
-                // à verif plein de caca
+                $reussite = false;
+
+                $template = $this->getTwig()->load('connexion.html.twig');
+                echo $template->render([
+                    'reussite' => $reussite,
+                ]);
+                // à verif 
             }
         }
-
-        $template = $this->getTwig()->load('connexion.html.twig');
-        echo $template->render([
-            'reusite' => $reusite,
-        ]);
     }
-}
+
+    /**
+     * @brief Déconnecte l'utilisateur en détruisant la session
+     *
+     * @return void
+     */
+
+    public function deconnexion()
+    {
+        // Destruction de la session
+        session_unset();
+        session_destroy();
+
+        // Redirection vers la page de connexion
+        header('Location: index.php');
+        exit();
+    }
     /*
             try {
                 // Tentative d'authentification
@@ -97,3 +118,4 @@ class ControllerConnexion extends controller
                 
         }
     }*/
+}
