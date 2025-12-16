@@ -9,6 +9,9 @@ class Compte {
     private ?string $dateInscription;
     private ?float $note;
     private ?string $role;
+    // private int $tentativesEchouees = 0;              // Nombre de tentatives échouées
+    // private ?string $dateDernierEchec = null; // Date et heure du dernier échec de connexion
+    // private string $statutCompte = 'actif';           // Statut du compte (actif ou désactivé)
 
     public function __construct(
         ?int $idCompte = null,
@@ -54,4 +57,5 @@ class Compte {
 
     public function getRole(): ?string { return $this->role; }
     public function setRole(?string $role): void { $this->role = $role; }
+
 }

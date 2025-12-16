@@ -5,25 +5,36 @@
 
 // Required
 @import "../node_modules/bootstrap/scss/functions";
+// Couleurs selon la charte graphique
 $primary: #ee8132;
 $secondary: #0065a3;
 $tertiary: #93c3fa;
-
+// Couleurs par défaut de bootstrap
+$info: #0dcaf0;
+$warning: #ffc107;
+$success: #198754;
+$danger: #d63447;
 
 // Required
 @import "../node_modules/bootstrap/scss/variables";
 @import "../node_modules/bootstrap/scss/variables-dark";
 
+// Creation du theme
 $theme-colors: (
   "primary": $primary,
   "secondary": $secondary,
   "tertiary": $tertiary,
+  "info": $info,
+  "success": $success,
+  "danger": $danger,
 );
 @import "../node_modules/bootstrap/scss/maps";
 @import "../node_modules/bootstrap/scss/mixins";
 @import "../node_modules/bootstrap/scss/root";
 
 @import "../node_modules/bootstrap/scss/bootstrap";
+
+// Custom
 .primaire {
   color: $primary;
 }
