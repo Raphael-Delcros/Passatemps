@@ -82,6 +82,28 @@ class CompteDao
 
 
     /**
+     * Insert un nouveau compte utilisateur en base de données
+     *
+     * @param Compte $compte
+     * @return void
+     */
+    public function insert(Compte $compte): void
+    {
+        $sql = "INSERT INTO " . Config::get()['database']['prefixe_table'] . "compte (email, motDePasseHache, nom, prenom, role, dateInscription) 
+                VALUES (:email, :motDePasseHache, :nom, :prenom, :role, NOW())";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'email' => $compte->getEmail(),
+            'motDePasseHache' => $compte->getMotDePasseHache(),
+            'nom' => $compte->getNom(),
+            'prenom' => $compte->getPrenom(),
+            'role' => $compte->getRole(),
+        ]);
+        $compte->setIdCompte((int)$this->pdo->lastInsertId());
+    }
+
+
+    /**
      * Vérifie si un email et un mot de passe existe déjà en base.
      *
      * @return bool true si l'utilisateur existe, false sinon.
@@ -93,10 +115,28 @@ class CompteDao
         $stmt->execute(['e' => $email, 'p' => $mdp]);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $result = $stmt->fetch();
-        if ($result== false) {
+        if ($result == false) {
             return false;
+        } else {
+            return $result;
         }
-        else{
+    }
+
+    /**
+     * Vérifie si un email existe déjà en base.
+     *
+     * @return bool true si l'utilisateur existe, false sinon.
+     */
+    public function findEmail(?string $email): mixed
+    {
+        $sql = "SELECT idCompte FROM " . Config::get()['database']['prefixe_table'] . "compte WHERE email = :e";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['e' => $email]);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch();
+        if ($result == false) {
+            return false;
+        } else {
             return $result;
         }
     }
@@ -106,5 +146,4 @@ class CompteDao
      *
      * @return bool true si l'utilisateur existe, false sinon.
      */
-
 }

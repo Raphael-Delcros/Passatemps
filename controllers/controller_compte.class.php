@@ -43,4 +43,45 @@ class ControllerCompte extends Controller
         echo $template->render();
     }
 
+
+    /**
+     * @brief Traite le formulaire d'inscription
+     *
+     * @todo à modifier quand le hashage des mots de passe sera en place
+     * 
+     * @return void
+     */
+    public function inscrire() : void
+    {
+        var_dump($_POST);
+        if (isset($_POST['email'], $_POST['password'], $_POST['nom'], $_POST['prenom'])) {
+
+            $dao = new CompteDao($this->getPdo());
+            if ($dao->findEmail($_POST['email'])) {
+                // Gérer le cas où l'email existe déjà
+                echo "Cet email est déjà utilisé. Veuillez en choisir un autre.";
+                return;
+            }
+
+
+
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+            $nom = $_POST['nom'];
+            $prenom = $_POST['prenom'];
+
+            $dao = new CompteDao($this->getPdo());
+            $compte = new Compte(null, $_POST['nom'], $_POST['prenom'], $_POST['email'], $_POST['password'], null, null, 'utilisateur');
+            $dao->insert($compte);
+
+            // Redirection vers la page de connexion après inscription
+            header('Location: index.php?controleur=connexion&methode=connexion');
+            exit();
+        } else {
+            // Gérer le cas où les données du formulaire ne sont pas complètes
+            echo "Veuillez remplir tous les champs du formulaire d'inscription.";
+        }
+
+
+    }
 }
