@@ -31,6 +31,11 @@ class ControllerConnexion extends controller
         }
     }
 
+    /**
+     * @brief Gère l'authentification de l'utilisateur
+     *
+     * @return void
+     */ 
     public function authentification()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -42,7 +47,7 @@ class ControllerConnexion extends controller
             $dao = new CompteDao($this->getPdo());
             $result = $dao->findEmailPass($email, $password);
             if ($result) {
-                $reusite = true;
+                $reussite = true;
 
                 //Création d'un utilisateur 
                 $arrayUtilisateur = $dao->findAssoc($result['idCompte']);
@@ -53,20 +58,19 @@ class ControllerConnexion extends controller
                 $_SESSION['idCompte'] = $utilisateur->getIdCompte();
                 $_SESSION['role'] = $utilisateur->getRole();
 
-                var_dump($_SESSION);
             } else {
-                $reusite = false;
+                $reussite = false;
                 // à verif plein de caca
             }
         }
 
         $template = $this->getTwig()->load('connexion.html.twig');
         echo $template->render([
-            'reusite' => $reusite,
+            'reusite' => $reussite,
         ]);
     }
 }
-    /*
+    /* Pour après, vérification à faire avec le validator quand il sera fait
             try {
                 // Tentative d'authentification
                 if ($utilisateur->connexion()) {
