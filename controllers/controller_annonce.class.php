@@ -26,4 +26,18 @@ Class ControllerAnnonce extends controller {
             'annonce' => $annonce,
         ]);
     }
+
+    public function rechercherAnnonces()
+    {
+        $q = $_GET['q'] ?? '';
+        $dao = new AnnonceDao($this->getPdo());
+
+        $annonces = ($q === '') ? [] : $dao->research($q);
+
+        $template = $this->getTwig()->load('recherche.html.twig');
+        echo $template->render([
+            'q' => $q,
+            'jeux' => $jeux
+        ]);
+    }
 }

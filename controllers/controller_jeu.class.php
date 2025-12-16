@@ -46,19 +46,41 @@ class ControllerJeu extends Controller
             'jeux' => $jeux,
         ]);
     }
-
-    // Affiche un seul jeu
+/**
+ * Affiche la page de détail d’un jeu ainsi que les annonces associées
+ *
+ * Cette méthode :
+ * - récupère l'identifiant du jeu depuis la requête GET
+ * - charge le jeu correspondant depuis la base de données
+ * - récupère toutes les annonces liées à ce jeu
+ * - transmet les données à la vue Twig
+ *
+ * @throws Exception Si l'identifiant du jeu est manquant ou si le jeu est introuvable
+ * @return void
+ */
     public function afficher()
     {
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
-        $dao = new JeuDao($this->getPdo());
-        $jeu = $dao->find($id);
+        if (!$id) {
+            throw new Exception("ID jeu manquant");
+        }
+
+        $jeuDao = new JeuDao($this->getPdo());
+        $annonceDao = new AnnonceDao($this->getPdo());
+
+        $jeu = $jeuDao->find($id);
+        if (!$jeu) {
+            throw new Exception("Jeu introuvable");
+        }
+        $annonces = $annonceDao->findByJeu($id);
 
         $template = $this->getTwig()->load('jeu.html.twig');
         echo $template->render([
             'jeu' => $jeu,
+            'annonces' => $annonces
         ]);
     }
+
 
     public function autocomplete()
     {
@@ -181,13 +203,13 @@ class ControllerJeu extends Controller
 
         return $saved;
     }
-    
+
     public function ajouter()
     {
         $template = $this->getTwig()->load('backOffice.html.twig');
         echo $template->render();
     }
-    
+
     /**
      * Ajoute à la base de données le jeu ajouté
      *
@@ -199,20 +221,20 @@ class ControllerJeu extends Controller
      */
     public function enregistrer()
     {
-        
-        if(!empty($_POST["submit"])){
+
+        if (!empty($_POST["submit"])) {
             // Connexions à la base de données
             $daoJeu = new JeuDao($this->getPdo());
             $daoPhoto = new PhotoDao($this->getPdo());
-            
+
             // Création de la photo 
             $photo = new Photo();
             $urlPhoto = strip_tags($_FILES['photo']['name']);
             $photo->setUrl($urlPhoto);
-            
-            
+
+
             var_dump($photo);
-            if ($daoPhoto->exists($photo->getUrl())){
+            if ($daoPhoto->exists($photo->getUrl())) {
                 // Gérer le cas où la photo existe déjà 
                 $template = $this->getTwig()->load('erreur.html.twig');
                 echo $template->render([
@@ -221,8 +243,8 @@ class ControllerJeu extends Controller
                 return;
             }
             $daoPhoto->addToDatabase($photo);
-            
-            
+
+
             // Insertion du Jeu.
             $jeu = new Jeu();
             $jeu->setNom(strip_tags($_POST['jeu']));
@@ -232,8 +254,8 @@ class ControllerJeu extends Controller
             $jeu->setNbJoueursMin(strip_tags($_POST['nbJoueursMin']));
             $jeu->setNbJoueursMax(strip_tags($_POST['nbJoueursMax']));
             $jeu->setDateSortie(strip_tags($_POST['dateSortie']));
-            
-            if (!empty($_POST['extensionDe'])){
+
+            if (!empty($_POST['extensionDe'])) {
                 $jeu->setIdJeuPrincipal(strip_tags($_POST['extensionDe'] ?: null));
             }
             $jeu->setIdPhoto($daoPhoto->getIdFromUrl($urlPhoto));

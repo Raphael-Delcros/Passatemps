@@ -29,4 +29,40 @@
         </div>
     </div>
 </div>
+
+<hr class="my-5">
+
+<h4>Annonces disponibles</h4>
+
+{% if annonces is empty %}
+    <p class="text-muted">Aucune annonce pour ce jeu actuellement.</p>
+{% else %}
+    <div class="row">
+        {% for annonce in annonces %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    {% if annonce.urlPhoto %}
+                        <img src="{{ constantes.application.game_image_path }}{{ annonce.urlPhoto }}"
+                             class="card-img-top"
+                             alt="{{ annonce.titre }}">
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ annonce.titre }}</h5>
+                        <p class="card-text">
+                            {{ annonce.description|length > 80
+                                ? annonce.description|slice(0, 80) ~ '...'
+                                : annonce.description
+                            }}
+                        </p>
+
+                        <p class="fw-bold">{{ annonce.prix }} €</p>
+                        <span class="badge bg-secondary">{{ annonce.etatJeu }}</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
 {% endblock %}

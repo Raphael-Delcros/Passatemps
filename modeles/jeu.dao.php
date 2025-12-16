@@ -243,15 +243,15 @@ class JeuDao
 
     public function research(string $q): array
     {
-    $sql = "SELECT J.idJeu, J.nom, J.nbJoueursMin, J.nbJoueursMax, P.url
+        $sql = "SELECT J.idJeu, J.nom, J.nbJoueursMin, J.nbJoueursMax, P.url
             FROM jeu J
             LEFT JOIN photo P ON J.idPhoto = P.idPhoto
             WHERE LOWER(J.nom) LIKE :q
             ORDER BY J.nom";
 
-    $stmt = $this->pdo->prepare($sql);
-    $stmt->execute(['q' => '%' . strtolower($q) . '%']);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['q' => '%' . strtolower($q) . '%']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -278,4 +278,5 @@ class JeuDao
             'dureePartie' => $jeu->getdureePartie()
         ]);
     }
+
 }
