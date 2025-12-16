@@ -66,7 +66,7 @@ class ControllerConnexion extends controller
 
         $template = $this->getTwig()->load('connexion.html.twig');
         echo $template->render([
-            'reusite' => $reussite,
+            'reussite' => $reussite,
         ]);
     }
 }
