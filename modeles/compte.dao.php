@@ -79,4 +79,32 @@ class CompteDao
         }
         return $comptes;
     }
+
+
+    /**
+     * Vérifie si un email et un mot de passe existe déjà en base.
+     *
+     * @return bool true si l'utilisateur existe, false sinon.
+     */
+    public function findEmailPass(?string $email, ?string $mdp): mixed
+    {
+        $sql = "SELECT idCompte FROM " . Config::get()['database']['prefixe_table'] . "compte WHERE email = :e AND motDePasseHache = :p";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['e' => $email, 'p' => $mdp]);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch();
+        if ($result== false) {
+            return false;
+        }
+        else{
+            return $result;
+        }
+    }
+
+    /**
+     * 
+     *
+     * @return bool true si l'utilisateur existe, false sinon.
+     */
+
 }
