@@ -7,4 +7,10 @@
     <p><strong>Date d'inscription :</strong> {{ compte.dateInscription }}</p>
     <p><strong>Note :</strong> {{ compte.note }}</p>
     <p><strong>Rôle :</strong> {{ compte.role }}</p>
+
+    <form method="POST" action="index.php?controleur=connexion&methode=deconnexion" class="row g-3 position-relative" autocomplete="off">
+        <div >
+            <button type="submit" class="btn btn-primary me-md-2">Se déconnecter</button>
+        </div>
+    </form>
 {% endblock %}
