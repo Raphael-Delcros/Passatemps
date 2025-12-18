@@ -46,18 +46,18 @@ class ControllerJeu extends Controller
             'jeux' => $jeux,
         ]);
     }
-/**
- * Affiche la page de détail d’un jeu ainsi que les annonces associées
- *
- * Cette méthode :
- * - récupère l'identifiant du jeu depuis la requête GET
- * - charge le jeu correspondant depuis la base de données
- * - récupère toutes les annonces liées à ce jeu
- * - transmet les données à la vue Twig
- *
- * @throws Exception Si l'identifiant du jeu est manquant ou si le jeu est introuvable
- * @return void
- */
+    /**
+     * Affiche la page de détail d’un jeu ainsi que les annonces associées
+     *
+     * Cette méthode :
+     * - récupère l'identifiant du jeu depuis la requête GET
+     * - charge le jeu correspondant depuis la base de données
+     * - récupère toutes les annonces liées à ce jeu
+     * - transmet les données à la vue Twig
+     *
+     * @throws Exception Si l'identifiant du jeu est manquant ou si le jeu est introuvable
+     * @return void
+     */
     public function afficher()
     {
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
@@ -120,90 +120,66 @@ class ControllerJeu extends Controller
             'jeux' => $jeux
         ]);
     }
-
+    
+    /**
+     * Génère une vignette redimensionnée avec fond blanc
+     *
+     * @param string $srcPath Chemin de l'image source
+     * @param string $destPath Chemin de la vignette à créer
+     * @param int $maxW Largeur maximale de la vignette
+     * @param int $maxH Hauteur maximale de la vignette
+     * @return bool Succès ou échec de la génération
+     */
     private function generateThumbnail(string $srcPath, string $destPath, int $maxW = 300, int $maxH = 200): bool
     {
-        if (!file_exists($srcPath)) {
-            return false;
-        }
-
+        if (!file_exists($srcPath)) return false;
         $info = @getimagesize($srcPath);
-        if ($info === false) {
-            return false;
-        }
-
+        if (!$info) return false;
         [$width, $height, $type] = $info;
 
-        // Création image source selon type
-        switch ($type) {
-            case IMAGETYPE_JPEG:
-                $srcImg = @imagecreatefromjpeg($srcPath);
-                $saveFunc = 'imagejpeg';
-                $saveQuality = 85;
-                break;
-            case IMAGETYPE_PNG:
-                $srcImg = @imagecreatefrompng($srcPath);
-                $saveFunc = 'imagepng';
-                $saveQuality = 6;
-                break;
-            default:
-                return false;
-        }
+        $srcImg = match ($type) {
+            IMAGETYPE_JPEG => @imagecreatefromjpeg($srcPath),
+            IMAGETYPE_PNG  => @imagecreatefrompng($srcPath),
+            default        => null
+        };
 
-        if (!$srcImg) {
-            return false;
-        }
+        if (!$srcImg) return false;
 
-        // Strategy "cover" : redimensionner pour remplir puis recadrer au centre
-        $ratio = max($maxW / $width, $maxH / $height); // scaler pour couvrir la zone
-        $interW = (int) round($width * $ratio);
-        $interH = (int) round($height * $ratio);
-
-        // image intermédiaire redimensionnée
-        $inter = imagecreatetruecolor($interW, $interH);
-
-        // gestion transparence pour PNG/GIF sur l'image intermédiaire
-        if ($type == IMAGETYPE_PNG) {
-            imagecolortransparent($inter, imagecolorallocatealpha($inter, 255, 255, 255, 127));
-            imagealphablending($inter, false);
-            imagesavealpha($inter, true);
-        }
-
-        imagecopyresampled($inter, $srcImg, 0, 0, 0, 0, $interW, $interH, $width, $height);
-
-        // vignette finale taille fixe
+        // 1. Créer le canevas aux dimensions fixes
         $thumb = imagecreatetruecolor($maxW, $maxH);
 
-        // gestion transparence pour PNG/GIF sur la vignette finale
-        if ($type == IMAGETYPE_PNG || $type == IMAGETYPE_GIF) {
-            imagecolortransparent($thumb, imagecolorallocatealpha($thumb, 0, 0, 0, 127));
-            imagealphablending($thumb, false);
-            imagesavealpha($thumb, true);
-        }
+        // 2. FORCER LE FOND BLANC (au lieu du noir par défaut)
+        $white = imagecolorallocate($thumb, 255, 255, 255);
+        imagefilledrectangle($thumb, 0, 0, $maxW, $maxH, $white);
 
-        // recadrage centré depuis l'intermédiaire
-        $srcX = (int) round(($interW - $maxW) / 2);
-        $srcY = (int) round(($interH - $maxH) / 2);
-        imagecopy($thumb, $inter, 0, 0, $srcX, $srcY, $maxW, $maxH);
+        // 3. Calcul du ratio pour garder les proportions
+        $ratio = min($maxW / $width, $maxH / $height);
+        $newW  = (int)round($width * $ratio);
+        $newH  = (int)round($height * $ratio);
 
-        // Sauvegarde
-        $saved = false;
-        switch ($type) {
-            case IMAGETYPE_JPEG:
-                $saved = $saveFunc($thumb, $destPath, $saveQuality);
-                break;
-            case IMAGETYPE_PNG:
-                $saved = $saveFunc($thumb, $destPath, $saveQuality);
-                break;
-        }
+        // 4. Centrage
+        $dstX = (int)round(($maxW - $newW) / 2);
+        $dstY = (int)round(($maxH - $newH) / 2);
+
+        // 5. Redimensionnement
+        imagecopyresampled($thumb, $srcImg, $dstX, $dstY, 0, 0, $newW, $newH, $width, $height);
+
+        // 6. Netteté
+        $sharpen = [[-1, -1, -1], [-1, 16, -1], [-1, -1, -1]];
+        $divisor = array_sum(array_map('array_sum', $sharpen));
+        imageconvolution($thumb, $sharpen, $divisor, 0);
+
+        // 7. Sauvegarde de la vignette
+        $result = match ($type) {
+            IMAGETYPE_JPEG => imagejpeg($thumb, $destPath, 90),
+            IMAGETYPE_PNG  => imagepng($thumb, $destPath, 2),
+            default        => false
+        };
 
         imagedestroy($srcImg);
-        imagedestroy($inter);
         imagedestroy($thumb);
-
-        return $saved;
+        return $result;
     }
-
     public function ajouter()
     {
         $template = $this->getTwig()->load('backOffice.html.twig');
