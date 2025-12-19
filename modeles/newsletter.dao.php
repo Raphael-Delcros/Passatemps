@@ -98,6 +98,12 @@ class NewsletterDao
         return $commandes;
     }
     
+    /**
+     * Trouve une newsletter par son email
+     *
+     * @param string $email L'email de la newsletter.
+     * @return Newsletter|null La Newsletter trouvée ou null si non trouvée
+     */
     public function findByEmail(string $email): ?Newsletter
     {
         $sql = "SELECT * FROM " . Config::get()['database']['prefixe_table'] . "newsletter WHERE email = :email";
