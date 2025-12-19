@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file controller_newsletter.class.php
  * 
@@ -10,11 +11,24 @@
  */
 class ControllerNewsletter extends Controller
 {
+
+    private array $reglesValidation = [
+        'email' => [
+            'obligatoire' => true,
+            'type' => 'string',
+            'longueur_min' => 5,
+            'longueur_max' => 254,
+            'format' => FILTER_VALIDATE_EMAIL,
+        ],
+        'accepterNewsletter' => ['obligatoire' => true],
+        'accepterConfidentialite' => ['obligatoire' => true]
+    ];
+
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
     }
-    
+
     /**
      * Affiche la page de newsletter
      *
@@ -35,30 +49,16 @@ class ControllerNewsletter extends Controller
     public function inscriptionNewsletter()
     {
         $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-        $accepterNews = isset($_POST['accepterNewsletter']) ? true : false;
-        $accepterConf = isset($_POST['accepterConfidentialite']) ? true : false;
 
+        $validator = new Validator($this->reglesValidation);
+        $donnees = $_POST;
+        
         // Validation des données
-        $errors = [];
-        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = "Veuillez entrer une adresse email valide.";
-        }
-        if (!$accepterNews) {
-            $errors[] = "Vous devez accepter de recevoir les nouvelles.";
-        }
-        if (!$accepterConf) {
-            $errors[] = "Vous devez accepter la politique de confidentialité.";
-        }
-        if (!empty($email)) {
-            // Vérifier si l'email est déjà inscrit
-            $dao = new NewsletterDao($this->getPdo());
-            $existingNewsletter = $dao->findByEmail($email);
-            if ($existingNewsletter !== null) {
-                $errors[] = "Cette adresse email est déjà inscrite à la newsletter.";
-            }
-        }
-
-        if (empty($errors)) {
+        $donneesValides = $validator->valider($donnees);
+        $messagesErreurs = $validator->getMessagesErreurs();
+        
+        // Actions si valide
+        if ($donneesValides) {
             // Enregistrement dans la base de données
             $dao = new NewsletterDao($this->getPdo());
             $dao->inscrire($email);
@@ -69,7 +69,7 @@ class ControllerNewsletter extends Controller
         } else {
             // Afficher les erreurs
             $template = $this->getTwig()->load('newsletter.html.twig');
-            echo $template->render(['errors' => $errors, 'email' => $email]);
+            echo $template->render(['errors' => $messagesErreurs, 'email' => $email]);
         }
     }
 }
