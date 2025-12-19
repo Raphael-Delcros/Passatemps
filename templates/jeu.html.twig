@@ -1,68 +1,90 @@
 {% extends 'base_template.html.twig' %}
 
-{% block title %}{{constantes.application.website_name}} - {{ jeu.nom }} - Détails du jeu{% endblock %}
+{% block title %}
+	{{constantes.application.website_name}}
+	-
+	{{ jeu.nom }}
+	- Détails du jeu
+{% endblock %}
 
 {% block body %}
-<div class="container my-5">
-    <div class="card shadow-lg border-0">
-        <div class="row g-0">
-            <div class="col-md-4 p-4">
-                <img src="{{ constantes.application.game_image_path  }}{{ jeu.urlPhoto }}" class="img-fluid rounded-start" alt="{{ jeu.nom }}">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h3 class="card-title">{{ jeu.nom }}</h3>
-                    <p class="card-text">{{ jeu.description }}</p>
+	<div class="container my-5">
+		<div class="card shadow-lg border-0">
+			<div class="row g-0">
+				<div class="col-md-4 p-4">
+					<img src="{{ constantes.application.game_image_path }}{{ jeu.urlPhoto }}" class="img-fluid rounded-start" alt="{{ jeu.nom }}">
+				</div>
+				<div class="col-md-8">
+					<div class="card-body">
+						<h3 class="card-title">{{ jeu.nom }}</h3>
+						<p class="card-text">{{ jeu.description }}</p>
 
-                    <ul class="list-unstyled mt-3">
-                        <li><strong>Nombre de joueurs :</strong> {{ jeu.nbJoueursMin }} - {{ jeu.nbJoueursMax }}</li>
-                        <li><strong>Durée :</strong> {{ jeu.dureePartie }} min</li>
-                        <li><strong>Date de sortie :</strong> {{ jeu.dateSortie }}</li>
-                        {% if jeu.categories %}
-                            <li><strong>Catégories :</strong> {{ jeu.categories|join(', ') }}</li>
-                        {% endif %}
-                    </ul>
+						<ul class="list-unstyled mt-3">
+							<li>
+								<strong>Nombre de joueurs :</strong>
+								{{ jeu.nbJoueursMin }}
+								-
+								{{ jeu.nbJoueursMax }}</li>
+							<li>
+								<strong>Durée :</strong>
+								{{ jeu.dureePartie }}
+								min</li>
+							<li>
+								<strong>Date de sortie :</strong>
+								{{ jeu.dateSortie }}</li>
+							{% if jeu.categories %}
+								<li class="list-unstyled mt-2">
+									<strong>Catégories :</strong>
+									<div class="d-flex flex-wrap gap-2 mt-1">
+										{% for categorie in jeu.categories %}
+											<span class="badge rounded-pill bg-primary text-light">
+												{{ categorie }}
+											</span>
+										{% endfor %}
+									</div>
+								</li>
+							{% endif %}
+						</ul>
 
-                    <a href="index.php?controleur=Jeu&methode=lister" class="btn btn-secondary mt-3">← Retour à la liste</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+						<a href="index.php?controleur=Jeu&methode=lister" class="btn btn-secondary mt-3">← Retour à la liste</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<hr class="my-5">
+	<hr class="my-5">
 
-<h4>Annonces disponibles</h4>
+	<h4>Annonces disponibles</h4>
 
-{% if annonces is empty %}
-    <p class="text-muted">Aucune annonce pour ce jeu actuellement.</p>
-{% else %}
-    <div class="row">
-        {% for annonce in annonces %}
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm">
-                    {% if annonce.urlPhoto %}
-                        <img src="{{ constantes.application.game_image_path }}{{ annonce.urlPhoto }}"
-                             class="card-img-top"
-                             alt="{{ annonce.titre }}">
-                    {% endif %}
+	{% if annonces is empty %}
+		<p class="text-muted">Aucune annonce pour ce jeu actuellement.</p>
+	{% else %}
+		<div class="row">
+			{% for annonce in annonces %}
+				<div class="col-md-4 mb-4">
+					<div class="card h-100 shadow-sm">
+						{% if annonce.urlPhoto %}
+							<img src="{{ constantes.application.game_image_path }}{{ annonce.urlPhoto }}" class="card-img-top" alt="{{ annonce.titre }}">
+						{% endif %}
 
-                    <div class="card-body">
-                        <h5 class="card-title">{{ annonce.titre }}</h5>
-                        <p class="card-text">
-                            {{ annonce.description|length > 80
+						<div class="card-body">
+							<h5 class="card-title">{{ annonce.titre }}</h5>
+							<p class="card-text">
+								{{ annonce.description|length > 80
                                 ? annonce.description|slice(0, 80) ~ '...'
                                 : annonce.description
                             }}
-                        </p>
+							</p>
 
-                        <p class="fw-bold">{{ annonce.prix }} €</p>
-                        <span class="badge bg-secondary">{{ annonce.etatJeu }}</span>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-{% endif %}
+							<p class="fw-bold">{{ annonce.prix }}
+								€</p>
+							<span class="badge bg-secondary">{{ annonce.etatJeu }}</span>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
 
 {% endblock %}
