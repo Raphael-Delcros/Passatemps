@@ -106,5 +106,19 @@ class CompteDao
      *
      * @return bool true si l'utilisateur existe, false sinon.
      */
+    
+    /**
+     * Insère dans la BDD, table compte, l'email inscrit dans le formulaire Newsletter.
+     *
+     * @todo Utiliser les variables de compte pour associer le compte a un mail inscrit à la newsletter
+     * @param string|null $email
+     * @return boolean
+     */
+    public function inscrireNewsletter(?string $email): bool
+    {
+        $sql = "UPDATE " . Config::get()['database']['prefixe_table'] . "compte SET newsletter = :email WHERE email = :email";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['email' => $email]);
+    }
 
 }

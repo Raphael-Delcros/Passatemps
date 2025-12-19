@@ -50,3 +50,9 @@ body {
 .form-check-input{
   border: 1px solid $primary;
 }
+
+// Style pour les champs obligatoires.
+.required::after {
+  content: " *";
+  color: red;
+}
