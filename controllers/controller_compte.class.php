@@ -43,6 +43,16 @@ class ControllerCompte extends Controller
         echo $template->render();
     }
 
+    /**
+     * @brief Renvoie le mot de passe hashé
+     *
+     * @return string
+     */
+    public function hasherMotDePasse(): string 
+    {
+        $motDePasseHashe = hash($POST['password']);
+        return $motDePasseHashe;
+    }
 
     /**
      * @brief Traite le formulaire d'inscription
@@ -66,12 +76,12 @@ class ControllerCompte extends Controller
             }
 
             $email = $_POST['email'];
-            $password = $_POST['password'];
+            $password = hash("md5",$_POST['password']);
             $nom = $_POST['nom'];
             $prenom = $_POST['prenom'];
 
             $dao = new CompteDao($this->getPdo());
-            $compte = new Compte(null, $_POST['nom'], $_POST['prenom'], $_POST['email'], $_POST['password'], null, null, 'utilisateur');
+            $compte = new Compte(null, $_POST['nom'], $_POST['prenom'], $_POST['email'], hash("md5",$_POST['password']), null, null, 'utilisateur');
             $dao->insert($compte);
 
             // Redirection vers la page de connexion après inscription

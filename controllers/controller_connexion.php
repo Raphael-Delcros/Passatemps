@@ -43,7 +43,7 @@ class ControllerConnexion extends controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Récupération des données du formulaire
             $email = $_POST['email'] ?? '';
-            $password = $_POST['password'] ?? '';
+            $password = hash("md5",$_POST['password']) ?? '';
 
             // Création de l'utilisateur avec les données saisies
             $dao = new CompteDao($this->getPdo());
