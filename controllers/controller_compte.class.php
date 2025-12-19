@@ -42,4 +42,5 @@ class ControllerCompte extends Controller
         $template = $this->getTwig()->load('inscription.html.twig');
         echo $template->render();
     }
+
 }
