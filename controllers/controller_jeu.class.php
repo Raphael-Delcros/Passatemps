@@ -120,7 +120,7 @@ class ControllerJeu extends Controller
             'jeux' => $jeux
         ]);
     }
-    
+
     /**
      * Génère une vignette redimensionnée avec fond blanc
      *
@@ -182,8 +182,14 @@ class ControllerJeu extends Controller
     }
     public function ajouter()
     {
+        // On récupère toutes les catégories pour les afficher dans le formulaire
+        $daoCategorie = new CategorieDao($this->getPdo());
+        $categories = $daoCategorie->findAll();
+
         $template = $this->getTwig()->load('backOffice.html.twig');
-        echo $template->render();
+        echo $template->render([
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -200,48 +206,59 @@ class ControllerJeu extends Controller
 
         if (!empty($_POST["submit"])) {
             // Connexions à la base de données
+            $pdo = $this->getPdo();
             $daoJeu = new JeuDao($this->getPdo());
             $daoPhoto = new PhotoDao($this->getPdo());
 
             // Création de la photo 
-            $photo = new Photo();
             $urlPhoto = strip_tags($_FILES['photo']['name']);
+            if (!$daoPhoto->exists($urlPhoto)) {
+            $photo = new Photo();
             $photo->setUrl($urlPhoto);
-
-
-            var_dump($photo);
-            if ($daoPhoto->exists($photo->getUrl())) {
+            $daoPhoto->addToDatabase($photo);
+            
+            $destination = Config::get()['application']['game_image_path'] . $urlPhoto;
+            move_uploaded_file($_FILES['photo']['tmp_name'], $destination);
+            }
+            else {
                 // Gérer le cas où la photo existe déjà 
                 $template = $this->getTwig()->load('erreur.html.twig');
                 echo $template->render([
-                    'message' => 'La photo existe déjà dans la base de données.'
+                    'message' => 'La photo existe déjà dans la base de données.'    
                 ]);
                 return;
             }
-            $daoPhoto->addToDatabase($photo);
+            $idPhoto = $daoPhoto->getIdFromUrl($urlPhoto);
 
 
-            // Insertion du Jeu.
-            $jeu = new Jeu();
-            $jeu->setNom(strip_tags($_POST['jeu']));
-            $jeu->setDescription(strip_tags($_POST['description']));
-            $jeu->setContenu(strip_tags($_POST['contenu']));
-            // Faire les catégories
-            $jeu->setNbJoueursMin(strip_tags($_POST['nbJoueursMin']));
-            $jeu->setNbJoueursMax(strip_tags($_POST['nbJoueursMax']));
-            $jeu->setDateSortie(strip_tags($_POST['dateSortie']));
+            //Création de l'objet Jeu
+            $jeu = new Jeu(
+            null, 
+            strip_tags($_POST['jeu']),
+            strip_tags($_POST['description']),
+            strip_tags($_POST['contenu']),
+            $_POST['nbJoueursMin'],
+            $_POST['nbJoueursMax'],
+            $_POST['dateSortie'],
+            !empty($_POST['idJeuPrincipal']) ? $_POST['idJeuPrincipal'] : null, 
+            $idPhoto,
+            $_POST['dureePartie']
+        );
 
-            if (!empty($_POST['extensionDe'])) {
-                $jeu->setIdJeuPrincipal(strip_tags($_POST['extensionDe'] ?: null));
+        //Insertion et récupération de l'ID pour les catégories
+        if ($daoJeu->addToDatabase($jeu)) {
+            $idNouveauJeu = $pdo->lastInsertId();
+
+            //Insertion des catégories dans la table cataloguer
+            if (!empty($_POST['categories']) && is_array($_POST['categories'])) {
+                foreach ($_POST['categories'] as $idCat) {
+                    $sql = "INSERT INTO cataloguer (idJeu, idCategorie) VALUES (?, ?)";
+                    $pdo->prepare($sql)->execute([$idNouveauJeu,$idCat]);
+                }
             }
-            $jeu->setIdPhoto($daoPhoto->getIdFromUrl($urlPhoto));
-            $jeu->setDureePartie(strip_tags($_POST['dureePartie']));
+        }
 
-            $daoJeu->addToDatabase($jeu);
-
-
-            $template = $this->getTwig()->load('backOffice.html.twig');
-            echo $template->render();
+        header("Location: index.php?controleur=jeu&methode=lister");
         }
     }
 }
