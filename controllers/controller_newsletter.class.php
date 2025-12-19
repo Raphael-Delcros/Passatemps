@@ -35,8 +35,8 @@ class ControllerNewsletter extends Controller
     public function inscriptionNewsletter()
     {
         $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-        $accepterNews = isset($_POST['accepterNews']) ? true : false;
-        $accepterConf = isset($_POST['accepterConf']) ? true : false;
+        $accepterNews = isset($_POST['accepterNewsletter']) ? true : false;
+        $accepterConf = isset($_POST['accepterConfidentialite']) ? true : false;
 
         // Validation des données
         $errors = [];
