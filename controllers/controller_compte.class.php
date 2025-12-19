@@ -53,7 +53,7 @@ class ControllerCompte extends Controller
      */
     public function inscrire() : void
     {
-        var_dump($_POST);
+       
         if (isset($_POST['email'], $_POST['password'], $_POST['nom'], $_POST['prenom'])) {
 
             $dao = new CompteDao($this->getPdo());
