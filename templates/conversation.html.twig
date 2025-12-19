@@ -1,0 +1,72 @@
+{% extends "base_template.html.twig" %}
+
+{% block title %}Discussion
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<div class="row justify-content-center">
+			<div class="col-md-10 col-lg-8">
+
+				<div class="card mb-3">
+					<div class="card-header bg-white d-flex align-items-center">
+						<div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 45px; height: 45px; font-weight: bold;">
+							{{ prenom|first|upper }}{{ nom|first|upper }}
+						</div>
+						<div>
+							<h5>{{ prenom }}
+								{{ nom }}</h5>
+						</div>
+					</div>
+
+					<div class="card-body bg-light" id="chat-window" style=" display: flex; flex-direction: column;   overflow:scroll;
+							  max-height: 500px;">
+						{% for message in messages %}
+							{% if message.idCompteExpediteur == idCompte %}
+								<div class="d-flex mb-3">
+									<div class="p-3 rounded-3 bg-white" style="max-width: 75%;">
+										<p class="mb-1">{{ message.contenu }}</p>
+									</div>
+								</div>
+							{% else %}
+								<div class="d-flex mb-3 justify-content-end">
+									<div class="p-3 rounded-3 bg-primary text-white" style="max-width: 75%;">
+										<p class="mb-1">{{ message.contenu }}</p>
+									</div>
+								</div>
+							{% endif %}
+						{% else %}
+							<div class="text-center my-auto text-muted">
+								<p>Aucun message. Dites bonjour à
+									{{ prenom }}
+									!</p>
+							</div>
+						{% endfor %}
+					</div>
+
+
+					<div class="card-footer bg-white p-3">
+						<form action="index.php?controleur=messagerie&methode=envoyer" method="POST" class="input-group">
+							<input type="hidden" name="idDestinataire" value="{{ idCompte }}">
+							<input type="hidden" name="nomDestinataire" value="{{ nom }}">
+							<input type="hidden" name="prenomDestinataire" value="{{ prenom }}">
+							<input type="text" name="message" class="form-control bg-light" placeholder="Écrivez votre message..." required autocomplete="off">
+							<button class="btn btn-primary px-4" type="submit"></button>
+						</form>
+					</div>
+
+
+					{% if erreur is defined and erreur %}
+						<div class="alert alert-danger mt-3 text-center" role="alert">
+							Une erreur est survenue lors de l'envoi du message.
+						</div>
+					{% endif %}
+
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
