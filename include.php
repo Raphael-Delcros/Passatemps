@@ -32,6 +32,7 @@ require_once 'controllers/controller_messagerie.class.php';
 require_once 'controllers/controller_vendre.class.php';
 require_once 'controllers/controller_livraison.class.php';
 require_once 'controllers/controller_connexion.php';
+require_once 'controllers/controller_newsletter.class.php';
 
 // Ajout des modeles
 require_once 'modeles/bd.class.php';
@@ -57,5 +58,7 @@ require_once 'modeles/messagerie.class.php';
 require_once 'modeles/messagerie.dao.php';
 require_once 'modeles/livraison.class.php';
 require_once 'modeles/livraison.dao.php';
+require_once 'modeles/newsletter.class.php';
+require_once 'modeles/newsletter.dao.php';
 
 ?>
