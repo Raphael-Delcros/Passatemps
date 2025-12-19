@@ -127,4 +127,18 @@ class MessagerieDao
         }
         return $messageries;
     }
+
+    public function InsertInto(Messagerie $messagerie): bool
+    {
+        $sql = "INSERT INTO " . Config::get()['database']['prefixe_table'] . "message (contenu, dateEnvoi, idCompteExpediteur, idCompteDestinataire) 
+                VALUES (:contenu, :dateEnvoi, :idCompteExpediteur, :idCompteDestinataire)";
+        $stmt = $this->pdo->prepare($sql);
+        $result = $stmt->execute([
+            'contenu' => $messagerie->getContenu(),
+            'dateEnvoi' => $messagerie->getDateEnvoi(),
+            'idCompteExpediteur' => $messagerie->getIdCompteExpediteur(),
+            'idCompteDestinataire' => $messagerie->getIdCompteDestinataire()
+        ]);
+        return $result;
+    }
 }
