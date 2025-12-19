@@ -11,7 +11,7 @@ class Compte {
     private ?string $role;
     // private int $tentativesEchouees = 0;              // Nombre de tentatives échouées
     // private ?string $dateDernierEchec = null; // Date et heure du dernier échec de connexion
-    // private string $statutCompte = 'actif';           // Statut du compte (actif ou désactivé)
+    private string $statutCompte = 'actif';           // Statut du compte (actif ou désactivé)
 
     public function __construct(
         ?int $idCompte = null,
@@ -21,7 +21,8 @@ class Compte {
         ?string $motDePasseHache = null,
         ?string $dateInscription = null,
         ?float $note = null,
-        ?string $role = null
+        ?string $role = null,
+        ?string $statutCompte = null
     ) {
         $this->idCompte = $idCompte;
         $this->nom = $nom;

@@ -42,33 +42,40 @@ class ControllerConnexion extends controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Récupération des données du formulaire
+            $error = false;
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
 
             // Création de l'utilisateur avec les données saisies
             $dao = new CompteDao($this->getPdo());
-            $result = $dao->findEmailPass($email, $password);
+            $result = $dao->findEmail($email);
             if ($result) {
-                $reussite = true;
 
                 //Création d'un utilisateur 
                 $arrayUtilisateur = $dao->findAssoc($result['idCompte']);
                 $utilisateur = $dao->hydrate($arrayUtilisateur);
-                $_SESSION['email'] = $utilisateur->getEmail();
-                $_SESSION['nom'] = $utilisateur->getNom();
-                $_SESSION['prenom'] = $utilisateur->getPrenom();
-                $_SESSION['idCompte'] = $utilisateur->getIdCompte();
-                $_SESSION['role'] = $utilisateur->getRole();
+                $passwordHash = $utilisateur->getMotDePasseHache();
 
-                header('Location: index.php');
+                if(password_verify($password,$passwordHash))
+                {
+                    $_SESSION['email'] = $utilisateur->getEmail();
+                    $_SESSION['nom'] = $utilisateur->getNom();
+                    $_SESSION['prenom'] = $utilisateur->getPrenom();
+                    $_SESSION['idCompte'] = $utilisateur->getIdCompte();
+                    $_SESSION['role'] = $utilisateur->getRole(); 
+
+                    header('Location: index.php?controleur=compte&methode=afficher&id=' . $utilisateur->getIdCompte());
+                } else {
+                    $error = true;
+                }
             } else {
-                $reussite = false;
-
+               $error = true;
+            }
+            if($error = true){
                 $template = $this->getTwig()->load('connexion.html.twig');
                 echo $template->render([
-                    'reussite' => $reussite,
+                    'reussite' => false,
                 ]);
-                // à verif 
             }
         }
     }
