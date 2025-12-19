@@ -36,12 +36,19 @@
 				</div>
 
 				{# Catégories #}
-				<div class="col mt-2">
-					<label for="categories" class="form-label">Catégorie(s)</label>
-					<div class="position-relative">
-						<input type="text" class="form-control" name="categories" placeholder="Catégories du jeu" required>
-					</div>
-				</div>
+                <div class="col-md-6">
+                    <label class="form-label d-block">Catégorie(s)</label>
+                    <div class="border rounded p-3 bg-light" style="max-height: 150px; overflow-y: auto;">
+                        {% for cat in categories %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="categories[]" value="{{ cat.idCategorie }}" id="cat{{ cat.idCategorie }}">
+                                <label class="form-check-label" for="cat{{ cat.idCategorie }}">
+                                    {{ cat.nom }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
 
 
 				{# Nombre de joueurs #}
@@ -77,7 +84,12 @@
 					<div class="col">
 						<label for="extensionDe" class="form-label">Jeu principal (si extension)</label>
 						<div class="position-relative">
-							<input type="text" class="form-control" name="extensionDe" placeholder="Monopoly">
+							<input type="text" id="Rjeu" class="form-control" name="extensionDe" placeholder="Monopoly">
+							<input type="hidden" id="idJeu" name="idJeuPrincipal">
+							<ul id="resultats"
+        					class="list-group position-absolute w-100"
+        					style="z-index:2000; display:none; max-height:300px; overflow:auto; top:100%; left:0;">
+    						</ul>
 						</div>
 					</div>
 
@@ -105,3 +117,99 @@
 			</form>
 		</main>
 	{% endblock %}
+
+{% block script %}
+<script>
+(() => {
+    let inputJeu = document.getElementById('Rjeu');
+    let resultats = document.getElementById('resultats');
+
+
+    // vider et cacher
+    function clearResults() {
+        resultats.innerHTML = '';
+        resultats.style.display = 'none';
+    }
+
+    // Affiche les résultats (tableau d'objets {idJeu, nom})
+    function showResults(items) {
+        resultats.innerHTML = '';
+        if (!items.length) {
+            clearResults();
+            return;
+        }
+        items.forEach(it => {
+            let li = document.createElement('li');
+            li.className = 'list-group-item list-group-item-action';
+            li.textContent = it.nom;
+            li.style.cursor = 'pointer';
+            li.addEventListener('click', () => {
+                inputJeu.value = it.nom;
+                document.getElementById('idJeu').value = it.idJeu;
+                clearResults();
+            });
+            resultats.appendChild(li);
+        });
+        resultats.style.display = 'block';
+    }
+
+    // Requête au serveur (debounce simple)
+    let timer = null;
+    inputJeu.addEventListener('input', () => {
+        let q = inputJeu.value.trim();
+        if (q.length === 0) { clearResults(); return; }
+
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+            fetch(`index.php?controleur=Jeu&methode=autocomplete&q=${encodeURIComponent(q)}`)
+                .then(resp => {
+                    if (!resp.ok) throw new Error('Réponse réseau : ' + resp.status);
+                    return resp.json();
+                })
+                .then(data => {
+                    // data doit être un tableau d'obj {idJeu, nom}
+                    showResults(Array.isArray(data) ? data : []);
+                })
+                .catch(err => {
+                    console.error('Autocomplete fetch error:', err);
+                    clearResults();
+                });
+        }, 180); // 180ms debounce
+    });
+
+    // Gestion appui sur Entrée
+	inputJeu.addEventListener('keydown', (e) => {
+
+    // navigation clavier (flèche haut/bas)
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        let items = Array.from(resultats.querySelectorAll('li'));
+        if (!items.length) return;
+        e.preventDefault();
+        let idx = items.findIndex(i => i.classList.contains('active'));
+        if (e.key === 'ArrowDown') idx = (idx + 1) % items.length;
+        else idx = (idx - 1 + items.length) % items.length;
+        items.forEach(i => i.classList.remove('active'));
+        items[idx].classList.add('active');
+        items[idx].scrollIntoView({ block: 'nearest' });
+    }
+
+    // sélection avec Entrée
+    if (e.key === 'Enter') {
+        let active = resultats.querySelector('li.active');
+        if (active) {
+            e.preventDefault(); // empêcher l'envoi du formulaire
+            active.click();
+        }
+    }
+	});
+
+
+    // Clic en dehors : fermer
+    document.addEventListener('click', (ev) => {
+        if (!inputJeu.contains(ev.target) && !resultats.contains(ev.target)) {
+            clearResults();
+        }
+    });
+})();
+</script>
+{% endblock %}
