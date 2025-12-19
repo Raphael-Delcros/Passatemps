@@ -51,19 +51,19 @@ class ControllerCompte extends Controller
      * 
      * @return void
      */
-    public function inscrire() : void
+    public function inscrire(): void
     {
-        var_dump($_POST);
         if (isset($_POST['email'], $_POST['password'], $_POST['nom'], $_POST['prenom'])) {
 
             $dao = new CompteDao($this->getPdo());
             if ($dao->findEmail($_POST['email'])) {
                 // Gérer le cas où l'email existe déjà
-                echo "Cet email est déjà utilisé. Veuillez en choisir un autre.";
+                $template = $this->getTwig()->load('inscription.html.twig');
+                echo $template->render([
+                    'erreur' => 'Cet email est déjà utilisé pour un autre compte.'
+                ]);
                 return;
             }
-
-
 
             $email = $_POST['email'];
             $password = $_POST['password'];
@@ -81,7 +81,5 @@ class ControllerCompte extends Controller
             // Gérer le cas où les données du formulaire ne sont pas complètes
             echo "Veuillez remplir tous les champs du formulaire d'inscription.";
         }
-
-
     }
 }

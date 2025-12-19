@@ -45,13 +45,10 @@ class ControllerConnexion extends controller
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
 
-            var_dump($password);
-
             // Création de l'utilisateur avec les données saisies
             $dao = new CompteDao($this->getPdo());
             $result = $dao->findEmailPass($email, $password);
             if ($result) {
-                $reussite = true;
 
                 //Création d'un utilisateur 
                 $arrayUtilisateur = $dao->findAssoc($result['idCompte']);
@@ -62,13 +59,11 @@ class ControllerConnexion extends controller
                 $_SESSION['idCompte'] = $utilisateur->getIdCompte();
                 $_SESSION['role'] = $utilisateur->getRole();
 
-                header('Location: index.php');
+                header('Location: index.php?controleur=compte&methode=afficher&id=' . $utilisateur->getIdCompte());
             } else {
-                $reussite = false;
-
                 $template = $this->getTwig()->load('connexion.html.twig');
                 echo $template->render([
-                    'reussite' => $reussite,
+                    'reussite' => false,
                 ]);
                 // à verif 
             }

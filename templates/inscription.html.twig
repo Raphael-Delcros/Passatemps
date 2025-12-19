@@ -40,6 +40,11 @@
 							<div class="d-grid">
 								<button type="submit" class="btn btn-primary">S'inscrire</button>
 							</div>
+							{% if erreur is defined %}
+								<div class="alert alert-danger mt-3 text-center" role="alert">
+									{{ erreur }}
+								</div>
+							{% endif %}
 						</form>
 						<a class="text-center mt-3" href="index.php?controleur=connexion&methode=connexion">Se connecter</a>
 					</div>
