@@ -34,6 +34,8 @@ class ControllerConnexion extends controller
     /**
      * @brief Authentifie l'utilisateur en fonction des données du formulaire de connexion
      *
+     * @todo à changer quand le hashage des mots de passe sera en place
+     * 
      * @return void
      */
     public function authentification()
@@ -42,6 +44,8 @@ class ControllerConnexion extends controller
             // Récupération des données du formulaire
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
+
+            var_dump($password);
 
             // Création de l'utilisateur avec les données saisies
             $dao = new CompteDao($this->getPdo());
