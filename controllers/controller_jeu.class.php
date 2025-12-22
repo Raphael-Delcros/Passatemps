@@ -120,7 +120,7 @@ class ControllerJeu extends Controller
             'jeux' => $jeux
         ]);
     }
-    
+
     /**
      * Génère une vignette redimensionnée avec fond blanc
      *
@@ -182,8 +182,13 @@ class ControllerJeu extends Controller
     }
     public function ajouter()
     {
+        $today = date("Y-m-d");
         $template = $this->getTwig()->load('backOffice.html.twig');
-        echo $template->render();
+        echo $template->render(
+            [
+                'today'=>$today,
+            ]
+        );
     }
 
     /**
