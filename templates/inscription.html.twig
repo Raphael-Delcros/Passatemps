@@ -15,25 +15,25 @@
 							<div class="row">
 								<div class="mb-3 col">
 									<label for="nom" class="form-label required">Nom</label>
-									<input type="text" class="form-control shadow-sm" id="nom" name="nom" placeholder="Entrez votre nom" title="Entrez votre nom" required>
+									<input type="text" class="form-control shadow-sm" id="nom" name="nom" placeholder="Entrez votre nom" title="Entrez votre nom" minlength="3" maxlength="50" pattern={{constantes.regex.texte}} required>
 								</div>
 								<div class="mb-3 col">
 									<label for="prenom" class="form-label required">Prénom</label>
-									<input type="text" class="form-control shadow-sm" id="prenom" name="prenom" placeholder="Entrez votre prénom" title="Entrez votre prénom" required>
+									<input type="text" class="form-control shadow-sm" id="prenom" name="prenom" placeholder="Entrez votre prénom" title="Entrez votre prénom" minlength="3" maxlength="50" pattern={{ constantes.regex.texte }} required>
 								</div>
 							</div>
 							<div class="mb-3">
 								<label for="email" class="form-label required">Email</label>
-								<input type="email" class="form-control shadow-sm" id="email" name="email" placeholder="Entrez votre email" title="Entrez votre email" required>
+								<input type="email" class="form-control shadow-sm" id="email" name="email" placeholder="Entrez votre email" title="Entrez votre email" minlength="5" maxlength="254" pattern={{ constantes.regex.email }} required>
 							</div>
 							<div class="mb-3">
 								<label for="password" class="form-label required">Mot de passe</label>
-								<input type="password" class="form-control shadow-sm" id="password" name="password" placeholder="Entrez votre mot de passe" title="Veuillez mettre votre mot de passe." required>
+								<input type="password" class="form-control shadow-sm" id="password" name="password" placeholder="Entrez votre mot de passe" title="Veuillez mettre votre mot de passe." minlength="8" maxlength="32" pattern={{ constantes.regex.mot_de_passe }} required>
 							</div>
 
 							<div class="mb-3">
 								<label for="passwordMatch" class="form-label required">Confirmer le mot de passe</label>
-								<input type="password" class="form-control shadow-sm" id="passwordMatch" name="passwordMatch" placeholder="Entrez votre mot de passe" title="Veuillez mettre votre mot de passe." required>
+								<input type="password" class="form-control shadow-sm" id="passwordMatch" name="passwordMatch" placeholder="Entrez confirmer mot de passe" title="Veuillez confirmer votre mot de passe." pattern={{ constantes.regex.mot_de_passe }} required>
 							</div>
 
 							<div class="mb-3 form-check">

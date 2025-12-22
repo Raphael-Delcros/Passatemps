@@ -11,7 +11,7 @@
 
 			{# Nom du jeu #}
 			<div class="row mt-2">
-				<label for="jeu" class="form-label">Jeu</label>
+				<label for="jeu" class="form-label required">Jeu</label>
 				<div class="position-relative">
 					<input type="text" id="jeu" class="form-control" name="jeu" placeholder="Entrez le nom du jeu" title="Nom du jeu" required>
 				</div>
@@ -19,7 +19,7 @@
 
 			{# Description du jeu #}
 			<div class="row mt-2">
-				<label for="description" class="form-label">Description</label>
+				<label for="description" class="form-label required">Description</label>
 				<div class="position-relative">
 					<textarea class="form-control" name="description" placeholder="Description de l'annonce" title="Decription de l'annonce" spellcheck="true" required></textarea>
 				</div>
@@ -28,7 +28,7 @@
 			<div class="row mt-2">
 				{# Contenu d'une boite standard #}
 				<div class="col mt-2">
-					<label for="contenu" class="form-label">Contenu</label>
+					<label for="contenu" class="form-label required">Contenu</label>
 					<div class="position-relative">
 						<textarea class="form-control" name="contenu" placeholder="Contenu d'une boite standard" title="Contenu d'une boite standard" spellcheck="true" required></textarea>
 					</div>
@@ -36,7 +36,7 @@
 
 				{# Catégories #}
 				<div class="col mt-2">
-					<label for="categories" class="form-label">Catégorie(s)</label>
+					<label for="categories" class="form-label required">Catégorie(s)</label>
 					<div class="position-relative">
 						<input type="text" class="form-control" name="categories" placeholder="Catégories du jeu" title="Veuillez inscrire les catégories du jeu" required>
 					</div>
@@ -48,14 +48,14 @@
 					class="row mt-2">
 					{# Minimum #}
 					<div class="col">
-						<label for="nbJoueursMin" class="form-label">Nombre de joueurs minimum</label>
+						<label for="nbJoueursMin" class="form-label required">Nombre de joueurs minimum</label>
 						<div class="position-relative">
 							<input type="number" class="form-control" name="nbJoueursMin" placeholder="2" title="Nombre minimum de joueurs" required>
 						</div>
 					</div>
 					{# Maximum #}
 					<div class="col">
-						<label for="nbJoueursMax" class="form-label">Nombre de joueurs maximum</label>
+						<label for="nbJoueursMax" class="form-label required">Nombre de joueurs maximum</label>
 						<div class="position-relative">
 							<input type="number" class="form-control" name="nbJoueursMax" placeholder="10" title="Nombre maximum de joueurs" required>
 						</div>
@@ -65,7 +65,7 @@
 				{# Date de sortie #}
 				<div class="row mt-2">
 					<div class="col">
-						<label for="dateSortie" class="form-label">Date de sortie</label>
+						<label for="dateSortie" class="form-label required">Date de sortie</label>
 						<div class="position-relative">
 							<input type="date" class="form-control" name="dateSortie" title="Date de sortie du jeu" required>
 						</div>
@@ -82,7 +82,7 @@
 
 					{# Durée de la partie #}
 					<div class="col">
-						<label for="dureePartie" class="form-label">Durée d'une partie (en minutes)</label>
+						<label for="dureePartie" class="form-label required">Durée d'une partie (en minutes)</label>
 						<div class="position-relative">
 							<input type="number" class="form-control" name="dureePartie" placeholder="15" title="Durée en minutes d'une partie standard" required>
 						</div>
@@ -91,7 +91,7 @@
 
 				{# Photos #}
 				<div class="row mt-2">
-					<label for="photo" class="form-label">Image du jeu</label>
+					<label for="photo" class="form-label required">Image du jeu</label>
 					<input
 					type="file" class="form-label" name="photo" accept=".png,.jpeg,.jpg" title="Image du jeu" required>
 
