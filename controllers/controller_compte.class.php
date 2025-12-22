@@ -2,9 +2,46 @@
 
 class ControllerCompte extends Controller
 {
+
+    private array $reglesValidation;
+
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
+
+        $config = Config::get();
+        $this->reglesValidation = [
+            'email' => [
+                'obligatoire' => true,
+                'longueur_min' => 5,
+                'longueur_max' => 254,
+                'format' => FILTER_VALIDATE_EMAIL,
+            ],
+            'password' => [
+                'obligatoire' => true,
+                'longueurMin' => 8,
+                'longueurMax' => '32',
+                'format' => $config['regex']['mot_de_passe']
+            ],
+            'passwordMatch' => [
+                'obligatoire' => true,
+                'longueurMin' => 8,
+                'longueurMax' => '32',
+                'format' => $config['regex']['mot_de_passe']
+            ],
+            'nom' => [
+                'obligatoire' => true,
+                'longueurMin' => 3,
+                'longueurMax' => 50,
+                'format' => $config['regex']['texte_espace']
+            ],
+            'prenom' => [
+                'obligatoire' => true,
+                'longueurMin' => 3,
+                'longueurMax' => 50,
+                'format' => $config['regex']['texte']
+            ],
+        ];
     }
 
     // Liste tous les comptes
@@ -34,7 +71,7 @@ class ControllerCompte extends Controller
 
     /**
      * @brief Affiche la page d'inscription
-     *
+     
      * @return void
      */
     public function inscription()
@@ -51,7 +88,7 @@ class ControllerCompte extends Controller
      * 
      * @return void
      */
-    public function inscrire() : void
+    public function inscrire(): void
     {
         var_dump($_POST);
         if (isset($_POST['email'], $_POST['password'], $_POST['nom'], $_POST['prenom'])) {
@@ -65,14 +102,29 @@ class ControllerCompte extends Controller
 
 
 
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-            $nom = $_POST['nom'];
-            $prenom = $_POST['prenom'];
+            $email = strip_tags($_POST['email']);
+            $password = strip_tags($_POST['password']);
+            $nom = strip_tags($_POST['nom']);
+            $prenom = strip_tags($_POST['prenom']);
 
-            $dao = new CompteDao($this->getPdo());
-            $compte = new Compte(null, $_POST['nom'], $_POST['prenom'], $_POST['email'], $_POST['password'], null, null, 'utilisateur');
-            $dao->insert($compte);
+            $donnees = $_POST;
+
+            $validator = new Validator($this->reglesValidation);
+
+            // Validation des données
+            $donneesValides = $validator->valider($donnees);
+            $messagesErreurs = $validator->getMessagesErreurs();
+
+            if ($donneesValides) {
+                $dao = new CompteDao($this->getPdo());
+                $compte = new Compte(null, $nom, $prenom, $email, $password, null, null, 'utilisateur');
+                $dao->insert($compte);
+            } else {
+                // Afficher les erreurs
+                $template = $this->getTwig()->load('inscription.html.twig');
+                echo $template->render(['errors' => $messagesErreurs]);
+                return;
+            }
 
             // Redirection vers la page de connexion après inscription
             header('Location: index.php?controleur=connexion&methode=connexion');
@@ -81,7 +133,5 @@ class ControllerCompte extends Controller
             // Gérer le cas où les données du formulaire ne sont pas complètes
             echo "Veuillez remplir tous les champs du formulaire d'inscription.";
         }
-
-
     }
 }

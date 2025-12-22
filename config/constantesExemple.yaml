@@ -19,5 +19,6 @@ application:
     delai_attente_connexion: 1800 # Délai d'attente après avoir atteint le nombre maximum de tentatives de connexion échouées (en secondes)
 
 regex:
-    texte: "/^[a-zA-ZÀ-ÿ\'-]+$/" # Autorise les lettres (majuscules et minuscules), les accents, les apostrophes et les traits d'union
-    texte_espace: "/^[a-zA-ZÀ-ÿ\'\-\s]+$/" # Autorise les lettres (majuscules et minuscules), les accents, les apostrophes, les traits d'union et les espaces
+    texte: /^[a-zA-ZÀ-ÿ\'-]+$/ # Autorise les lettres (majuscules et minuscules), les accents, les apostrophes et les traits d'union
+    texte_espace: /^[a-zA-ZÀ-ÿ\'\-\s]+$/ # Autorise les lettres (majuscules et minuscules), les accents, les apostrophes, les traits d'union et les espaces
+    mot_de_passe: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,32}$/ # Doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial, et être entre 8 et 32 caractères de long

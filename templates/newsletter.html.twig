@@ -23,7 +23,7 @@
 							<div>
 								<input type="checkbox" class="form-check-input" id="accepterConfidentialite" name="accepterConfidentialite" required>
 								<label for="accepterConfidentialite" class="form-check-label required">J'ai lu la
-									<a href="legal.php#politique-confidentialite"  class="text-secondary">politique de confidentialité</a>
+									<a href="legal.php#politique-confidentialite" class="text-secondary">politique de confidentialité</a>
 									de Passatemps.</label>
 							</div>
 							<div class="d-grid">
@@ -38,10 +38,11 @@
 										<li>{{ error }}</li>
 									{% endfor %}
 								</ul>
-							{% endif %}
-						</div>
+							</div>
+						{% endif %}
 					</div>
 				</div>
 			</div>
-		</main>
-	{% endblock %}
+		</div>
+	</main>
+{% endblock %}

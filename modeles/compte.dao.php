@@ -3,32 +3,6 @@
 class CompteDao
 {
     private ?PDO $pdo;
-    private $reglesValidation = [
-        'email' => [
-            'obligatoire' => true,
-            'longueur_min' => 5,
-            'longueur_max' => 254,
-            'format' => FILTER_VALIDATE_EMAIL,
-        ],
-        'motDePasseHache' => [
-            'obligatoire' => true,
-            'longueurMin' => 8,
-            'longueurMax' => '32',
-            'format' => Config::get()['regex']['mot_de_passe']
-        ],
-        'nom' => [
-            'obligatoire' => true,
-            'longueurMin' => 3,
-            'longueurMax' => 50,
-            'format' => Config::get()['regex']['texte_espace']
-        ],
-        'prenom' => [
-            'obligatoire' => true,
-            'longueurMin' => 3,
-            'longueurMax' => 50,
-            'format' => Config::get()['regex']['texte']
-        ],
-    ];
 
     public function __construct(?PDO $pdo = null)
     {

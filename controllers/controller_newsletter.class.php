@@ -12,7 +12,13 @@
 class ControllerNewsletter extends Controller
 {
 
-    private array $reglesValidation = [
+    private array $reglesValidation;
+
+    public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
+    {
+        parent::__construct($twig, $loader);
+        
+        $this->reglesValidation = [
         'email' => [
             'obligatoire' => true,
             'type' => 'string',
@@ -23,10 +29,6 @@ class ControllerNewsletter extends Controller
         'accepterNewsletter' => ['obligatoire' => true],
         'accepterConfidentialite' => ['obligatoire' => true]
     ];
-
-    public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
-    {
-        parent::__construct($twig, $loader);
     }
 
     /**
