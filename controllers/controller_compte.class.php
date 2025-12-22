@@ -83,55 +83,56 @@ class ControllerCompte extends Controller
 
     /**
      * @brief Traite le formulaire d'inscription
+     * 
+     * Inscrit l'utilisateur si et seulement si :
+     * - Nom et Prénom sont entre [3;50] caractères, sont inscrits et sont alphabétiques
+     * - Email est sous format email, est entre [5:254] caractères et est inscrit
+     * - password & passwordMatch sont égaux, inscrit, entre [8;32] caractères et sont alphanumériques avec un symbole et une majuscule minimum.
      *
      * @todo à modifier quand le hashage des mots de passe sera en place
+     * @todo IMPORTANT : Afficher comment le MDP est pas robuste.
      * 
      * @return void
      */
     public function inscrire(): void
     {
-        var_dump($_POST);
-        if (isset($_POST['email'], $_POST['password'], $_POST['nom'], $_POST['prenom'])) {
-
-            $dao = new CompteDao($this->getPdo());
-            if ($dao->findEmail($_POST['email'])) {
-                // Gérer le cas où l'email existe déjà
-                echo "Cet email est déjà utilisé. Veuillez en choisir un autre.";
-                return;
-            }
-
-
-
-            $email = strip_tags($_POST['email']);
-            $password = strip_tags($_POST['password']);
-            $nom = strip_tags($_POST['nom']);
-            $prenom = strip_tags($_POST['prenom']);
-
-            $donnees = $_POST;
-
-            $validator = new Validator($this->reglesValidation);
-
-            // Validation des données
-            $donneesValides = $validator->valider($donnees);
-            $messagesErreurs = $validator->getMessagesErreurs();
-
-            if ($donneesValides) {
-                $dao = new CompteDao($this->getPdo());
-                $compte = new Compte(null, $nom, $prenom, $email, $password, null, null, 'utilisateur');
-                $dao->insert($compte);
-            } else {
-                // Afficher les erreurs
-                $template = $this->getTwig()->load('inscription.html.twig');
-                echo $template->render(['errors' => $messagesErreurs]);
-                return;
-            }
-
-            // Redirection vers la page de connexion après inscription
-            header('Location: index.php?controleur=connexion&methode=connexion');
-            exit();
-        } else {
-            // Gérer le cas où les données du formulaire ne sont pas complètes
-            echo "Veuillez remplir tous les champs du formulaire d'inscription.";
+        $dao = new CompteDao($this->getPdo());
+        if ($dao->findEmail($_POST['email'])) {
+            // Gérer le cas où l'email existe déjà
+            echo "Cet email est déjà utilisé. Veuillez en choisir un autre.";
+            return;
         }
+        
+        // Récupération des données
+        $email = strip_tags($_POST['email']);
+        $password = strip_tags($_POST['password']);
+        $passwordMatch = strip_tags($_POST['passwordMatch']);
+        $nom = strip_tags($_POST['nom']);
+        $prenom = strip_tags($_POST['prenom']);
+
+        $donnees = $_POST; // Pour le Validator
+
+        $validator = new Validator($this->reglesValidation);
+        // Validation des données
+        $donneesValides = $validator->valider($donnees);
+        
+        $messagesErreurs = $validator->getMessagesErreurs();
+        if ($donneesValides && $password == $passwordMatch) {
+            $dao = new CompteDao($this->getPdo());
+            $compte = new Compte(null, $nom, $prenom, $email, $password, null, null, 'utilisateur');
+            $dao->insert($compte);
+        } else {
+            // Afficher les erreurs
+            if ($password != $passwordMatch) { // Verification MDP pas confirmé
+                $messagesErreurs[] = "Le mot de passe n'est pas le même dans les deux champs !";
+            }
+            $template = $this->getTwig()->load('inscription.html.twig');
+            echo $template->render(['errors' => $messagesErreurs]);
+            return;
+        }
+
+        // Redirection vers la page de connexion après inscription
+        header('Location: index.php?controleur=connexion&methode=connexion');
+        exit();
     }
 }
