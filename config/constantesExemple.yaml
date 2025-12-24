@@ -22,3 +22,4 @@ regex:
     texte: /^[a-zA-ZÀ-ÿ\'-]+$/ # Autorise les lettres (majuscules et minuscules), les accents, les apostrophes et les traits d'union
     texte_espace: /^[a-zA-ZÀ-ÿ\'\-\s]+$/ # Autorise les lettres (majuscules et minuscules), les accents, les apostrophes, les traits d'union et les espaces
     mot_de_passe: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,32}$/ # Doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial, et être entre 8 et 32 caractères de long
+    email: /^[\w\.]+@([\w-]+\.)+[\w-]{2,4}$/g # Vérifie le format mail (utilisé dans le côté client surtout)
