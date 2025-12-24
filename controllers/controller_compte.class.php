@@ -20,13 +20,13 @@ class ControllerCompte extends Controller
             'password' => [
                 'obligatoire' => true,
                 'longueurMin' => 8,
-                'longueurMax' => '32',
+                'longueurMax' => 32,
                 'format' => $config['regex']['mot_de_passe']
             ],
             'passwordMatch' => [
                 'obligatoire' => true,
                 'longueurMin' => 8,
-                'longueurMax' => '32',
+                'longueurMax' => 32,
                 'format' => $config['regex']['mot_de_passe']
             ],
             'nom' => [

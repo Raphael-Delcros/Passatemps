@@ -44,9 +44,7 @@ class ControllerConnexion extends controller
             // Récupération des données du formulaire
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
-
-            var_dump($password);
-
+            
             // Création de l'utilisateur avec les données saisies
             $dao = new CompteDao($this->getPdo());
             $result = $dao->findEmailPass($email, $password);
