@@ -92,21 +92,21 @@ class Validator
                         $estValide = false;
                     }
                     break;
-                case 'longueur_min':
+                case 'longueurMin':
                     if (strlen($valeur) < $parametre)
                     {
                         $this->messagesErreurs[] = "Le champ $champ doit comporter au moins $parametre caractères.";
                         $estValide = false;
                     }
                     break;
-                case 'longueur_max':
+                case 'longueurMax':
                     if (strlen($valeur) > $parametre)
                     {
                         $this->messagesErreurs[] = "Le champ $champ ne doit pas dépasser $parametre caractères.";
                         $estValide = false;
                     }
                     break;
-                case 'longueur_exacte':
+                case 'longueurExacte':
                     if (strlen($valeur) !== $parametre)
                     {
                         $this->messagesErreurs[] = "Le champ $champ doit comporter exactement $parametre caractères.";
@@ -125,14 +125,14 @@ class Validator
                         $estValide = false;
                     }
                     break;
-                case 'plage_min':
+                case 'plageMin':
                     if ($valeur < $parametre)
                     {
                         $this->messagesErreurs[] = "La valeur de $champ doit être au minimum $parametre.";
                         $estValide = false;
                     }
                     break;
-                case 'plage_max':
+                case 'plageMax':
                     if ($valeur > $parametre)
                     {
                         $this->messagesErreurs[] = "La valeur de $champ ne doit pas dépasser $parametre.";

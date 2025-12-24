@@ -6,20 +6,20 @@
 
 {% block body %}
 	<h1 class="text-center">Bienvenu sur notre forum</h1>
-	<main class="text-center container">
-        <div class="list-group">
+	<div class="text-center container">
+		<div class="list-group">
 			{% for publication in publications %}
 				{% if publication.idPostPrincipale == null %}
-						<a href="index.php?controleur=forum&methode=afficher&id={{ publication.idPost }}" class="list-group-item list-group-item-action" aria-current="true">
-							<div class="d-flex w-100 justify-content-between">
-								<h5 class="mb-1">{{ publication.sujet }}</h5>
-								<small>{{publication.dateEnvoi}}</small>
-							</div>
-							<p class="mb-1">{{publication.contenu}}</p>
-							<small href="index.php?controleur=forum&methode=afficher&id={{ publication.idPost }}" class="text-body-secondary">commentaire</small>
-						</a>
+					<a href="index.php?controleur=forum&methode=afficher&id={{ publication.idPost }}" class="list-group-item list-group-item-action" aria-current="true">
+						<div class="d-flex w-100 justify-content-between">
+							<h5 class="mb-1">{{ publication.sujet }}</h5>
+							<small>{{publication.dateEnvoi}}</small>
+						</div>
+						<p class="mb-1">{{publication.contenu}}</p>
+						<small href="index.php?controleur=forum&methode=afficher&id={{ publication.idPost }}" class="text-body-secondary">commentaire</small>
+					</a>
 				{% endif %}
 			{% endfor %}
-            </div>
-	</main>
+		</div>
+	</div>
 {% endblock %}

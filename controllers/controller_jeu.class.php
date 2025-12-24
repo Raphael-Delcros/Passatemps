@@ -2,9 +2,50 @@
 
 class ControllerJeu extends Controller
 {
+    
+    private array $reglesValidation;
+    
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
+        $this->reglesValidation = [
+            'jeu' => [
+                'obligatoire' => true,
+                'longueurMin' => 3,
+                'longueurMax' => 100,
+            ],
+            'description' => [
+                'obligatoire' => true,
+                'longueurMin' => 10,
+                'longueurMax' => 1000,
+            ],
+            'contenu' => [
+                'obligatoire' => true,
+                'longueurMin' => 10,
+                'longueurMax' => 2000,
+            ],
+            'nbJoueursMin' => [
+                'obligatoire' => true,
+                'type' => 'integer',
+                'plageMin' => 1,
+                'plageMax' => 100,
+            ],
+            'nbJoueursMax' => [
+                'obligatoire' => true,
+                'type' => 'integer',
+                'plageMin' => 1,
+                'plageMax' => 100,
+            ],
+            'dateSortie' => [
+                'obligatoire' => true,
+            ],
+            'dureePartie' => [
+                'obligatoire' => true,
+                'type' => 'integer',
+                'plageMin' => 1,
+                'plageMax' => 1440, // en minutes
+            ],
+        ];
     }
 
     // Liste tous les Jeux
@@ -204,6 +245,24 @@ class ControllerJeu extends Controller
     {
 
         if (!empty($_POST["submit"])) {
+            // Récupération des données
+            $donnees = $_POST; // Pour le Validator
+            $nomJeu = strip_tags($_POST['jeu']);
+            $description = strip_tags($_POST['description']);
+            $contenu = strip_tags($_POST['contenu']);
+            $nbJoueursMin = strip_tags($_POST['nbJoueursMin']);
+            $nbJoueursMax = strip_tags($_POST['nbJoueursMax']);
+            $dateSortie = strip_tags($_POST['dateSortie']);
+            $dureePartie = strip_tags($_POST['dureePartie']);
+            $extensionDe = strip_tags($_POST['extensionDe'] ?? null);
+            
+            // Validation des données
+            $validator = new Validator($this->reglesValidation);
+            $donneesValides = $validator->valider($donnees);
+            $messagesErreurs = $validator->getMessagesErreurs();
+            
+            
+            
             // Connexions à la base de données
             $daoJeu = new JeuDao($this->getPdo());
             $daoPhoto = new PhotoDao($this->getPdo());
@@ -214,33 +273,38 @@ class ControllerJeu extends Controller
             $photo->setUrl($urlPhoto);
 
 
-            var_dump($photo);
+            // Vérification si la photo existe déjà
             if ($daoPhoto->exists($photo->getUrl())) {
                 // Gérer le cas où la photo existe déjà 
-                $template = $this->getTwig()->load('erreur.html.twig');
-                echo $template->render([
-                    'message' => 'La photo existe déjà dans la base de données.'
-                ]);
+                $messagesErreurs[] = "La photo existe déjà dans la base de données.";
                 return;
             }
             $daoPhoto->addToDatabase($photo);
 
+            // Vérification des erreurs
+            if (!$donneesValides || !empty($messagesErreurs)) {
+                // Afficher les erreurs
+                $this->afficherErreursEnregistrement($messagesErreurs);
+                return;
+            }
+            // Les données sont valides, on continue
+            
 
             // Insertion du Jeu.
             $jeu = new Jeu();
-            $jeu->setNom(strip_tags($_POST['jeu']));
-            $jeu->setDescription(strip_tags($_POST['description']));
-            $jeu->setContenu(strip_tags($_POST['contenu']));
+            $jeu->setNom($nomJeu);
+            $jeu->setDescription($description);
+            $jeu->setContenu($contenu);
             // Faire les catégories
-            $jeu->setNbJoueursMin(strip_tags($_POST['nbJoueursMin']));
-            $jeu->setNbJoueursMax(strip_tags($_POST['nbJoueursMax']));
-            $jeu->setDateSortie(strip_tags($_POST['dateSortie']));
+            $jeu->setNbJoueursMin($nbJoueursMin);
+            $jeu->setNbJoueursMax($nbJoueursMax);
+            $jeu->setDateSortie($dateSortie);
 
-            if (!empty($_POST['extensionDe'])) {
-                $jeu->setIdJeuPrincipal(strip_tags($_POST['extensionDe'] ?: null));
+            if (!empty($extensionDe)) {
+                $jeu->setIdJeuPrincipal($extensionDe);
             }
             $jeu->setIdPhoto($daoPhoto->getIdFromUrl($urlPhoto));
-            $jeu->setDureePartie(strip_tags($_POST['dureePartie']));
+            $jeu->setDureePartie($dureePartie);
 
             $daoJeu->addToDatabase($jeu);
 
@@ -248,5 +312,12 @@ class ControllerJeu extends Controller
             $template = $this->getTwig()->load('backOffice.html.twig');
             echo $template->render();
         }
+    }
+    public function afficherErreursEnregistrement(array $erreurs)
+    {
+        $template = $this->getTwig()->load('backOffice.html.twig');
+        echo $template->render([
+            'erreurs' => $erreurs
+        ]);
     }
 }

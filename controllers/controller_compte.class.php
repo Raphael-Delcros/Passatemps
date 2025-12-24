@@ -90,18 +90,12 @@ class ControllerCompte extends Controller
      * - password & passwordMatch sont égaux, inscrit, entre [8;32] caractères et sont alphanumériques avec un symbole et une majuscule minimum.
      *
      * @todo à modifier quand le hashage des mots de passe sera en place
-     * @todo IMPORTANT : Afficher comment le MDP est pas robuste.
+     * @todo IMPORTANT : Afficher comment le MDP est pas robuste. Je crois que la fonction qu'on utilise peux le rendre, mais faut le faire marcher.
      * 
      * @return void
      */
     public function inscrire(): void
     {
-        $dao = new CompteDao($this->getPdo());
-        if ($dao->findEmail($_POST['email'])) {
-            // Gérer le cas où l'email existe déjà
-            echo "Cet email est déjà utilisé. Veuillez en choisir un autre.";
-            return;
-        }
         
         // Récupération des données
         $email = strip_tags($_POST['email']);
@@ -115,24 +109,39 @@ class ControllerCompte extends Controller
         $validator = new Validator($this->reglesValidation);
         // Validation des données
         $donneesValides = $validator->valider($donnees);
-        
         $messagesErreurs = $validator->getMessagesErreurs();
-        if ($donneesValides && $password == $passwordMatch) {
+        
+        $dao = new CompteDao($this->getPdo());
+        
+        // Gérer le cas où l'email existe déjà
+        if ($dao->findEmail($email)) {
+            $messagesErreurs[] = "Cet email est déjà utilisé. Veuillez en choisir un autre.";
+        }
+        // Gérer le cas où les mots de passe ne correspondent pas
+        if ($password != $passwordMatch) { 
+                $messagesErreurs[] = "Le mot de passe n'est pas le même dans les deux champs !";
+            }
+        
+        if($donneesValides && empty($messagesErreurs)) {
             $dao = new CompteDao($this->getPdo());
             $compte = new Compte(null, $nom, $prenom, $email, $password, null, null, 'utilisateur');
             $dao->insert($compte);
         } else {
             // Afficher les erreurs
-            if ($password != $passwordMatch) { // Verification MDP pas confirmé
-                $messagesErreurs[] = "Le mot de passe n'est pas le même dans les deux champs !";
-            }
-            $template = $this->getTwig()->load('inscription.html.twig');
-            echo $template->render(['errors' => $messagesErreurs]);
+            $this->afficherErreursInscription($messagesErreurs);
             return;
         }
 
         // Redirection vers la page de connexion après inscription
         header('Location: index.php?controleur=connexion&methode=connexion');
         exit();
+    }
+    
+    public function afficherErreursInscription(array $erreurs): void
+    {
+        $template = $this->getTwig()->load('inscription.html.twig');
+        echo $template->render([
+            'erreurs' => $erreurs,
+        ]);
     }
 }
