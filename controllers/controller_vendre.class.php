@@ -11,9 +11,38 @@
  */
 class ControllerVendre extends controller
 {
+
+    // public array $reglesValidation;
+
     public function __construct(Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
+        /*$config = Config::get();
+        $this->reglesValidation = [
+            'titre' => [
+                'obligatoire' => true,
+                'type' => 'string',
+                'longueurMin' => 5,
+                'longueurMax' => 100,
+            ],
+            'description' => [
+                'obligatoire' => true,
+                'type' => 'string',
+                'longueurMin' => 10,
+                'longueurMax' => 200,
+            ],
+            'prix' => [
+                'obligatoire' => true,
+                'type' => 'float',
+                'plageMin' => 5.00,
+                'plageMax' => 1000.00,
+            ],
+            'etatJeu' => [
+                'obligatoire' => true,
+                'type' => 'string',
+                'valeurs_acceptables' => ['neuf', 'comme neuf', 'bon état', 'acceptable', 'à réparer'],
+            ],
+        ];*/
     }
 
 

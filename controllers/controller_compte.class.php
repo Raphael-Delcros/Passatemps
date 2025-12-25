@@ -15,31 +15,39 @@ class ControllerCompte extends Controller
                 'obligatoire' => true,
                 'longueur_min' => 5,
                 'longueur_max' => 254,
+                'type' => 'string',
                 'format' => FILTER_VALIDATE_EMAIL,
             ],
             'password' => [
                 'obligatoire' => true,
                 'longueurMin' => 8,
                 'longueurMax' => 32,
+                'type' => 'string',
                 'format' => $config['regex']['mot_de_passe']
             ],
             'passwordMatch' => [
                 'obligatoire' => true,
                 'longueurMin' => 8,
                 'longueurMax' => 32,
+                'type' => 'string',
                 'format' => $config['regex']['mot_de_passe']
             ],
             'nom' => [
                 'obligatoire' => true,
                 'longueurMin' => 3,
                 'longueurMax' => 50,
+                'type' => 'string',
                 'format' => $config['regex']['texte_espace']
             ],
             'prenom' => [
                 'obligatoire' => true,
                 'longueurMin' => 3,
                 'longueurMax' => 50,
+                'type' => 'string',
                 'format' => $config['regex']['texte']
+            ],
+            'terms' => [
+                'obligatoire' => true,
             ],
         ];
     }
@@ -71,7 +79,6 @@ class ControllerCompte extends Controller
 
     /**
      * @brief Affiche la page d'inscription
-     
      * @return void
      */
     public function inscription()

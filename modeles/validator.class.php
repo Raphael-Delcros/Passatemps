@@ -139,6 +139,12 @@ class Validator
                         $estValide = false;
                     }
                     break;
+                case 'valeurs_acceptables':
+                    if (!in_array($valeur, $parametre))
+                    {
+                        $this->messagesErreurs[] = "La valeur de $champ n'est pas acceptable.";
+                        $estValide = false;
+                    }
             }
         }
 

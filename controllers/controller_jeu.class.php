@@ -8,21 +8,28 @@ class ControllerJeu extends Controller
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
+        $config = Config::get();
         $this->reglesValidation = [
             'jeu' => [
                 'obligatoire' => true,
                 'longueurMin' => 3,
+                'type' => 'string',
                 'longueurMax' => 100,
+                'format' => $config['regex']['texte_espace'],
             ],
             'description' => [
                 'obligatoire' => true,
                 'longueurMin' => 10,
                 'longueurMax' => 1000,
+                'type' => 'string',
+                'format' => $config['regex']['texte_espace'],
             ],
             'contenu' => [
                 'obligatoire' => true,
                 'longueurMin' => 10,
-                'longueurMax' => 2000,
+                'longueurMax' => 200,
+                'type' => 'string',
+                'format' => $config['regex']['texte_espace'],
             ],
             'nbJoueursMin' => [
                 'obligatoire' => true,
