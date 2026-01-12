@@ -137,7 +137,7 @@ class ControllerCompte extends Controller
         $prenom = strip_tags($_POST['prenom']);
 
         $donnees = $_POST; // Pour le Validator
-
+        var_dump($password, $passwordMatch, $password != $passwordMatch, $_POST['password'] != $_POST['passwordMatch']);
         $validator = new Validator($this->reglesValidation);
         // Validation des données
         $donneesValides = $validator->valider($donnees);
@@ -150,7 +150,7 @@ class ControllerCompte extends Controller
             $messagesErreurs[] = "Cet email est déjà utilisé. Veuillez en choisir un autre.";
         }
         // Gérer le cas où les mots de passe ne correspondent pas
-        if ($password != $passwordMatch) {
+        if ($_POST['password'] != $_POST['passwordMatch']) {
             $messagesErreurs[] = "Le mot de passe n'est pas le même dans les deux champs !";
         }
 

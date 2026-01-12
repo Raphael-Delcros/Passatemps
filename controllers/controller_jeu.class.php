@@ -232,9 +232,6 @@ class ControllerJeu extends Controller
     /**
      * Ajoute à la base de données le jeu ajouté
      *
-     * @todo Ajouter la recherche du jeu pour l'extension comme dans la boite de Vendre
-     * @todo Ajouter les catégories
-     * @todo Ajouter la recherche des catégories
      * @todo Ajouter confirmation 
      * @return void
      */
@@ -284,20 +281,20 @@ class ControllerJeu extends Controller
                 return;
             }
             $idPhoto = $daoPhoto->getIdFromUrl($urlPhoto);
-
+            var_dump($_POST);
 
             //Création de l'objet Jeu
             $jeu = new Jeu(
             null, 
-            strip_tags($_POST['jeu']),
-            strip_tags($_POST['description']),
-            strip_tags($_POST['contenu']),
-            $_POST['nbJoueursMin'],
-            $_POST['nbJoueursMax'],
-            $_POST['dateSortie'],
+            $nomJeu,
+            $description,
+            $contenu,
+            $nbJoueursMin,
+            $nbJoueursMax,
+            $dateSortie,
             !empty($_POST['idJeuPrincipal']) ? $_POST['idJeuPrincipal'] : null, 
             $idPhoto,
-            $_POST['dureePartie']
+            $dureePartie
         );
 
         //Insertion et récupération de l'ID pour les catégories

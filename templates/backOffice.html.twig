@@ -12,7 +12,7 @@
 		<div class="row mt-2">
 			<label for="jeu" class="form-label required">Jeu</label>
 			<div class="position-relative">
-				<input type="text" id="jeu" class="form-control" name="jeu" placeholder="Entrez le nom du jeu" title="Nom du jeu" minlength="3" maxlength="100" pattern="{{ constantes.application.texte_espace }}" required>
+				<input type="text" id="jeu" class="form-control" name="jeu" placeholder="Entrez le nom du jeu" title="Nom du jeu" minlength="3" maxlength="100" pattern="{{ constantes.regex.texte }}" required>
 			</div>
 		</div>
 
@@ -34,201 +34,201 @@
 				</div>
 			</div>
 
-			{# Catégories #}
-			<div class="col mt-2">
-				<label for="categories" class="form-label required">Catégorie(s)</label>
-				<div class="position-relative">
-					<input type="text" class="form-control" name="categories" placeholder="Catégories du jeu" title="Veuillez inscrire les catégories du jeu" required>
-				</div>
-			</div>
-
 
 			{# Nombre de joueurs #}
-			<div
-				class="row mt-2">
-				{# Minimum #}
-				<div class="col">
+			<div class="row mt-2">
+
+				<div
+					class="col">
+					{# Minimum #}
 					<label for="nbJoueursMin" class="form-label required">Nombre de joueurs minimum</label>
 					<div class="position-relative">
 						<input type="number" class="form-control" name="nbJoueursMin" placeholder="2" title="Nombre minimum de joueurs" maxlength="2" required>
 					</div>
+
+					{# Maximum #}
+					<label for="nbJoueursMax" class="form-label required">Nombre de joueurs maximum</label>
+					<div class="position-relative">
+						<input type="number" class="form-control" name="nbJoueursMax" placeholder="5" title="Nombre maximum de joueurs" maxlength="2" required>
+					</div>
 				</div>
 
 				{# Catégories #}
-                <div class="col-md-6">
-                    <label class="form-label d-block">Catégorie(s)</label>
-                    <div class="border rounded p-3 bg-light" style="max-height: 150px; overflow-y: auto;">
-                        {% for cat in categories %}
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="categories[]" value="{{ cat.idCategorie }}" id="cat{{ cat.idCategorie }}">
-                                <label class="form-check-label" for="cat{{ cat.idCategorie }}">
-                                    {{ cat.nom }}
-                                </label>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-
-			{# Date de sortie #}
-			<div class="row mt-2">
-				<div class="col">
-					<label for="dateSortie" class="form-label required">Date de sortie</label>
-					<div class="position-relative">
-						<input type="date" class="form-control" name="dateSortie" title="Date de sortie du jeu" max={{ today }} required>
+				<div class="col-md-6">
+					<label class="form-label d-block">Catégorie(s)</label>
+					<div class="border rounded p-3 bg-light" style="max-height: 150px; overflow-y: auto;">
+						{% for cat in categories %}
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" name="categories[]" value="{{ cat.idCategorie }}" id="cat{{ cat.idCategorie }}">
+								<label class="form-check-label" for="cat{{ cat.idCategorie }}">
+									{{ cat.nom }}
+								</label>
+							</div>
+						{% endfor %}
 					</div>
 				</div>
 
 				{# Date de sortie #}
 				<div class="row mt-2">
 					<div class="col">
-						<label for="dateSortie" class="form-label">Date de sortie</label>
+						<label for="dateSortie" class="form-label required">Date de sortie</label>
 						<div class="position-relative">
-							<input type="date" class="form-control" name="dateSortie" required>
+							<input type="date" class="form-control" name="dateSortie" title="Date de sortie du jeu" max={{ today }} required>
 						</div>
 					</div>
 
-					{# Extension? #}
-					{# AJOUTER LA RECHERCHE ICI #}
+					{# Date de sortie #}
+					<div class="row mt-2">
+
+
+						{# Extension? #}
+						{# AJOUTER LA RECHERCHE ICI #}
+							<div class="col"> <label for="extensionDe" class="form-label">Jeu principal (si extension)</label>
+							<div class="position-relative">
+								<input type="text" id="Rjeu" class="form-control" name="extensionDe" placeholder="Monopoly">
+								<input type="hidden" id="idJeu" name="idJeuPrincipal">
+								<ul id="resultats" class="list-group position-absolute w-100" style="z-index:2000; display:none; max-height:300px; overflow:auto; top:100%; left:0;"></ul>
+							</div>
+						</div>
+					</div>
+
+					{# Durée de la partie #}
 					<div class="col">
-						<label for="extensionDe" class="form-label">Jeu principal (si extension)</label>
+						<label for="dureePartie" class="form-label required">Durée d'une partie (en minutes)</label>
 						<div class="position-relative">
-							<input type="text" id="Rjeu" class="form-control" name="extensionDe" placeholder="Monopoly">
-							<input type="hidden" id="idJeu" name="idJeuPrincipal">
-							<ul id="resultats"
-        					class="list-group position-absolute w-100"
-        					style="z-index:2000; display:none; max-height:300px; overflow:auto; top:100%; left:0;">
-    						</ul>
+							<input type="number" class="form-control" name="dureePartie" placeholder="15" title="Durée en minutes d'une partie standard" maxlength="3" required>
 						</div>
 					</div>
 				</div>
 
-				{# Durée de la partie #}
-				<div class="col">
-					<label for="dureePartie" class="form-label required">Durée d'une partie (en minutes)</label>
-					<div class="position-relative">
-						<input type="number" class="form-control" name="dureePartie" placeholder="15" title="Durée en minutes d'une partie standard" maxlength="3" required>
+				{# Photos #}
+				<div class="row mt-2">
+					<div class="col">
+						<label for="photo" class="form-label required">Image du jeu</label>
+						<input type="file" class="form-label" name="photo" accept=".png,.jpeg,.jpg" title="Image du jeu" required>
+					</div>
+
+					{# Bouton d'ajout #}
+					<div class="col align-items-end">
+						<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+							<button type="submit" name="submit" value="1" class="btn btn-primary me-md-2">Ajouter le jeu</button>
+						</div>
 					</div>
 				</div>
-			</div>
-
-			{# Photos #}
-			<div class="row mt-2">
-				<div class="col">
-					<label for="photo" class="form-label required">Image du jeu</label>
-					<input type="file" class="form-label" name="photo" accept=".png,.jpeg,.jpg" title="Image du jeu" required>
+			</form>
+			{% if erreurs is defined and erreurs|length > 0 %}
+				<div class="alert alert-danger mt-3">
+					<ul class="mb-0">
+						{% for erreur in erreurs %}
+							<li>{{ erreur }}</li>
+						{% endfor %}
+					</ul>
 				</div>
+			{% endif %}
+		{% endblock %}
 
-				{# Bouton d'ajout #}
-				<div class="col align-items-end">
-					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-						<button type="submit" name="submit" value="1" class="btn btn-primary me-md-2">Ajouter le jeu</button>
-					</div>
-				</div>
-			</div>
-		</form>
-		{% if erreurs is defined and erreurs|length > 0 %}
-			<div class="alert alert-danger mt-3">
-				<ul class="mb-0">
-					{% for erreur in erreurs %}
-						<li>{{ erreur }}</li>
-					{% endfor %}
-				</ul>
-			</div>
-		{% endif %}
-	{% endblock %}
-
-{% block script %}
-<script>
-(() => {
-    let inputJeu = document.getElementById('Rjeu');
-    let resultats = document.getElementById('resultats');
+		{% block script %}
+			<script>
+				(() => {
+let inputJeu = document.getElementById('Rjeu');
+let resultats = document.getElementById('resultats');
 
 
-    // vider et cacher
-    function clearResults() {
-        resultats.innerHTML = '';
-        resultats.style.display = 'none';
-    }
+// vider et cacher
+function clearResults() {
+resultats.innerHTML = '';
+resultats.style.display = 'none';
+}
 
-    // Affiche les résultats (tableau d'objets {idJeu, nom})
-    function showResults(items) {
-        resultats.innerHTML = '';
-        if (!items.length) {
-            clearResults();
-            return;
-        }
-        items.forEach(it => {
-            let li = document.createElement('li');
-            li.className = 'list-group-item list-group-item-action';
-            li.textContent = it.nom;
-            li.style.cursor = 'pointer';
-            li.addEventListener('click', () => {
-                inputJeu.value = it.nom;
-                document.getElementById('idJeu').value = it.idJeu;
-                clearResults();
-            });
-            resultats.appendChild(li);
-        });
-        resultats.style.display = 'block';
-    }
+// Affiche les résultats (tableau d'objets {idJeu, nom})
+function showResults(items) {
+resultats.innerHTML = '';
+if (! items.length) {
+clearResults();
+return;
+}
+items.forEach(it => {
+let li = document.createElement('li');
+li.className = 'list-group-item list-group-item-action';
+li.textContent = it.nom;
+li.style.cursor = 'pointer';
+li.addEventListener('click', () => {
+inputJeu.value = it.nom;
+document.getElementById('idJeu').value = it.idJeu;
+clearResults();
+});
+resultats.appendChild(li);
+});
+resultats.style.display = 'block';
+}
 
-    // Requête au serveur (debounce simple)
-    let timer = null;
-    inputJeu.addEventListener('input', () => {
-        let q = inputJeu.value.trim();
-        if (q.length === 0) { clearResults(); return; }
+// Requête au serveur (debounce simple)
+let timer = null;
+inputJeu.addEventListener('input', () => {
+let q = inputJeu.value.trim();
+if (q.length === 0) {
+clearResults();
+return;
+}
 
-        if (timer) clearTimeout(timer);
-        timer = setTimeout(() => {
-            fetch(`index.php?controleur=Jeu&methode=autocomplete&q=${encodeURIComponent(q)}`)
-                .then(resp => {
-                    if (!resp.ok) throw new Error('Réponse réseau : ' + resp.status);
-                    return resp.json();
-                })
-                .then(data => {
-                    // data doit être un tableau d'obj {idJeu, nom}
-                    showResults(Array.isArray(data) ? data : []);
-                })
-                .catch(err => {
-                    console.error('Autocomplete fetch error:', err);
-                    clearResults();
-                });
-        }, 180); // 180ms debounce
-    });
-
-    // Gestion appui sur Entrée
-	inputJeu.addEventListener('keydown', (e) => {
-
-    // navigation clavier (flèche haut/bas)
-    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-        let items = Array.from(resultats.querySelectorAll('li'));
-        if (!items.length) return;
-        e.preventDefault();
-        let idx = items.findIndex(i => i.classList.contains('active'));
-        if (e.key === 'ArrowDown') idx = (idx + 1) % items.length;
-        else idx = (idx - 1 + items.length) % items.length;
-        items.forEach(i => i.classList.remove('active'));
-        items[idx].classList.add('active');
-        items[idx].scrollIntoView({ block: 'nearest' });
-    }
-
-    // sélection avec Entrée
-    if (e.key === 'Enter') {
-        let active = resultats.querySelector('li.active');
-        if (active) {
-            e.preventDefault(); // empêcher l'envoi du formulaire
-            active.click();
-        }
-    }
-	});
+if (timer) 
+clearTimeout(timer);
 
 
-    // Clic en dehors : fermer
-    document.addEventListener('click', (ev) => {
-        if (!inputJeu.contains(ev.target) && !resultats.contains(ev.target)) {
-            clearResults();
-        }
-    });
+timer = setTimeout(() => {
+fetch (`index.php?controleur=Jeu&methode=autocomplete&q=${
+encodeURIComponent(q)
+}`).then(resp => {
+if (!resp.ok) 
+throw new Error('Réponse réseau : ' + resp.status);
+
+
+return resp.json();
+}).then(data => { // data doit être un tableau d'obj {idJeu, nom}
+showResults(Array.isArray(data) ? data : []);
+}).catch(err => {
+console.error('Autocomplete fetch error:', err);
+clearResults();
+});
+}, 180); // 180ms debounce
+});
+
+// Gestion appui sur Entrée
+inputJeu.addEventListener('keydown', (e) => { // navigation clavier (flèche haut/bas)
+if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+let items = Array.from(resultats.querySelectorAll('li'));
+if (! items.length) 
+return;
+
+
+e.preventDefault();
+let idx = items.findIndex(i => i.classList.contains('active'));
+if (e.key === 'ArrowDown') 
+idx = (idx + 1) % items.length;
+ else 
+idx = (idx - 1 + items.length) % items.length;
+ items.forEach(i => i.classList.remove('active'));
+items[idx].classList.add('active');
+items[idx].scrollIntoView({block: 'nearest'});
+}
+
+// sélection avec Entrée
+if (e.key === 'Enter') {
+let active = resultats.querySelector('li.active');
+if (active) {
+e.preventDefault(); // empêcher l'envoi du formulaire
+active.click();
+}
+}
+});
+
+
+// Clic en dehors : fermer
+document.addEventListener('click', (ev) => {
+if (! inputJeu.contains(ev.target) && ! resultats.contains(ev.target)) {
+clearResults();
+}
+});
 })();
-</script>
-{% endblock %}
+			</script>
+		{% endblock %}
