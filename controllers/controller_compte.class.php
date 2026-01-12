@@ -102,38 +102,52 @@ class ControllerCompte extends Controller
      */
     public function inscrire(): void
     {
-        if (isset($_POST['email'], $_POST['password'], $_POST['nom'], $_POST['prenom'])) {
+        
+        // Récupération des données
+        $email = strip_tags($_POST['email']);
+        $password = strip_tags($_POST['password']);
+        $passwordMatch = strip_tags($_POST['passwordMatch']);
+        $nom = strip_tags($_POST['nom']);
+        $prenom = strip_tags($_POST['prenom']);
 
-            $dao = new CompteDao($this->getPdo());
-            if ($dao->findEmail($_POST['email'])) {
-                // Gérer le cas où l'email existe déjà
-                $template = $this->getTwig()->load('inscription.html.twig');
-                echo $template->render([
-                    'erreur' => 'Cet email est déjà utilisé pour un autre compte.'
-                ]);
-                return;
+        $donnees = $_POST; // Pour le Validator
+
+        $validator = new Validator($this->reglesValidation);
+        // Validation des données
+        $donneesValides = $validator->valider($donnees);
+        $messagesErreurs = $validator->getMessagesErreurs();
+        
+        $dao = new CompteDao($this->getPdo());
+        
+        // Gérer le cas où l'email existe déjà
+        if ($dao->findEmail($email)) {
+            $messagesErreurs[] = "Cet email est déjà utilisé. Veuillez en choisir un autre.";
+        }
+        // Gérer le cas où les mots de passe ne correspondent pas
+        if ($password != $passwordMatch) { 
+                $messagesErreurs[] = "Le mot de passe n'est pas le même dans les deux champs !";
             }
-
-            $email = $_POST['email'];
-            $password = password_hash($_POST['password'],PASSWORD_BCRYPT);
-            $nom = $_POST['nom'];
-            $prenom = $_POST['prenom'];
-
+        
+        if($donneesValides && empty($messagesErreurs)) {
             $dao = new CompteDao($this->getPdo());
-            $compte = new Compte(null, $_POST['nom'], $_POST['prenom'], $_POST['email'], password_hash($_POST['password'],PASSWORD_BCRYPT), null, null, 'utilisateur');
+            $compte = new Compte(null, $nom, $prenom, $email, $password, null, null, 'utilisateur');
             $dao->insert($compte);
         } else {
             // Afficher les erreurs
             $this->afficherErreursInscription($messagesErreurs);
             return;
         }
+
+        // Redirection vers la page de connexion après inscription
+        header('Location: index.php?controleur=connexion&methode=connexion');
+        exit();
     }
     
-    public function afficherErreursInscription(array $messagesErreurs): void
+    public function afficherErreursInscription(array $erreurs): void
     {
         $template = $this->getTwig()->load('inscription.html.twig');
         echo $template->render([
-            'erreurs' => $messagesErreurs
+            'erreurs' => $erreurs,
         ]);
     }
 }
