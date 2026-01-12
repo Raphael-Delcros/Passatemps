@@ -1,8 +1,8 @@
 <?php
+
 /**
  * @file controller_messagerie.class.php
  * @brief Affiche les pages liées à la messagerie entre des utilisateurs
- * @todo Modifier cette classe quand on aura les comptes afin d'afficher des messages entre utilisateurs.
  * 
  */
 
@@ -18,37 +18,116 @@ class ControllerMessagerie extends Controller
 
     /**
      * @brief Liste les messages reçus.
-     * 
-     * @todo Quand on aura les comptes : Modifier la fonction pour afficher les messages par compte 
      *
      * @return void
      */
     public function lister()
     {
-        $dao = new MessagerieDao($this->getPdo());
-        $messages = $dao->findAllAssoc(); // récupère tous les messages en tableau associatif
+        if (isset($_SESSION['idCompte'])) {
+            $dao = new MessagerieDao($this->getPdo());
 
-        $template = $this->getTwig()->load('messagerie.html.twig');
-        echo $template->render([
-            'messages' => $messages,
-        ]);
+            $messages = $dao->findAssocComptes($_SESSION['idCompte']); // récupère tous   les messages d'un utilisateur en tableau associatif
+            $utilisateurs = $dao->findAssocNoComptes($_SESSION['idCompte']);
+            $id = $_SESSION['idCompte'];
+            $template = $this->getTwig()->load('messagerie.html.twig');
+            echo $template->render([
+                'messages' => $messages,
+                'utilisateurs' => $utilisateurs,
+                'id' => $id
+            ]);
+        } else {
+            $template = $this->getTwig()->load('connexion.html.twig');
+            echo $template->render();
+        }
     }
     /**
      * @brief Affiche un message unique.
+     *
      * 
-     * @todo Quand on aura les comptes : Afficher tous les messages entre l'utilisateur et l'autre compte.
+     * @param mixed $erreur
+     * @return void
+     */
+    public function afficher(mixed $erreur = null)
+    {
+        if (!isset($_SESSION['idCompte']) or !isset($_GET['id'])) {
+            $template = $this->getTwig()->load('connexion.html.twig');
+            echo $template->render();
+            return;
+        } else {
+            if ($erreur == null) {
+                $erreur = false;
+            }
+
+            $id = isset($_GET['id']) ? intval($_GET['id']) : null;
+            $nom = isset($_GET['nom']) ? $_GET['nom'] : null;
+            $prenom = isset($_GET['prenom']) ? $_GET['prenom'] : null;
+            $monNom = isset($_SESSION['nom']) ? $_SESSION['nom'] : null;
+            $monPrenom = isset($_SESSION['prenom']) ? $_SESSION['prenom'] : null;
+
+            $dao = new MessagerieDao($this->getPdo());
+            $messages = $dao->findAssocConversation($_SESSION['idCompte'], $id);
+            $template = $this->getTwig()->load('conversation.html.twig');
+            echo $template->render([
+                'messages' => $messages,
+                'nom' => $nom,
+                'prenom' => $prenom,
+                'idCompte' => $id,
+                'monNom' => $monNom,
+                'monPrenom' => $monPrenom,
+                'erreur' => $erreur
+            ]);
+        }
+    }
+
+    /**
+     * @brief Envoie un message à un autre utilisateur.
      *
      * @return void
      */
-    public function afficher()
-    {
-        $id = isset($_GET['id']) ? intval($_GET['id']) : null;
-        $dao = new MessagerieDao($this->getPdo());
-        $message = $dao->findAssoc($id);
 
-        $template = $this->getTwig()->load('message.html.twig');
-        echo $template->render([
-            'message' => $message,
-        ]);
+    public function envoyer()
+    {
+        // 1. Vérification session
+        if (!isset($_SESSION['idCompte'])) {
+            header("Location: index.php?controleur=connexion"); // Rediriger vers connexion si pas de session
+            exit();
+        }
+
+        // 2. Vérification données POST
+        if (!isset($_POST['message'], $_POST['idDestinataire'])) {
+            header("Location: index.php?controleur=messagerie");
+            exit();
+        }
+
+        $idDest = $_POST['idDestinataire'];
+        $nomDest = $_POST['nomDestinataire'] ?? ''; // Récupéré du champ caché
+        $prenomDest = $_POST['prenomDestinataire'] ?? ''; // Récupéré du champ caché
+
+        // 3. Préparation de la date (plus simple que getdate)
+        $stringdate = date('Y-m-d H:i:s');
+
+        // 4. Insertion
+        $dao = new MessagerieDao($this->getPdo());
+        $message = new Messagerie(
+            null,
+            $_POST['message'],
+            $stringdate,
+            $_SESSION['idCompte'],
+            $idDest
+        );
+
+        $result = $dao->InsertInto($message);
+
+        // 5. REDIRECTION (C'est ici que ça se joue)
+        if ($result) {
+            // On construit l'URL de retour avec tous les paramètres nécessaires
+            $url = "index.php?controleur=messagerie&methode=afficher&id=$idDest&nom=$nomDest&prenom=$prenomDest";
+            header("Location: " . $url);
+            exit();
+        } else {
+            // En cas d'erreur, on peut rediriger vers une page d'erreur ou la messagerie
+            header("Location: index.php?controleur=messagerie&error=1");
+            exit();
+        }
     }
 }

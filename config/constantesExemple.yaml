@@ -17,9 +17,4 @@ application:
     image_upload_path: "uploads/images/" # Chemin vers le dossier de téléchargement des images par les utilisateurs
     max_connextions_echouees: 3 # Nombre maximum de tentatives de connexion échouées avant désactivation du compte
     delai_attente_connexion: 1800 # Délai d'attente après avoir atteint le nombre maximum de tentatives de connexion échouées (en secondes)
-
-regex:
-    texte: /^[a-zA-ZÀ-ÿ\'-]+$/ # Autorise les lettres (majuscules et minuscules), les accents, les apostrophes et les traits d'union
-    texte_espace: /^[a-zA-ZÀ-ÿ\'\-\s]+$/ # Autorise les lettres (majuscules et minuscules), les accents, les apostrophes, les traits d'union et les espaces
-    mot_de_passe: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,32}$/ # Doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial, et être entre 8 et 32 caractères de long
-    email: /^[\w\.]+@([\w-]+\.)+[\w-]{2,4}$/g # Vérifie le format mail (utilisé dans le côté client surtout)
+    token_gestion_cookies : 
