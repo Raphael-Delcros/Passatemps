@@ -279,4 +279,70 @@ class JeuDao
         ]);
     }
 
+
+    public function findPage(int $page, int $parPage): array
+    {
+        $offset = ($page - 1) * $parPage;
+
+        // On reprend ta requête complexe de findAllAssoc mais avec LIMIT
+        $sql = "SELECT J.idJeu, J.nom, J.nbJoueursMin, J.nbJoueursMax, photo.url 
+            FROM jeu J
+            LEFT JOIN photo ON J.idPhoto = photo.idPhoto
+            ORDER BY J.idJeu
+            LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':limit', $parPage, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countAll(): int
+    {
+        $sql = "SELECT COUNT(*) FROM jeu";
+        return (int) $this->pdo->query($sql)->fetchColumn();
+    }
+    /**
+     * Supprime un jeu de la base de données
+     */
+    public function delete(int $id): bool
+    {
+        $sql = "DELETE FROM jeu WHERE idJeu = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
+    }
+
+    /**
+     * Met à jour un jeu existant
+     */
+    public function update(Jeu $jeu): bool
+    {
+        $sql = "UPDATE jeu SET 
+            nom = :nom, 
+            description = :description, 
+            contenu = :contenu, 
+            nbJoueursMin = :nbJoueursMin, 
+            nbJoueursMax = :nbJoueursMax, 
+            dateSortie = :dateSortie, 
+            idJeuPrincipal = :idJeuPrincipal, 
+            idPhoto = :idPhoto, 
+            dureePartie = :dureePartie
+            WHERE idJeu = :idJeu";
+
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            'nom' => $jeu->getNom(),
+            'description' => $jeu->getDescription(),
+            'contenu' => $jeu->getContenu(),
+            'nbJoueursMin' => $jeu->getNbJoueursMin(),
+            'nbJoueursMax' => $jeu->getNbJoueursMax(),
+            'dateSortie' => $jeu->getDateSortie(),
+            'idJeuPrincipal' => $jeu->getIdJeuPrincipal(),
+            'idPhoto' => $jeu->getIdPhoto(),
+            'dureePartie' => $jeu->getdureePartie(),
+            'idJeu' => $jeu->getIdJeu()
+        ]);
+    }
 }

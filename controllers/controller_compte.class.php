@@ -72,9 +72,12 @@ class ControllerCompte extends Controller
         $compte = $dao->find($id);
 
         $template = $this->getTwig()->load('compte.html.twig');
-        echo $template->render([
-            'compte' => $compte,
-        ]);
+        $vars = [
+            'session' => $_SESSION
+        ];
+        echo $template->render(array_merge($vars, [
+            'compte' => $compte, 
+        ]));
     }
 
     /**
@@ -102,11 +105,11 @@ class ControllerCompte extends Controller
      */
     public function inscrire(): void
     {
-        
+
         // Récupération des données
         $email = strip_tags($_POST['email']);
         $password = strip_tags($_POST['password']);
-        $passwordHash = password_hash($_POST['password'],PASSWORD_BCRYPT);
+        $passwordHash = password_hash($_POST['password'], PASSWORD_BCRYPT);
         $passwordMatch = strip_tags($_POST['passwordMatch']);
         $nom = strip_tags($_POST['nom']);
         $prenom = strip_tags($_POST['prenom']);
@@ -117,19 +120,19 @@ class ControllerCompte extends Controller
         // Validation des données
         $donneesValides = $validator->valider($donnees);
         $messagesErreurs = $validator->getMessagesErreurs();
-        
+
         $dao = new CompteDao($this->getPdo());
-        
+
         // Gérer le cas où l'email existe déjà
         if ($dao->findEmail($email)) {
             $messagesErreurs[] = "Cet email est déjà utilisé. Veuillez en choisir un autre.";
         }
         // Gérer le cas où les mots de passe ne correspondent pas
-        if ($password != $passwordMatch) { 
-                $messagesErreurs[] = "Le mot de passe n'est pas le même dans les deux champs !";
-            }
-        
-        if($donneesValides && empty($messagesErreurs)) {
+        if ($password != $passwordMatch) {
+            $messagesErreurs[] = "Le mot de passe n'est pas le même dans les deux champs !";
+        }
+
+        if ($donneesValides && empty($messagesErreurs)) {
             $dao = new CompteDao($this->getPdo());
             $compte = new Compte(null, $nom, $prenom, $email, $passwordHash, null, null, 'utilisateur');
             $dao->insert($compte);
@@ -143,7 +146,7 @@ class ControllerCompte extends Controller
         header('Location: index.php?controleur=connexion&methode=connexion');
         exit();
     }
-    
+
     public function afficherErreursInscription(array $erreurs): void
     {
         $template = $this->getTwig()->load('inscription.html.twig');

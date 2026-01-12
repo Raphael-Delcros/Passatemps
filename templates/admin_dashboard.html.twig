@@ -1,0 +1,78 @@
+{% extends 'base_template.html.twig' %}
+
+{% block title %}Administration - {{ constantes.application.website_name }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="border-bottom pb-2">Tableau de Bord Administrateur</h1>
+            <p class="text-muted">Bienvenue, {{prenom}}. Que souhaitez-vous gérer aujourd'hui ?</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Jeux</h3>
+                    <p class="card-text text-muted">Gérer la bibliothèque de jeux, modifier les descriptions ou les supprimer.</p>
+                </div>
+                <div class="card-footer bg-transparent border-0 d-grid gap-2 mb-3">
+                    <a href="index.php?controleur=admin&methode=listeJeux" class="btn btn-outline-primary">Liste des jeux</a>
+                    <a href="index.php?controleur=admin&methode=ajouterJeu" class="btn btn-primary">+ Ajouter un jeu</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Annonces</h3>
+                    <p class="card-text text-muted">Modérer les annonces publiées par les utilisateurs ou supprimer les abus.</p>
+                </div>
+                <div class="card-footer bg-transparent border-0 d-grid gap-2 mb-3">
+                    <a href="index.php?controleur=admin&methode=gererAnnonces" class="btn btn-success">Gérer les annonces</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Comptes</h3>
+                    <p class="card-text text-muted">Gérer les utilisateurs, bannir des comptes ou changer les rôles.</p>
+                </div>
+                <div class="card-footer bg-transparent border-0 d-grid gap-2 mb-3">
+                    <a href="index.php?controleur=admin&methode=listeUtilisateurs" class="btn btn-warning text-white">Voir les utilisateurs</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-info">
+                <div class="card-body">
+                    <h5 class="card-title text-info font-weight-bold">En résumé</h5>
+                    <ul class="list-group list-group-flush mt-3">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Jeux en ligne <span class="badge bg-primary rounded-pill">{{ totalGames }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Annonces actives <span class="badge bg-success rounded-pill">{{ totalAnnonces }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Membres inscrits <span class="badge bg-warning rounded-pill">{{ totalUsers }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <a href="index.php" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Retour au site
+        </a>
+    </div>
+</div>
+{% endblock %}

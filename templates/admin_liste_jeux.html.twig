@@ -1,0 +1,41 @@
+{% extends 'base_template.html.twig' %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Gestion des Jeux</h1>
+    </div>
+
+    <table class="table table-striped border shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Image</th>
+                <th>Nom</th>
+                <th>Joueurs</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for jeu in jeux %}
+            <tr>
+                <td>
+                    {% if jeu.url %}
+                        <img src="images/vignettes/{{ jeu.url }}" width="50" class="rounded">
+                    {% else %}
+                        <span class="text-muted">No image</span>
+                    {% endif %}
+                </td>
+                <td><strong>{{ jeu.nom }}</strong></td>
+                <td>{{ jeu.nbJoueursMin }} - {{ jeu.nbJoueursMax }}</td>
+                <td>
+                    <a href="index.php?controleur=admin&methode=formulaireModif&id={{ jeu.idJeu }}" class="btn btn-sm btn-warning">Modifier</a>
+                    <a href="index.php?controleur=admin&methode=supprimerJeu&id={{ jeu.idJeu }}" 
+                       class="btn btn-sm btn-danger" 
+                       onclick="return confirm('Supprimer {{ jeu.nom }} ?')">Supprimer</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

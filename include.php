@@ -33,6 +33,7 @@ require_once 'controllers/controller_vendre.class.php';
 require_once 'controllers/controller_livraison.class.php';
 require_once 'controllers/controller_connexion.php';
 require_once 'controllers/controller_newsletter.class.php';
+require_once 'controllers/controller_admin.class.php';
 
 // Ajout des modeles
 require_once 'modeles/bd.class.php';

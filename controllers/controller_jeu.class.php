@@ -228,17 +228,6 @@ class ControllerJeu extends Controller
         imagedestroy($thumb);
         return $result;
     }
-    public function ajouter()
-    {
-        // On récupère toutes les catégories pour les afficher dans le formulaire
-        $daoCategorie = new CategorieDao($this->getPdo());
-        $categories = $daoCategorie->findAll();
-
-        $template = $this->getTwig()->load('backOffice.html.twig');
-        echo $template->render([
-            'categories' => $categories
-        ]);
-    }
 
     /**
      * Ajoute à la base de données le jeu ajouté

@@ -7,6 +7,13 @@
     <p><strong>Date d'inscription :</strong> {{ compte.dateInscription }}</p>
     <p><strong>Note :</strong> {{ compte.note }}</p>
     <p><strong>Rôle :</strong> {{ compte.role }}</p>
+    {% if compte.role == 'administrateur' %}
+    <hr>
+    <a href="index.php?controleur=admin&methode=dashboard"
+       class="btn btn-danger">
+        Accéder au Back-Office
+    </a>
+    {% endif %}
 
     <form method="POST" action="index.php?controleur=connexion&methode=deconnexion" class="row g-3 position-relative" autocomplete="off">
         <div >
