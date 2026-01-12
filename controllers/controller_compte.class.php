@@ -168,9 +168,6 @@ class ControllerCompte extends Controller
         header('Location: index.php?controleur=connexion&methode=connexion');
         exit();
     }
-<<<<<<< HEAD
-
-=======
     
     /**
      * @brief Affiche les erreurs d'inscription
@@ -178,7 +175,6 @@ class ControllerCompte extends Controller
      * @param array $erreurs Liste des messages d'erreurs
      * @return void
      */
->>>>>>> 54fee286adbe3e02aa3e102b76dec3ead5cfb43f
     public function afficherErreursInscription(array $erreurs): void
     {
         $template = $this->getTwig()->load('inscription.html.twig');
