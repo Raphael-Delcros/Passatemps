@@ -212,4 +212,40 @@ class AnnonceDao
         $stmt->execute(['q' => '%' . strtolower($q) . '%']);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Supprime une annonce de la base de données
+     */
+    public function delete(int $id): bool
+    {
+        $sql = "DELETE FROM annonce WHERE idAnnonce = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
+    }
+
+    /**
+     * Met à jour une annonce existante
+     */
+    public function update(Annonce $annonce): bool
+    {
+        $sql = "UPDATE annonce SET 
+            titre = :titre, 
+            description = :description, 
+            prix = :prix, 
+            etatJeu = :etatJeu, 
+            etatVente = :etatVente, 
+            idJeu = :idJeu 
+            WHERE idAnnonce = :idAnnonce";
+
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            'titre'       => $annonce->getTitre(),
+            'description' => $annonce->getDescription(),
+            'prix'        => $annonce->getPrix(),
+            'etatJeu'     => $annonce->getEtatJeu(),
+            'etatVente'   => $annonce->getEtatVente(),
+            'idJeu'       => $annonce->getIdJeu(),
+            'idAnnonce'   => $annonce->getIdAnnonce()
+        ]);
+    }
 }

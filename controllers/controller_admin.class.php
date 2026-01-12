@@ -107,4 +107,67 @@ class ControllerAdmin extends Controller
             exit;
         }
     }
+    public function listeAnnonces()
+    {
+        $dao = new AnnonceDao($this->getPdo());
+        $annonces = $dao->findAllAssoc(); // Utilise ta méthode existante
+
+        echo $this->getTwig()->render('admin_liste_annonces.html.twig', [
+            'annonces' => $annonces
+        ]);
+    }
+
+    public function supprimerAnnonce()
+    {
+        $id = isset($_GET['id']) ? intval($_GET['id']) : null;
+        if ($id) {
+            $dao = new AnnonceDao($this->getPdo());
+            $dao->delete($id);
+        }
+        header('Location: index.php?controleur=admin&methode=listeAnnonces');
+        exit;
+    }
+
+    public function formulaireModifAnnonce()
+    {
+        $id = isset($_GET['id']) ? intval($_GET['id']) : null;
+        $dao = new AnnonceDao($this->getPdo());
+        $jeuDao = new JeuDao($this->getPdo());
+
+        $annonce = $dao->findAssoc($id); // Récupère les données de l'annonce
+        $listeJeux = $jeuDao->findAllAssoc(); // Pour le menu déroulant des jeux
+
+        echo $this->getTwig()->render('admin_form_annonce.html.twig', [
+            'annonce' => $annonce,
+            'jeux' => $listeJeux
+        ]);
+    }
+
+    public function modifierAnnonce()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $dao = new AnnonceDao($this->getPdo());
+
+            // Création de l'objet Annonce avec les données du formulaire
+            $annonce = new Annonce(
+                intval($_POST['idAnnonce']),
+                $_POST['titre'],
+                $_POST['description'],
+                floatval($_POST['prix']),
+                $_POST['datePub'],
+                $_POST['etatJeu'],
+                $_POST['etatVente'],
+                intval($_POST['idJeu']),
+                intval($_POST['idCompteVendeur']),
+                $_POST['urlPhoto']
+            );
+
+            if ($dao->update($annonce)) {
+                header('Location: index.php?controleur=admin&methode=listeAnnonces&success=1');
+            } else {
+                echo "Erreur lors de la modification.";
+            }
+            exit;
+        }
+    }
 }
