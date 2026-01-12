@@ -146,4 +146,35 @@ class CompteDao
      *
      * @return bool true si l'utilisateur existe, false sinon.
      */
+    /**
+     * Supprime un compte utilisateur
+     */
+    public function delete(int $id): bool
+    {
+        $sql = "DELETE FROM " . Config::get()['database']['prefixe_table'] . "compte WHERE idCompte = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
+    }
+
+    /**
+     * Met à jour les informations d'un compte (utile pour le rôle et les infos de base)
+     */
+    public function update(Compte $compte): bool
+    {
+        $sql = "UPDATE " . Config::get()['database']['prefixe_table'] . "compte SET 
+            nom = :nom, 
+            prenom = :prenom, 
+            email = :email, 
+            role = :role 
+            WHERE idCompte = :id";
+
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            'nom' => $compte->getNom(),
+            'prenom' => $compte->getPrenom(),
+            'email' => $compte->getEmail(),
+            'role' => $compte->getRole(),
+            'id' => $compte->getIdCompte()
+        ]);
+    }
 }

@@ -170,4 +170,55 @@ class ControllerAdmin extends Controller
             exit;
         }
     }
+
+    public function listeComptes()
+    {
+        $dao = new CompteDao($this->getPdo());
+        $comptes = $dao->findAllAssoc();
+
+        echo $this->getTwig()->render('admin_liste_comptes.html.twig', [
+            'comptes' => $comptes
+        ]);
+    }
+
+    public function formulaireModifCompte()
+    {
+        $id = isset($_GET['id']) ? intval($_GET['id']) : null;
+        $dao = new CompteDao($this->getPdo());
+        $compte = $dao->findAssoc($id);
+
+        echo $this->getTwig()->render('admin_form_compte.html.twig', [
+            'compte' => $compte
+        ]);
+    }
+
+    public function modifierCompte()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $dao = new CompteDao($this->getPdo());
+
+            // On crée l'objet avec les données du formulaire
+            $compte = new Compte();
+            $compte->setIdCompte(intval($_POST['idCompte']));
+            $compte->setNom($_POST['nom']);
+            $compte->setPrenom($_POST['prenom']);
+            $compte->setEmail($_POST['email']);
+            $compte->setRole($_POST['role']);
+
+            $dao->update($compte);
+            header('Location: index.php?controleur=admin&methode=listeComptes');
+            exit;
+        }
+    }
+
+    public function supprimerCompte()
+    {
+        $id = isset($_GET['id']) ? intval($_GET['id']) : null;
+        if ($id) {
+            $dao = new CompteDao($this->getPdo());
+            $dao->delete($id);
+        }
+        header('Location: index.php?controleur=admin&methode=listeComptes');
+        exit;
+    }
 }
