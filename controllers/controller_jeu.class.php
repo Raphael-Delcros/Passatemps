@@ -2,9 +2,9 @@
 
 class ControllerJeu extends Controller
 {
-    
+
     private array $reglesValidation;
-    
+
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
@@ -249,14 +249,14 @@ class ControllerJeu extends Controller
             $dateSortie = strip_tags($_POST['dateSortie']);
             $dureePartie = strip_tags($_POST['dureePartie']);
             $extensionDe = strip_tags($_POST['extensionDe'] ?? null);
-            
+
             // Validation des données
             $validator = new Validator($this->reglesValidation);
             $donneesValides = $validator->valider($donnees);
             $messagesErreurs = $validator->getMessagesErreurs();
-            
-            
-            
+
+
+
             // Connexions à la base de données
             $pdo = $this->getPdo();
             $daoJeu = new JeuDao($this->getPdo());
@@ -265,52 +265,58 @@ class ControllerJeu extends Controller
             // Création de la photo 
             $urlPhoto = strip_tags($_FILES['photo']['name']);
             if (!$daoPhoto->exists($urlPhoto)) {
-            $photo = new Photo();
-            $photo->setUrl($urlPhoto);
-            $daoPhoto->addToDatabase($photo);
-            
-            $destination = Config::get()['application']['game_image_path'] . $urlPhoto;
-            move_uploaded_file($_FILES['photo']['tmp_name'], $destination);
-            }
-            else {
+                $photo = new Photo();
+                $photo->setUrl($urlPhoto);
+                $daoPhoto->addToDatabase($photo);
+
+                $destination = Config::get()['application']['game_image_path'] . $urlPhoto;
+                move_uploaded_file($_FILES['photo']['tmp_name'], $destination);
+            } else {
                 // Gérer le cas où la photo existe déjà 
                 $template = $this->getTwig()->load('erreur.html.twig');
                 echo $template->render([
-                    'message' => 'La photo existe déjà dans la base de données.'    
+                    'message' => 'La photo existe déjà dans la base de données.'
                 ]);
                 return;
             }
             $idPhoto = $daoPhoto->getIdFromUrl($urlPhoto);
-            var_dump($_POST);
+
+            // Vérification des erreurs
+            if (!$donneesValides || !empty($messagesErreurs)) {
+                // Afficher les erreurs
+                $this->afficherErreursEnregistrement($messagesErreurs);
+                return;
+            }
+            // Les données sont valides, on continue
 
             //Création de l'objet Jeu
             $jeu = new Jeu(
-            null, 
-            $nomJeu,
-            $description,
-            $contenu,
-            $nbJoueursMin,
-            $nbJoueursMax,
-            $dateSortie,
-            !empty($_POST['idJeuPrincipal']) ? $_POST['idJeuPrincipal'] : null, 
-            $idPhoto,
-            $dureePartie
-        );
+                null,
+                $nomJeu,
+                $description,
+                $contenu,
+                $nbJoueursMin,
+                $nbJoueursMax,
+                $dateSortie,
+                !empty($_POST['idJeuPrincipal']) ? $_POST['idJeuPrincipal'] : null,
+                $idPhoto,
+                $dureePartie
+            );
 
-        //Insertion et récupération de l'ID pour les catégories
-        if ($daoJeu->addToDatabase($jeu)) {
-            $idNouveauJeu = $pdo->lastInsertId();
+            //Insertion et récupération de l'ID pour les catégories
+            if ($daoJeu->addToDatabase($jeu)) {
+                $idNouveauJeu = $pdo->lastInsertId();
 
-            //Insertion des catégories dans la table cataloguer
-            if (!empty($_POST['categories']) && is_array($_POST['categories'])) {
-                foreach ($_POST['categories'] as $idCat) {
-                    $sql = "INSERT INTO cataloguer (idJeu, idCategorie) VALUES (?, ?)";
-                    $pdo->prepare($sql)->execute([$idNouveauJeu,$idCat]);
+                //Insertion des catégories dans la table cataloguer
+                if (!empty($_POST['categories']) && is_array($_POST['categories'])) {
+                    foreach ($_POST['categories'] as $idCat) {
+                        $sql = "INSERT INTO cataloguer (idJeu, idCategorie) VALUES (?, ?)";
+                        $pdo->prepare($sql)->execute([$idNouveauJeu, $idCat]);
+                    }
                 }
             }
-        }
 
-        header("Location: index.php?controleur=jeu&methode=lister");
+            header("Location: index.php?controleur=jeu&methode=lister");
         }
     }
     public function afficherErreursEnregistrement(array $erreurs)
