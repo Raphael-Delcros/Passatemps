@@ -128,4 +128,12 @@ class ControllerCompte extends Controller
             return;
         }
     }
+    
+    public function afficherErreursInscription(array $messagesErreurs): void
+    {
+        $template = $this->getTwig()->load('inscription.html.twig');
+        echo $template->render([
+            'erreurs' => $messagesErreurs
+        ]);
+    }
 }
