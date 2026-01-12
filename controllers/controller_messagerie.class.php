@@ -43,7 +43,6 @@ class ControllerMessagerie extends Controller
     /**
      * @brief Affiche un message unique.
      *
-     * 
      * @param mixed $erreur
      * @return void
      */

@@ -86,24 +86,27 @@ class MessagerieDao
      */
     public function findAssocNoComptes(?int $compteId): array
     {
-        $sql = "SELECT idCompte, nom, prenom 
-                FROM " . Config::get()['database']['prefixe_table'] . "compte 
-                WHERE idCompte = :compteId 
-                AND idCompte NOT IN (
-                    SELECT idCompteExpediteur 
-                    FROM " . Config::get()['database']['prefixe_table'] . "message 
-                    WHERE idCompteDestinataire = :compteId  
-                    
-                    UNION
-                    
-                    SELECT idCompteDestinataire
-                    FROM " . Config::get()['database']['prefixe_table'] . "message 
-                    WHERE idCompteExpediteur = :compteId
-            )";
+        $sql = "SELECT idCompte, nom, prenom
+            FROM " . Config::get()['database']['prefixe_table'] . "compte
+            WHERE idCompte != :compteId
+            AND idCompte NOT IN (
+                SELECT idCompteExpediteur
+                FROM " . Config::get()['database']['prefixe_table'] . "message
+                WHERE idCompteDestinataire = :compteId
+
+                UNION
+
+                SELECT idCompteDestinataire
+                FROM " . Config::get()['database']['prefixe_table'] . "message
+                WHERE idCompteExpediteur = :compteId
+            )
+            LIMIT 10;";
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['compteId' => $compteId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 
     /**
      * Trouve tous les comptes qui ont eu une conversation avec le compte donné
@@ -156,6 +159,12 @@ class MessagerieDao
         return $messageries;
     }
 
+    /**
+     * Insère un nouveau message dans la base de données
+     *
+     * @param Messagerie $messagerie Données du message
+     * @return bool True si l'insertion a réussi, false sinon
+     */
     public function InsertInto(Messagerie $messagerie): bool
     {
         $sql = "INSERT INTO " . Config::get()['database']['prefixe_table'] . "message (contenu, dateEnvoi, idCompteExpediteur, idCompteDestinataire) 
