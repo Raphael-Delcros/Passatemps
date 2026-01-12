@@ -1,10 +1,23 @@
 <?php
+/**
+ * @file controller_bannissement.class.php
+ * @brief Définit la classe ControllerBannissement pour gérer les actions liées aux bannissements.
+ * 
+ */
 
+/**
+ * @brief Classe ControllerBannissement pour gérer les actions liées aux bannissements
+ */
 class controllerBannissement extends Controller {
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader) {
         parent::__construct($twig, $loader);
     }
 
+    /**
+     * Affiche tout les bannissements
+     *
+     * @return void
+     */
     public function lister() {
         $dao = new BannissementDao($this->getPdo());
         $bannissements = $dao->findAllAssoc();
@@ -16,6 +29,11 @@ class controllerBannissement extends Controller {
         ]);
     }
 
+    /**
+     * Affiche un bannissement spécifique basé sur son identifiant
+     * 
+     * @return void
+     */
     public function afficher() {
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
         $dao = new BannissementDao($this->getPdo());

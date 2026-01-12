@@ -1,10 +1,28 @@
 <?php
+/**
+ * @file controller_compte.class.php
+ * @brief Définit la classe ControllerCompte pour gérer les actions liées aux comptes.
+ * 
+ */
 
+/**
+ * @brief Classe ControllerCompte pour gérer les actions liées aux comptes
+ */
 class ControllerCompte extends Controller
 {
-
+    /**
+     * Règles de validation pour l'inscription, relié à la classe Validator
+     *
+     * @var array
+     */
     private array $reglesValidation;
 
+    /**
+     * Constructeur de la classe ControllerCompte
+     *
+     * @param Twig\Environment $twig Environnement Twig pour le rendu des templates
+     * @param Twig\Loader\FilesystemLoader $loader Chargeur de fichiers Twig
+     */
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
@@ -52,7 +70,11 @@ class ControllerCompte extends Controller
         ];
     }
 
-    // Liste tous les comptes
+/**
+ * affiche tous les comptes
+ *
+ * @return void
+ */
     public function lister()
     {
         $dao = new CompteDao($this->getPdo());
@@ -64,7 +86,11 @@ class ControllerCompte extends Controller
         ]);
     }
 
-    // Affiche un seul compte
+    /**
+     * Affiche un compte spécifique basé sur son identifiant
+     * 
+     * @return void
+     */
     public function afficher()
     {
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
@@ -94,10 +120,7 @@ class ControllerCompte extends Controller
      * - Nom et Prénom sont entre [3;50] caractères, sont inscrits et sont alphabétiques
      * - Email est sous format email, est entre [5:254] caractères et est inscrit
      * - password & passwordMatch sont égaux, inscrit, entre [8;32] caractères et sont alphanumériques avec un symbole et une majuscule minimum.
-     *
-     * @todo à modifier quand le hashage des mots de passe sera en place
-     * @todo IMPORTANT : Afficher comment le MDP est pas robuste. Je crois que la fonction qu'on utilise peux le rendre, mais faut le faire marcher.
-     * 
+    *
      * @return void
      */
     public function inscrire(): void
@@ -143,6 +166,12 @@ class ControllerCompte extends Controller
         exit();
     }
     
+    /**
+     * @brief Affiche les erreurs d'inscription
+     * 
+     * @param array $erreurs Liste des messages d'erreurs
+     * @return void
+     */
     public function afficherErreursInscription(array $erreurs): void
     {
         $template = $this->getTwig()->load('inscription.html.twig');

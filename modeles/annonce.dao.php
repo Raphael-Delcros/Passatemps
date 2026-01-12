@@ -200,7 +200,7 @@ class AnnonceDao
      * @param string $q Mot-clé de recherche
      * @return array Liste des annonces correspondantes
      */
-    public function researchAnnonces(string $q): array
+    public function research(string $q): array
     {
         $sql = "SELECT A.idAnnonce, A.titre, A.description, A.prix, A.datePub, A.etatJeu, A.etatVente, A.idJeu, A.idCompteVendeur, P.url
             FROM annonce A
