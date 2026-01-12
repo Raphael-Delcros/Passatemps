@@ -1,9 +1,23 @@
 <?php
 
+/**
+ * @file annonce.dao.php
+ * @brief Définit la classe AnnonceDao pour gérer les opérations BDD sur les annonces.
+ * 
+ */
+
+/**
+ * @brief Classe DAO pour gérer les opérations BDD sur les annonces
+ */
 class AnnonceDao
 {
     private ?PDO $pdo;
 
+    /**
+     * Créer un lien vers la base de données
+     *
+     * @param PDO|null $pdo Lien PDO vers la base de données
+     */
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;
@@ -19,6 +33,12 @@ class AnnonceDao
         $this->pdo = $pdo;
     }
 
+    /**
+     * Renvoie une annonce selon son identifiant sous forme d'objet Annonce
+     *
+     * @param integer|null $id
+     * @return Annonce|null
+     */
     public function find(?int $id): ?Annonce
     {
         $tableauAssoc = $this->findAssoc($id);
@@ -27,13 +47,23 @@ class AnnonceDao
         }
         return null;
     }
-
+    /**
+     * Renvoie toutes les annonces sous forme de tableau d'objets Annonce
+     *
+     * @return Annonce[]
+     */
     public function findAll(): array
     {
         $tableau = $this->findAllAssoc();
         return $this->hydrateAll($tableau);
     }
 
+    /**
+     * Renvoie une annonce selon son identifiant sous forme de tableau associatif
+     *
+     * @param integer|null $id
+     * @return array|null
+     */
     public function findAssoc(?int $id)
     {
         $sql = "SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub, a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur, p.url
@@ -47,7 +77,11 @@ class AnnonceDao
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         return $stmt->fetch() ?: null;
     }
-
+    /**
+     * Renvoie toutes les annonces sous forme de tableau associatif
+     *
+     * @return array
+     */
     public function findAllAssoc(): array
     {
         $sql = "SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub, a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur, p.url
@@ -59,7 +93,12 @@ class AnnonceDao
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         return $stmt->fetchAll();
     }
-
+    /**
+     * Hydrate un tableau associatif en un objet Annonce
+     *
+     * @param array|null $tableauAssoc
+     * @return Annonce|null
+     */
     public function hydrate(?array $tableauAssoc): ?Annonce
     {
         $annonce = new annonce();
@@ -75,7 +114,12 @@ class AnnonceDao
         $annonce->setUrlPhoto($tableauAssoc['url'] ?? null);
         return $annonce;
     }
-
+    /**
+     * Hydrate un tableau de tableaux associatifs en un tableau d'objets Annonce
+     *
+     * @param array|null $tableauAssoc
+     * @return Annonce[]
+     */
     public function hydrateAll(?array $tableauAssoc): array
     {
         $annonces = [];
@@ -84,7 +128,12 @@ class AnnonceDao
         }
         return $annonces;
     }
-
+    /**
+     * Insère une nouvelle annonce dans la base de données
+     *
+     * @param Annonce $annonce L'objet Annonce à insérer
+     * @return bool Succès ou échec de l'insertion
+     */
     public function InsertInto(Annonce $annonce): bool
     {
         $sql = "INSERT INTO " . Config::get()['database']['prefixe_table'] . "annonce 
@@ -106,7 +155,11 @@ class AnnonceDao
         ]);
     }
 
-
+    /**
+     * Récupère le dernier identifiant d'annonce utilisé
+     *
+     * @return int Le dernier identifiant d'annonce
+     */
     public function lastId(): int
     {
         $sql = "SELECT MAX(idAnnonce) AS max_id FROM annonce";
@@ -141,7 +194,12 @@ class AnnonceDao
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         return $this->hydrateAll($stmt->fetchAll());
     }
-
+    /**
+     * Recherche des annonces par mot-clé dans le titre
+     *
+     * @param string $q Mot-clé de recherche
+     * @return array Liste des annonces correspondantes
+     */
     public function researchAnnonces(string $q): array
     {
         $sql = "SELECT A.idAnnonce, A.titre, A.description, A.prix, A.datePub, A.etatJeu, A.etatVente, A.idJeu, A.idCompteVendeur, P.url
