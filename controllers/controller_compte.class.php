@@ -2,9 +2,54 @@
 
 class ControllerCompte extends Controller
 {
+
+    private array $reglesValidation;
+
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
+
+        $config = Config::get();
+        $this->reglesValidation = [
+            'email' => [
+                'obligatoire' => true,
+                'longueur_min' => 5,
+                'longueur_max' => 254,
+                'type' => 'string',
+                'format' => FILTER_VALIDATE_EMAIL,
+            ],
+            'password' => [
+                'obligatoire' => true,
+                'longueurMin' => 8,
+                'longueurMax' => 32,
+                'type' => 'string',
+                'format' => $config['regex']['mot_de_passe']
+            ],
+            'passwordMatch' => [
+                'obligatoire' => true,
+                'longueurMin' => 8,
+                'longueurMax' => 32,
+                'type' => 'string',
+                'format' => $config['regex']['mot_de_passe']
+            ],
+            'nom' => [
+                'obligatoire' => true,
+                'longueurMin' => 3,
+                'longueurMax' => 50,
+                'type' => 'string',
+                'format' => $config['regex']['texte_espace']
+            ],
+            'prenom' => [
+                'obligatoire' => true,
+                'longueurMin' => 3,
+                'longueurMax' => 50,
+                'type' => 'string',
+                'format' => $config['regex']['texte']
+            ],
+            'terms' => [
+                'obligatoire' => true,
+            ],
+        ];
     }
 
     // Liste tous les comptes
@@ -34,7 +79,6 @@ class ControllerCompte extends Controller
 
     /**
      * @brief Affiche la page d'inscription
-     *
      * @return void
      */
     public function inscription()
@@ -45,8 +89,14 @@ class ControllerCompte extends Controller
 
     /**
      * @brief Traite le formulaire d'inscription
+     * 
+     * Inscrit l'utilisateur si et seulement si :
+     * - Nom et Prénom sont entre [3;50] caractères, sont inscrits et sont alphabétiques
+     * - Email est sous format email, est entre [5:254] caractères et est inscrit
+     * - password & passwordMatch sont égaux, inscrit, entre [8;32] caractères et sont alphanumériques avec un symbole et une majuscule minimum.
      *
      * @todo à modifier quand le hashage des mots de passe sera en place
+     * @todo IMPORTANT : Afficher comment le MDP est pas robuste. Je crois que la fonction qu'on utilise peux le rendre, mais faut le faire marcher.
      * 
      * @return void
      */
@@ -72,13 +122,10 @@ class ControllerCompte extends Controller
             $dao = new CompteDao($this->getPdo());
             $compte = new Compte(null, $_POST['nom'], $_POST['prenom'], $_POST['email'], password_hash($_POST['password'],PASSWORD_BCRYPT), null, null, 'utilisateur');
             $dao->insert($compte);
-
-            // Redirection vers la page de connexion après inscription
-            header('Location: index.php?controleur=connexion&methode=connexion');
-            exit();
         } else {
-            // Gérer le cas où les données du formulaire ne sont pas complètes
-            echo "Veuillez remplir tous les champs du formulaire d'inscription.";
+            // Afficher les erreurs
+            $this->afficherErreursInscription($messagesErreurs);
+            return;
         }
     }
 }

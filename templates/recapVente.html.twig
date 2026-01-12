@@ -1,32 +1,46 @@
 {% extends 'base_template.html.twig' %}
 
-{% block title %}{{constantes.application.website_name}} - Récapitulatif{% endblock %}
+{% block title %}
+	{{constantes.application.website_name}}
+	- Récapitulatif
+{% endblock %}
 
 {% block body %}
-<main>
-    <h1>Récapitulatif de votre annonce</h1>
+	<h1>Récapitulatif de votre annonce</h1>
 
-    <ul class="list-group">
-        <li class="list-group-item"><strong>Titre :</strong> {{ annonce.titre }}</li>
-        <li class="list-group-item"><strong>Jeu :</strong> {{ annonce.jeu }} (ID: {{ annonce.idJeu }})</li>
-        <li class="list-group-item"><strong>Description :</strong> {{ annonce.description }}</li>
-        <li class="list-group-item"><strong>Prix :</strong> {{ annonce.prix }} €</li>
-        <li class="list-group-item"><strong>État :</strong> {{ annonce.etatJeu }}</li>
-    </ul>
+	<ul class="list-group">
+		<li class="list-group-item">
+			<strong>Titre :</strong>
+			{{ annonce.titre }}</li>
+		<li class="list-group-item">
+			<strong>Jeu :</strong>
+			{{ annonce.jeu }}
+			(ID:
+			{{ annonce.idJeu }})</li>
+		<li class="list-group-item">
+			<strong>Description :</strong>
+			{{ annonce.description }}</li>
+		<li class="list-group-item">
+			<strong>Prix :</strong>
+			{{ annonce.prix }}
+			€</li>
+		<li class="list-group-item">
+			<strong>État :</strong>
+			{{ annonce.etatJeu }}</li>
+	</ul>
 
-    <br>
+	<br>
 
-    <form method="POST" action="index.php?controleur=vendre&methode=confirmerVente">
+	<form method="POST" action="index.php?controleur=vendre&methode=confirmerVente">
 
-    <input type="hidden" name="titre" value="{{ annonce.titre}}">
-    <input type="hidden" name="jeu" value="{{ annonce.jeu }}">
-    <input type="hidden" name="idJeu" value="{{ annonce.idJeu }}">
-    <input type="hidden" name="description" value="{{ annonce.description }}">
-    <input type="hidden" name="prix" value="{{ annonce.prix }}">
-    <input type="hidden" name="etatJeu" value="{{ annonce.etatJeu }}">
+		<input type="hidden" name="titre" value="{{ annonce.titre}}">
+		<input type="hidden" name="jeu" value="{{ annonce.jeu }}">
+		<input type="hidden" name="idJeu" value="{{ annonce.idJeu }}">
+		<input type="hidden" name="description" value="{{ annonce.description }}">
+		<input type="hidden" name="prix" value="{{ annonce.prix }}">
+		<input type="hidden" name="etatJeu" value="{{ annonce.etatJeu }}">
 
-    <button type="submit" class="btn btn-success">Confirmer la publication</button>
-    <a href="index.php?controleur=vendre&methode=creer" class="btn btn-secondary">Modifier</a>
-    </form>
-</main>
+		<button type="submit" class="btn btn-success">Confirmer la publication</button>
+		<a href="index.php?controleur=vendre&methode=creer" class="btn btn-secondary">Modifier</a>
+	</form>
 {% endblock %}

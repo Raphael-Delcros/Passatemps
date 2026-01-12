@@ -2,9 +2,57 @@
 
 class ControllerJeu extends Controller
 {
+    
+    private array $reglesValidation;
+    
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
+        $config = Config::get();
+        $this->reglesValidation = [
+            'jeu' => [
+                'obligatoire' => true,
+                'longueurMin' => 3,
+                'type' => 'string',
+                'longueurMax' => 100,
+                'format' => $config['regex']['texte_espace'],
+            ],
+            'description' => [
+                'obligatoire' => true,
+                'longueurMin' => 10,
+                'longueurMax' => 1000,
+                'type' => 'string',
+                'format' => $config['regex']['texte_espace'],
+            ],
+            'contenu' => [
+                'obligatoire' => true,
+                'longueurMin' => 10,
+                'longueurMax' => 200,
+                'type' => 'string',
+                'format' => $config['regex']['texte_espace'],
+            ],
+            'nbJoueursMin' => [
+                'obligatoire' => true,
+                'type' => 'integer',
+                'plageMin' => 1,
+                'plageMax' => 100,
+            ],
+            'nbJoueursMax' => [
+                'obligatoire' => true,
+                'type' => 'integer',
+                'plageMin' => 1,
+                'plageMax' => 100,
+            ],
+            'dateSortie' => [
+                'obligatoire' => true,
+            ],
+            'dureePartie' => [
+                'obligatoire' => true,
+                'type' => 'integer',
+                'plageMin' => 1,
+                'plageMax' => 1440, // en minutes
+            ],
+        ];
     }
 
     // Liste tous les Jeux
@@ -205,6 +253,24 @@ class ControllerJeu extends Controller
     {
 
         if (!empty($_POST["submit"])) {
+            // Récupération des données
+            $donnees = $_POST; // Pour le Validator
+            $nomJeu = strip_tags($_POST['jeu']);
+            $description = strip_tags($_POST['description']);
+            $contenu = strip_tags($_POST['contenu']);
+            $nbJoueursMin = strip_tags($_POST['nbJoueursMin']);
+            $nbJoueursMax = strip_tags($_POST['nbJoueursMax']);
+            $dateSortie = strip_tags($_POST['dateSortie']);
+            $dureePartie = strip_tags($_POST['dureePartie']);
+            $extensionDe = strip_tags($_POST['extensionDe'] ?? null);
+            
+            // Validation des données
+            $validator = new Validator($this->reglesValidation);
+            $donneesValides = $validator->valider($donnees);
+            $messagesErreurs = $validator->getMessagesErreurs();
+            
+            
+            
             // Connexions à la base de données
             $pdo = $this->getPdo();
             $daoJeu = new JeuDao($this->getPdo());
@@ -260,5 +326,12 @@ class ControllerJeu extends Controller
 
         header("Location: index.php?controleur=jeu&methode=lister");
         }
+    }
+    public function afficherErreursEnregistrement(array $erreurs)
+    {
+        $template = $this->getTwig()->load('backOffice.html.twig');
+        echo $template->render([
+            'erreurs' => $erreurs
+        ]);
     }
 }

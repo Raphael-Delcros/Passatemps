@@ -3,8 +3,6 @@
 {% block title %}{{constantes.application.website_name}} - Annonce publiée{% endblock %}
 
 {% block body %}
-<main class="container mt-5">
-
     {% if success %}
         <div class="alert alert-success">
             Votre annonce a été publiée avec succès !
@@ -19,6 +17,4 @@
         <a href="index.php" class="btn btn-primary">Retour à l'accueil</a>
         <a href="index.php?controleur=vendre&methode=creer" class="btn btn-secondary">Publier une autre annonce</a>
     </div>
-
-</main>
 {% endblock %}
