@@ -105,7 +105,7 @@ class ControllerCompte extends Controller
         
         // Récupération des données
         $email = strip_tags($_POST['email']);
-        $password = strip_tags($_POST['password']);
+        $password = password_hash($_POST['password'],PASSWORD_BCRYPT);
         $passwordMatch = strip_tags($_POST['passwordMatch']);
         $nom = strip_tags($_POST['nom']);
         $prenom = strip_tags($_POST['prenom']);
