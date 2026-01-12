@@ -105,9 +105,8 @@ class ControllerCompte extends Controller
         
         // Récupération des données
         $email = strip_tags($_POST['email']);
-        $password = strip_tags($_POST['password']);
-        $passwordHash = password_hash($_POST['password'],PASSWORD_BCRYPT);
-        $passwordMatch = strip_tags($_POST['passwordMatch']);
+        $password = password_hash($_POST['password'],PASSWORD_BCRYPT);
+        $passwordMatch = password_hash($_POST['passwordMatch'],PASSWORD_BCRYPT);
         $nom = strip_tags($_POST['nom']);
         $prenom = strip_tags($_POST['prenom']);
 
@@ -131,7 +130,7 @@ class ControllerCompte extends Controller
         
         if($donneesValides && empty($messagesErreurs)) {
             $dao = new CompteDao($this->getPdo());
-            $compte = new Compte(null, $nom, $prenom, $email, $passwordHash, null, null, 'utilisateur');
+            $compte = new Compte(null, $nom, $prenom, $email, $password, null, null, 'utilisateur');
             $dao->insert($compte);
         } else {
             // Afficher les erreurs
