@@ -99,7 +99,8 @@ class MessagerieDao
                 SELECT idCompteDestinataire
                 FROM " . Config::get()['database']['prefixe_table'] . "message
                 WHERE idCompteExpediteur = :compteId
-            )";
+            )
+            LIMIT 10;";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['compteId' => $compteId]);

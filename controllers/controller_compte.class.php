@@ -122,6 +122,7 @@ class ControllerCompte extends Controller
             $dao = new CompteDao($this->getPdo());
             $compte = new Compte(null, $_POST['nom'], $_POST['prenom'], $_POST['email'], password_hash($_POST['password'],PASSWORD_BCRYPT), null, null, 'utilisateur');
             $dao->insert($compte);
+            header('Location: index.php?controleur=connexion&methode=connexion');
         } else {
             // Afficher les erreurs
             $this->afficherErreursInscription($messagesErreurs);
