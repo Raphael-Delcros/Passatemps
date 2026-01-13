@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file controller_livraison.class.php
  * @author Raphaël Delcros
@@ -52,17 +53,17 @@ class ControllerLivraison extends Controller
      */
     public function lister()
     {
-        $dao = new LivraisonDao($this->getPdo());
-        $commandes = $dao->findAllAssoc(); // récupère toutes le commandes en tableau associatif
-
-        // On récupère le titre & prix du jeu pour chaque commande
-        foreach ($commandes as $commande) {
-            $commande['jeuCommande'] = $dao->getInfoAnnonceByLivraisonId($commande['idLivraison']);
+        if (!isset($_SESSION['idCompte'])) {
+            $template = $this->getTwig()->load('connexion.html.twig');
+            echo $template->render();
+            return;
+        } else {
+            $dao = new LivraisonDao($this->getPdo());
+            $commandes = $dao->findAllAssocFromIdWithAnnonceInfo($_SESSION['idCompte']);
+            $template = $this->getTwig()->load('commandes.html.twig');
+            echo $template->render([
+                'commandes' => $commandes,
+            ]);
         }
-
-        $template = $this->getTwig()->load('livraisons.html.twig');
-        echo $template->render([
-            'commandes' => $commandes,
-        ]);
     }
 }
