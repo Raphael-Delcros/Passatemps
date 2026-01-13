@@ -137,7 +137,7 @@ class ControllerCompte extends Controller
         $prenom = strip_tags($_POST['prenom']);
 
         $donnees = $_POST; // Pour le Validator
-        var_dump($password, $passwordMatch, $password != $passwordMatch, $_POST['password'] != $_POST['passwordMatch']);
+
         $validator = new Validator($this->reglesValidation);
         // Validation des données
         $donneesValides = $validator->valider($donnees);
