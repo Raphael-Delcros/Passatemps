@@ -23,7 +23,7 @@
                 <tr>
                     <td>
                         {% if annonce.url %}
-                            <img src="images/jeux/{{ annonce.url }}" width="50" class="rounded shadow-sm">
+                            <img src="{{ annonce.url }}" width="50" class="rounded shadow-sm">
                         {% else %}
                             <span class="badge bg-secondary">Pas d'image</span>
                         {% endif %}
