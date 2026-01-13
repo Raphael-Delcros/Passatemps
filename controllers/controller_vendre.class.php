@@ -96,7 +96,7 @@ class ControllerVendre extends controller
             floatval($data['prix']),
             date('Y-m-d'),
             $data['etatJeu'],
-            'en Vente',
+            'enVente',
             intval($data['idJeu']),
             $_SESSION['idCompte'] ?? 1
         );
@@ -165,7 +165,7 @@ class ControllerVendre extends controller
 
         $jeux = new JeuDao($this->getPdo());
         $jeu = $jeux->find(intval($data['idJeu']));
-
+        // Verification que le jeu existe. Fonctionne SEULEMENT si on utilise la prédiction (recherche) du jeu.
         if ($jeu) {
             $data['jeu'] = $jeu->getNom();
         } else {
@@ -173,6 +173,7 @@ class ControllerVendre extends controller
         }
 
         if (!$donneesValides || !empty($messagesErreurs)) {
+            // S'il y a des erreurs, on réaffiche le formulaire avec les messages d'erreur
             $template = $this->getTwig()->load('vendre.html.twig');
             echo $template->render([
                 'erreurs' => $messagesErreurs,
