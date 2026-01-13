@@ -32,18 +32,19 @@ class ControllerLivraison extends Controller
      */
     public function afficher()
     {
-        $id = isset($_GET['id']) ? intval($_GET['id']) : null;
-        $dao = new LivraisonDao($this->getPdo());
-        $commande = $dao->find($id);
+        if (!isset($_SESSION['idCompte'])) {
+            $template = $this->getTwig()->load('connexion.html.twig');
+            echo $template->render();
+            return;
+        } else {
+            $dao = new LivraisonDao($this->getPdo());
 
-        // On récupère le titre & prix du jeu pour cette commande
-        $annonce = $dao->getInfoAnnonceByLivraisonId($commande->getIdLivraison());
-
-        $template = $this->getTwig()->load('livraison.html.twig');
-        echo $template->render([
-            'commande' => $commande,
-            'annonce' => $annonce,
-        ]);
+            $commande = $dao->findAllAssocFromIdWithAnnonceInfo($_SESSION['idCompte'], isset($_GET['id']) ? intval($_GET['id']) : null);
+            $template = $this->getTwig()->load('livraison.html.twig');
+            echo $template->render([
+                'commande' => $commande[0],
+            ]);
+        }
     }
 
     /**
