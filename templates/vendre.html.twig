@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-	<form method="POST" action="index.php?controleur=vendre&methode=recap" class="row g-3 position-relative" autocomplete="off" novalidate>
+	<form method="POST" action="index.php?controleur=vendre&methode=recap" class="row g-3 position-relative" autocomplete="off" novalidate enctype="multipart/form-data">
 		<h1>Vendre</h1>
 		<input type="hidden" name="controleur" value="vendre">
 		<input type="hidden" name="methode" value="confirmerVente">
@@ -104,7 +104,7 @@
 		<div class="row mt-2">
 			<div class="col mt-2">
 				<label for="photos" class="form-label required">Photos de l'annonce</label>
-				<input type="file" class="form-label" name="photos" accept=".png,.jpeg,.jpg" title="Photos du jeu" multiple required>
+				<input type="file" class="form-label" name="photos" accept=".png,.jpeg,.jpg" title="Photos du jeu" required>
 			</div>
 			{# Confirmation #}
 			<div class="col align-items-end">

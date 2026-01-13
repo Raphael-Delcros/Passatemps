@@ -69,40 +69,64 @@ class ControllerVendre extends controller
     /**
      * @brief Ajoute une annonce de vente dans la base de données
      * 
-     * @todo Changer idCommpteVendeur quand les comptes seront faits, Faire id jeu quand la recherche et la récuperation d'id sera faite
-     * @todo Autocomplétion de Jeu dans le formulaire de vente
      * @return void
      */
     public function confirmerVente()
     {
-        $data = $_POST;
+        // Récupérer les données depuis la session au lieu de $_POST
+        $data = $_SESSION['annonce_temp'] ?? [];
 
-        $date = getdate();
-        $stringdate =  $date['year'] . '-' . $date['mon'] . '-' . $date['mday'];
+        if (empty($data)) {
+            $template = $this->getTwig()->load('confirmation.html.twig');
+            echo $template->render(['success' => false]);
+            return;
+        }
 
-        $dao = new AnnonceDao($this->getPdo());
-        $idAnnonce = $dao->lastId();
+        $daoAnnonce = new AnnonceDao($this->getPdo());
+        $daoPhoto = new PhotoDao($this->getPdo());
 
+        // 1. Ton ID que tu calcules et qui marche déjà 
+        $monIdCalculé = $daoAnnonce->lastId();
+
+        // 2. Création et insertion de l'annonce (Tu dis que ça, ça marche)
         $annonce = new Annonce(
-            intval($idAnnonce),
+            $monIdCalculé,
             $data['titre'],
             $data['description'],
-            $data['prix'],
-            $stringdate,
+            floatval($data['prix']),
+            date('Y-m-d'),
             $data['etatJeu'],
-            'en Vente', //etatVente
+            'enVente',
             intval($data['idJeu']),
-            1             // idCompteVendeur → à remplacer plus tard
+            $_SESSION['idCompte'] ?? 1
         );
-        //à changer IdCompteVendeur quand les comptes seront faits
-        //Faire id jeu quand la recherche et la récupération d'id serai faite
 
-        $result = $dao->InsertInto($annonce);
+        $res = $daoAnnonce->InsertInto($annonce);
+
+        // 3. L'IMAGE : On récupère le chemin depuis la session
+        if ($res) {
+            if (isset($_SESSION['temp_photo_path']) && !empty($_SESSION['temp_photo_path'])) {
+                $photo = new Photo();
+                $photo->setUrl($_SESSION['temp_photo_path']);
+                $photo->setIdAnnonce($monIdCalculé);
+
+                $daoPhoto->addToDatabase($photo);
+
+                // Nettoyer la session
+                unset($_SESSION['temp_photo_path']);
+            }
+            $result = true;
+        } else {
+            $result = false;
+        }
+
+        // Nettoyer les données temporaires
+        unset($_SESSION['annonce_temp']);
+
         $template = $this->getTwig()->load('confirmation.html.twig');
-        echo $template->render([
-            'success' => $result
-        ]);
+        echo $template->render(['success' => $result]);
     }
+
 
     /**
      * @brief Affiche le récapitulatif de l'annonce avant confirmation
@@ -112,24 +136,42 @@ class ControllerVendre extends controller
      */
     public function recap()
     {
-        // On récupère tout le formulaire
         $data = $_POST;
+        $config = Config::get();
+
+        // Gestion de l'upload de fichier
+        if (isset($_FILES['photos']) && $_FILES['photos']['error'] === UPLOAD_ERR_OK) {
+            $uploaddir = $config['application']['image_upload_path'];
+
+            if (!is_dir($uploaddir)) {
+                mkdir($uploaddir, 0755, true);
+            }
+
+            $extension = pathinfo($_FILES['photos']['name'], PATHINFO_EXTENSION);
+            $nomFichier = "temp_" . time() . "_" . rand(1000, 9999) . "." . $extension;
+            $uploadfile = $uploaddir . $nomFichier;
+
+            if (move_uploaded_file($_FILES['photos']['tmp_name'], $uploadfile)) {
+                $data['urlPhoto'] = $uploadfile;
+                // IMPORTANT : Stocker le chemin en session
+                $_SESSION['temp_photo_path'] = $uploadfile;
+            }
+        }
 
         // Validation des données
         $validator = new Validator($this->reglesValidation);
         $donneesValides = $validator->valider($data);
         $messagesErreurs = $validator->getMessagesErreurs();
-        
+
         $jeux = new JeuDao($this->getPdo());
         $jeu = $jeux->find(intval($data['idJeu']));
-
         // Verification que le jeu existe. Fonctionne SEULEMENT si on utilise la prédiction (recherche) du jeu.
         if ($jeu) {
             $data['jeu'] = $jeu->getNom();
         } else {
             $messagesErreurs[] = "Le jeu sélectionné est invalide.";
         }
-        
+
         if (!$donneesValides || !empty($messagesErreurs)) {
             // S'il y a des erreurs, on réaffiche le formulaire avec les messages d'erreur
             $template = $this->getTwig()->load('vendre.html.twig');
@@ -140,9 +182,9 @@ class ControllerVendre extends controller
             return;
         }
 
+        // Stocker toutes les données en session pour confirmerVente()
+        $_SESSION['annonce_temp'] = $data;
 
-
-        // On envoie à Twig pour affichage du résumé
         $template = $this->getTwig()->load('recapVente.html.twig');
         echo $template->render([
             'annonce' => $data

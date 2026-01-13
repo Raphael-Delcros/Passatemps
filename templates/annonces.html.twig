@@ -15,7 +15,7 @@
     {% for a in annonces %}
         <div class="col">
             <div class="card h-100 shadow-lg border-0 p-4 text-center list-unstyled">
-                <li><img src="{{ constantes.application.game_image_path }}{{ a.url }}" alt="Photo {{ a.idAnnonce }}" width="200"></li>
+                <li><img src="{{ a.url }}" alt="Photo {{ a.idAnnonce }}" width="200"></li>
                 </br>
                 <strong>{{ a.titre }}</strong></br>
                 <a href="index.php?controleur=Annonce&methode=afficher&id={{ a.idAnnonce }}">Voir plus</a>
