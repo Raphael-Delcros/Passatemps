@@ -3,11 +3,20 @@
 {% block title %}{{constantes.application.website_name}} - Commande n°{{commande.idLivraison}}{% endblock %}
 
 {% block body %}
-<h1>Détails de la commande n°{{ commande.idLivraison }}</h1>
-<ul>
-    <li>Jeu commandé : <a href="index.php?controleur=Annonce&methode=afficher&id={{ commande.idAnnonce }}">{{ annonce.titre}}</a></li>
-    <li>Date de la commande : {{ commande.dateCommande|date('d/m/Y') }}</li>
-    <li>Numéro de suivi : {{ commande.numeroDeSuivi }}</li>
-    <li>Prix : {{ annonce.prix }} €</li>
-</ul>
+<div class="container mt-5">
+		<h1 class="text-center fw-bold">
+			Détails de la commande n°{{ commande.idLivraison }} - 
+            <a href="index.php?controleur=Annonce&methode=afficher&id={{ commande.idAnnonce }}">{{ commande.titre }}</a>
+		</h1>
+		<div class="card shadow-sm border-0">
+			<div class="list-group list-group-flush rounded shadow-sm">
+
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Date de la commande :</strong> {{ commande.dateCommande|date('d/m/Y') }}</li>
+                    <li class="list-group-item"><strong>Numéro de suivi :</strong> {{ commande.numeroDeSuivi }}</li>
+                    <li class="list-group-item"><strong>Prix :</strong> {{ commande.prix }} €</li>
+                    <li class="list-group-item"><strong>Status :</strong> {{ commande.status }}</li>
+                    <li class="list-group-item"><strong>Adresse de livraison :</strong> {{ commande.adresse }} {{ commande.codePostal }} {{ commande.ville }} {{ commande.pays }}</li>
+        </div>
+    </div>
 {% endblock %}
