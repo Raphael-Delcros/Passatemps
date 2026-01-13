@@ -136,25 +136,24 @@ class AnnonceDao
      */
     public function InsertInto(Annonce $annonce): bool
     {
+        // On ajoute explicitement idAnnonce dans la requête
         $sql = "INSERT INTO " . Config::get()['database']['prefixe_table'] . "annonce 
-            (idAnnonce, titre, description, prix, datePub, etatJeu, etatVente, idJeu, idCompteVendeur) 
-            VALUES (:idAnnonce, :titre, :description, :prix, :datePub, :etatJeu, :etatVente, :idJeu, :idCompteVendeur)";
+        (idAnnonce, titre, description, prix, datePub, etatJeu, etatVente, idJeu, idCompteVendeur) 
+        VALUES (:id, :titre, :description, :prix, :datePub, :etatJeu, :etatVente, :idJeu, :idCompteVendeur)";
 
         $stmt = $this->pdo->prepare($sql);
-
         return $stmt->execute([
-            'idAnnonce'      => $annonce->getIdAnnonce(),
-            'titre'          => $annonce->getTitre(),
-            'description'    => $annonce->getDescription(),
-            'prix'           => $annonce->getPrix(),
-            'datePub'        => $annonce->getDatePub(),
-            'etatJeu'        => $annonce->getEtatJeu(),
-            'etatVente'      => $annonce->getEtatVente(),
-            'idJeu'          => $annonce->getIdJeu(),
+            'id'              => $annonce->getIdAnnonce(), // Utilise l'ID calculé par lastId()
+            'titre'           => $annonce->getTitre(),
+            'description'     => $annonce->getDescription(),
+            'prix'            => $annonce->getPrix(),
+            'datePub'         => $annonce->getDatePub(),
+            'etatJeu'         => $annonce->getEtatJeu(),
+            'etatVente'       => $annonce->getEtatVente(),
+            'idJeu'           => $annonce->getIdJeu(),
             'idCompteVendeur' => $annonce->getIdCompteVendeur()
         ]);
     }
-
     /**
      * Récupère le dernier identifiant d'annonce utilisé
      *
