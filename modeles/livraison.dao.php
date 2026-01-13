@@ -66,6 +66,20 @@ class LivraisonDao
     }
 
     /**
+     * Trouve toutes les livraisons d'un compte avec les informations de l'annonce associée
+     *
+     * @return array Liste des livraisons
+     */
+    public function findAllAssocFromIdWithAnnonceInfo( ?int $idCompte ): array
+    {
+        $sql = "SELECT l.*, a.titre, a.prix, a.idAnnonce FROM " . Config::get()['database']['prefixe_table'] . "livraison l JOIN " . Config::get()['database']['prefixe_table'] . "annonce a ON l.idAnnonce = a.idAnnonce WHERE l.idCompteAcheteur = :idCompte";
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute(array("idCompte" => $idCompte));
+        $commandes = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+        return $commandes;
+    }
+
+    /**
      * Hydrate un tableau de données en une instance de Livraison
      *
      * @param array $data Tableau associatif des données de la livraison
