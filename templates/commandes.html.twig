@@ -1,0 +1,53 @@
+{% extends "base_template.html.twig" %}
+{% block title %}
+	{{constantes.application.website_name}}
+	- Gestion des commandes
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h1 class="text-center fw-bold">
+			Vos Commandes
+		</h1>
+		<div class="card shadow-sm border-0">
+			<div class="list-group list-group-flush rounded shadow-sm">
+
+				{% if commandes is empty %}
+					<div class="text-center p-5">
+						<i class="bi bi-chat-square-dots text-muted" style="font-size: 3rem;"></i>
+						<p class="mt-3 text-muted">Vous n'avez aucune commande pour le moment.</p>
+					</div>
+				{% else %}
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">Jeu commandé</th>
+								<th scope="col">Date de la commande</th>
+								<th scope="col">Numéro de suivi</th>
+								<th scope="col">Prix</th>
+								<th scope="col">Status</th>
+								<th scope="col">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for commande in commandes %}
+								<tr>
+									<td>
+										<a href="index.php?controleur=Annonce&methode=afficher&id={{ commande.idAnnonce }}">{{ commande.titre }}</a>
+									</td>
+									<td>{{ commande.dateCommande|date('d/m/Y') }}</td>
+									<td>{{ commande.numeroDeSuivi }}</td>
+									<td>{{ commande.prix }}
+										€</td>
+									<td>{{ commande.status }}</td>
+									<td>
+										<a href="index.php?controleur=livraison&methode=afficher&id={{ commande.idLivraison }}" class="btn btn-primary btn-sm">Voir Détails</a>
+									</td>
+								</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}
