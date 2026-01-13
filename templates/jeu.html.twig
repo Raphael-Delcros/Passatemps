@@ -65,7 +65,7 @@
 				<div class="col-md-4 mb-4">
 					<div class="card h-100 shadow-sm">
 						{% if annonce.urlPhoto %}
-							<img src="{{ constantes.application.game_image_path }}{{ annonce.urlPhoto }}" class="card-img-top" alt="{{ annonce.titre }}">
+							<img src="{{ annonce.urlPhoto }}" class="card-img-top" alt="{{ annonce.titre }}">
 						{% endif %}
 
 						<div class="card-body">
