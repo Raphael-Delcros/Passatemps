@@ -32,4 +32,4 @@ class Config
         }
         return self::$instance;
     }
-}
+} 

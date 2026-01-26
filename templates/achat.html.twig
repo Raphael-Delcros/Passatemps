@@ -1,0 +1,71 @@
+{% extends 'base_template.html.twig' %}
+
+{% block title %}
+	{{constantes.application.website_name}}
+	- Vente
+{% endblock %}
+
+{% block body %}
+	<form method="POST" action="index.php?controleur=paiement&methode=afficher" class="row g-3 position-relative" autocomplete="off" novalidate enctype="multipart/form-data">
+		<h1 class="text-center">Acheter votre jeu</h1>
+        <p><b>Adresse de livraison</b>→ paiement → récapituatif</p>
+		<input type="hidden" name="controleur" value="paiement">
+		<input type="hidden" name="methode" value="afficher">
+
+		<div class="row">
+			<div class=" col mt-2 bg-white p-2 border border-2 rounded">
+				<h3 class="text-center">Adresse de livraison</h3>
+				<div class="row">
+					<div class="col">
+						<label for="titre" class="form-label required">Ville</label>
+						<input type="text" class="form-control" name="ville" placeholder="Bordeaux" title="Ville de la livraison" required>
+					</div>
+					<div class="col-2">
+						<label for="titre" class="form-label required">Code Postal</label>
+						<input type="text" class="form-control" name="codePostal" placeholder="33000" title="Code Postal de la livraison" required>
+					</div>
+				</div>
+				<div class="row mt-2">
+					<div class="col">
+						<label for="titre" class="form-label required">Adresse</label>
+						<input type="text" class="form-control" name="adresse" placeholder="12 rue de la paix" title="Adresse de la livraison" required>
+					</div>
+					<div class="col">
+						<label for="titre" class="form-label">Complement d'adresse</label>
+						<input type="text" class="form-control" name="complementAdresse" placeholder="Batiment A, Appartement 3" title="Complement d'adresse de la livraison">
+					</div>
+
+				</div>
+                <button type="submit" class="btn btn-primary mt-3" href="index.php?controleur=paiement&methode=afficher&id={{ annonce.idAnnonce }}">Continuer vers le paiement</button>
+
+			</div>
+
+			<div class="col-1"></div>
+
+			<div class="col-3 bg-white p-2 border border-2 rounded">
+				<h3>{{ annonce.titre }}</h3>
+				<p>
+					<strong>Prix :</strong>
+					{{ annonce.prix }}
+					€</p>
+				<p>
+					<strong>Etat du jeu :</strong>
+					{{ annonce.etatJeu }}</p>
+				<p>
+					<strong>Description :</strong>
+					{{annonce.description}}</p>
+			</div>
+		</div>
+
+		<div class="row mt-2">
+			<div class="col mt-2">
+				{% if erreurs is defined and erreurs|length > 0 %}
+					<div class="alert alert-danger mt-3">
+						<ul class="mb-0">
+							{% for erreur in erreurs %}
+								<li>{{ erreur }}</li>
+							{% endfor %}
+						</ul>
+					</div>
+				{% endif %}
+			{% endblock %}

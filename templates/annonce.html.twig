@@ -5,7 +5,7 @@
 <div class="container mt-5">
     <div class="row row-cols-md-2 align-items-center">
         <div class="col">
-            <div class="card h-100" style="width: 300px">
+            <div class="card h-100 p-3" style="width: 300px">
                 <img src="{{ annonce.urlPhoto }}" class="card-img-top" h="300" alt="Photo {{ annonce.idAnnonce }}">
             </div>
         </div>
@@ -24,6 +24,7 @@
                 <div class="card h-30 p-1">
                     <a href="index.php?controleur=Paiement&methode=afficher&id={{ a.idAnnonce }}" class="btn btn-primary w-100">Acheter l'annonce</a>
                 </div>
+                <a class="btn btn-primary" href="index.php?controleur=livraison&methode=achat&id={{ annonce.idAnnonce }}">Acheter</a>
             </div>
         </div>
     </div>
