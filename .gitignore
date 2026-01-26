@@ -1,3 +1,4 @@
+# Application
 /vendor
 /node_modules
 /CSS
@@ -6,3 +7,13 @@
 /images/vignettes/
 /docs
 /uploads
+
+# PHPBB3
+/phpBB3/cache/
+/phpBB3/files/
+/phpBB3/images/avatars/upload/
+/phpBB3/vendor/
+/phpBB3/config.php
+/phpBB3/files/
+/phpBB3/store/
+/phpBB3/tmp/
