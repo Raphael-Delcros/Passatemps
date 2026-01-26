@@ -1,9 +1,12 @@
 {% extends 'base_template.html.twig' %}
 
+{% block title %}{{constantes.application.website_name}} - Modification de {{jeu.nom}}{% endblock %}
+
+
 {% block body %}
 <div class="container mt-5">
     <div class="card shadow">
-        <div class="card-header bg-warning text-dark">
+        <div class="card-header primary bg-primary">
             <h2>Modifier le jeu : {{ jeu.nom }}</h2>
         </div>
         <div class="card-body">
@@ -50,7 +53,7 @@
                 </div>
 
                 <div class="d-flex justify-content-between mt-4">
-                    <a href="index.php?controleur=admin&methode=listeJeux" class="btn btn-secondary">Annuler</a>
+                    <a href="index.php?controleur=admin&methode=listeJeux" class="btn btn-outline-secondary">Annuler</a>
                     <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
                 </div>
             </form>

@@ -5,7 +5,7 @@ class JeuDao
     private ?PDO $pdo;
 
 
-    // --- Constucteur ---
+    // --- Constructeur ---
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;

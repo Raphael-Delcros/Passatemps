@@ -1,44 +1,52 @@
 {% extends 'base_template.html.twig' %}
 
-{% block body %}
-<div class="container mt-5">
-    <h1 class="mb-4">Gestion des Comptes</h1>
+{% block title %}{{constantes.application.website_name}} - Gestion des Comptes{% endblock %}
 
-    <div class="card shadow-sm">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="table-dark">
-                <tr>
-                    <th>Utilisateur</th>
-                    <th>Email</th>
-                    <th>Rôle</th>
-                    <th>Date Inscription</th>
-                    <th class="text-end">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for c in comptes %}
-                <tr>
-                    <td><strong>{{ c.prenom }} {{ c.nom }}</strong></td>
-                    <td>{{ c.email }}</td>
-                    <td>
-                        <span class="badge {{ c.role == 'administrateur' ? 'bg-danger' : 'bg-primary' }}">
-                            {{ c.role }}
-                        </span>
-                    </td>
-                    <td>{{ c.dateInscription|date("d/m/Y") }}</td>
-                    <td class="text-end">
-                        <a href="index.php?controleur=admin&methode=formulaireModifCompte&id={{ c.idCompte }}" class="btn btn-sm btn-warning">Modifier</a>
-                        <a href="index.php?controleur=admin&methode=supprimerCompte&id={{ c.idCompte }}" 
-                           class="btn btn-sm btn-danger" 
-                           onclick="return confirm('Supprimer le compte de {{ c.prenom }} ?')">Supprimer</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <div class="mt-4">
-        <a href="index.php?controleur=admin&methode=dashboard" class="btn btn-outline-secondary">Retour Dashboard</a>
-    </div>
-</div>
+{% block body %}
+	<div class="container mt-5">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+
+			<h1 class="mb-4">Gestion des Comptes</h1>
+			<a href="index.php?controleur=admin&methode=dashboard" class="btn btn-outline-secondary">Retour Dashboard</a>
+
+		</div>
+
+		<div class="card shadow-sm">
+			<table class="table table-hover align-middle mb-0">
+				<thead class="table-dark">
+					<tr>
+						<th>Utilisateur</th>
+						<th>Email</th>
+						<th>Rôle</th>
+						<th>Date Inscription</th>
+						<th class="text-end">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for c in comptes %}
+						<tr>
+							<td>
+								<strong>{{ c.prenom }}
+									{{ c.nom }}</strong>
+							</td>
+							<td>{{ c.email }}</td>
+							<td>
+								<span class="badge {{ c.role == 'administrateur' ? 'bg-danger' : 'bg-primary' }}">
+									{{ c.role }}
+								</span>
+							</td>
+							<td>{{ c.dateInscription|date("d/m/Y") }}</td>
+							<td class="text-end">
+								<a href="index.php?controleur=admin&methode=formulaireModifCompte&id={{ c.idCompte }}" class="btn btn-sm btn-warning">Modifier</a>
+								<a href="index.php?controleur=admin&methode=supprimerCompte&id={{ c.idCompte }}" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer le compte de {{ c.prenom }} ?')">Supprimer</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="mt-4">
+			<a href="index.php?controleur=admin&methode=dashboard" class="btn btn-outline-secondary">Retour Dashboard</a>
+		</div>
+	</div>
 {% endblock %}
