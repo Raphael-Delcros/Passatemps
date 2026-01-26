@@ -68,4 +68,5 @@ Class ControllerAnnonce extends controller {
             'q' => $q
         ]);
     }
+
 }
