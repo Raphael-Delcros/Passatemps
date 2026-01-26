@@ -43,4 +43,4 @@ class Bd
     {
         throw new Exception("Un singleton ne doit pas être deserialisé");
     }
-}
+} 
