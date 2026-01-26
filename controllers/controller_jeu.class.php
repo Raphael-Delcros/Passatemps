@@ -59,7 +59,8 @@ class ControllerJeu extends Controller
     public function lister()
     {
         $dao = new JeuDao($this->getPdo());
-        $jeux = $dao->findAllAssoc(); // récupère tous les jeux en tableau associatif
+
+        $jeux = $dao->findAllAssoc();
 
         // Génération automatique des vignettes dans images/vignette/
         $imagesDir = Config::get()['application']['game_image_path'];
@@ -88,10 +89,13 @@ class ControllerJeu extends Controller
                 $this->generateThumbnail($srcPath, $destPath, 300, 200);
             }
         }
+        $categorieDao = new CategorieDao($this->getPdo());
+        $categories = $categorieDao->findAllAssoc();
 
         $template = $this->getTwig()->load('jeux.html.twig');
         echo $template->render([
             'jeux' => $jeux,
+            'categories' => $categories
         ]);
     }
     /**
@@ -324,6 +328,30 @@ class ControllerJeu extends Controller
         $template = $this->getTwig()->load('backOffice.html.twig');
         echo $template->render([
             'erreurs' => $erreurs
+        ]);
+    }
+
+    public function filtrerParCategorie()
+    {
+        $categorieSelectionnee = $_GET['categorie'] ?? ''; 
+
+        $dao = new JeuDao($this->getPdo());
+
+        // Si aucune catégorie sélectionnée, on affiche tous les jeux
+        if (empty($categorieSelectionnee)) {
+            $jeux = $dao->findAllAssoc();
+        } else {
+            $jeux = $dao->findByCategorie($categorieSelectionnee);
+        }
+
+        $categorieDao = new CategorieDao($this->getPdo());
+        $categories = $categorieDao->findAllAssoc();
+
+        $template = $this->getTwig()->load('jeux.html.twig');
+        echo $template->render([
+            'jeux' => $jeux,
+            'categories' => $categories,
+            'categorieActive' => $categorieSelectionnee, // Pour garder la sélection active
         ]);
     }
 }
