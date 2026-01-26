@@ -346,27 +346,45 @@ class JeuDao
         ]);
     }
 
-
     /**
-     * @brief Récupère les jeux d'une catégorie donnée
+     * @brief Recherche de jeux avec filtres dynamiques
      * 
-     * @param string $categorie Nom de la catégorie des jeux à récupérer
-     * @return array Liste des jeux dans la catégorie donnée avec leurs informations complètes
+     * @param JeuFilter $filter Instance de JeuFilter configurée
+     * @return array Liste des jeux correspondant aux filtres
      */
-    public function findByCategorie(string $categorie): array
+    public function findWithFilters(JeuFilter $filter): array
     {
-        $sql = "SELECT DISTINCT J.idJeu, J.nom, J.nbJoueursMin, J.nbJoueursMax, 
-                   J.description, J.contenu, J.dateSortie, J.dureePartie,
-                   J.idJeuPrincipal, J.idPhoto, P.url
-            FROM jeu J
-            INNER JOIN cataloguer C ON J.idJeu = C.idJeu
-            INNER JOIN categorie CA ON C.idCategorie = CA.idCategorie
-            LEFT JOIN photo P ON J.idPhoto = P.idPhoto
-            WHERE LOWER(CA.nom) = LOWER(:categorie)
-            ORDER BY J.nom";
+        $sql = "SELECT DISTINCT J.idJeu, J.nom, J.description, J.contenu, 
+               J.nbJoueursMin, J.nbJoueursMax, J.dateSortie, 
+               J.idJeuPrincipal, J.idPhoto, J.dureePartie, P.url
+        FROM jeu J
+        LEFT JOIN photo P ON J.idPhoto = P.idPhoto"
+            . $filter->buildJoins() . " "
+            . $filter->buildWhereClause() . "
+        ORDER BY J.nom";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['categorie' => $categorie]);
+        $stmt->execute($filter->getParams());
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @brief Compte le nombre de jeux correspondant aux filtres
+     * 
+     * @param JeuFilter $filter Instance de JeuFilter configurée
+     * @return int Nombre de jeux trouvés
+     */
+    public function countWithFilters(JeuFilter $filter): int
+    {
+        $sql = "SELECT COUNT(DISTINCT J.idJeu) 
+        FROM jeu J"
+            . $filter->buildJoins() . " "
+            . $filter->buildWhereClause();
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($filter->getParams());
+
+        return (int) $stmt->fetchColumn();
     }
 }
