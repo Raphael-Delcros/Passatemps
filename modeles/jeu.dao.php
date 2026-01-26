@@ -345,4 +345,28 @@ class JeuDao
             'idJeu' => $jeu->getIdJeu()
         ]);
     }
+
+
+    /**
+     * @brief Récupère les jeux d'une catégorie donnée
+     * 
+     * @param string $categorie Nom de la catégorie des jeux à récupérer
+     * @return array Liste des jeux dans la catégorie donnée avec leurs informations complètes
+     */
+    public function findByCategorie(string $categorie): array
+    {
+        $sql = "SELECT DISTINCT J.idJeu, J.nom, J.nbJoueursMin, J.nbJoueursMax, 
+                   J.description, J.contenu, J.dateSortie, J.dureePartie,
+                   J.idJeuPrincipal, J.idPhoto, P.url
+            FROM jeu J
+            INNER JOIN cataloguer C ON J.idJeu = C.idJeu
+            INNER JOIN categorie CA ON C.idCategorie = CA.idCategorie
+            LEFT JOIN photo P ON J.idPhoto = P.idPhoto
+            WHERE LOWER(CA.nom) = LOWER(:categorie)
+            ORDER BY J.nom";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['categorie' => $categorie]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
