@@ -1,6 +1,7 @@
 <?php
 
 class ControllerForum extends Controller {
+
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader) {
         parent::__construct($twig, $loader);
     }
@@ -25,5 +26,10 @@ class ControllerForum extends Controller {
             'publication' => $publication,
             'menu' => 'publication'
         ]);
+    }
+    
+    public function creerPublication() {
+        $template = $this->getTwig()->load('creer_publication.html.twig');
+        echo $template->render([]);
     }
 }
