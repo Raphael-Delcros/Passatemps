@@ -11,12 +11,19 @@
         </div>
 
         <div class="col">
-            <div class="card h-100 p-3">
-                <h2 class="card-title">{{ annonce.titre }}</h2>
-                <p><strong>Prix :</strong> {{ annonce.prix }} €</p>
-                <p><strong>Etat du jeu :</strong> {{ annonce.etatJeu }}</p>
-                <p><strong>Description :</strong> {{annonce.description}}</p>
-                <p><strong>Date de la publication :</strong> {{ annonce.datePub }}</p>
+            <div class="row">
+                <div class="card h-100 p-3">
+                    <h2 class="card-title">{{ annonce.titre }}</h2>
+                    <p><strong>Prix :</strong> {{ annonce.prix }} €</p>
+                    <p><strong>Etat du jeu :</strong> {{ annonce.etatJeu }}</p>
+                    <p><strong>Description :</strong> {{annonce.description}}</p>
+                    <p><strong>Date de la publication :</strong> {{ annonce.datePub }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card h-30 p-1">
+                    <button href="index.php?controleur=Paiement&methode=afficher&id={{ annonce.idAnnonce }}" type="submit" class="btn btn-primary me-mt-2">Acheter l'annonce</button>
+                </div>
             </div>
         </div>
     </div>
