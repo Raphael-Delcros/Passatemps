@@ -1,51 +1,50 @@
 {% extends 'base_template.html.twig' %}
-{% block title %}{{constantes.application.website_name}} - {{ annonce.titre }} {% endblock %}
+{% block title %}{{constantes.application.website_name}} - Paiement {% endblock %}
 
 {% block body %}
 
- <div class="checkout-container">
-        <!-- Form Panel -->
-        <div class="form-panel">
-            <h1 class="h3 fw-bold mb-4">Veuillez compléter votre achat</h1>
-            
-            <!-- Progress Bar -->
-            <div class="step-progress-bar">
-                <div class="progress-indicator" style="width: 0%;"></div>
+<div class="form-container">
+    <form class="checkout-form">
+        <h2 class="form-title">Détails du paiement</h2>
+        <div class="mb-4">
+            <label class="form-label">Numéro de la carte</label>
+            <input type="text" name="numCarte" class="form-control" placeholder="1234 1234 1234 1234" required>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label class="form-label">Date d'expiration</label>
+                <input type="text" name="dateExpiration" class="form-control" placeholder="MM/YY" required>
             </div>
-
-            <!-- Form Steps -->
-            <form id="checkout-form" type="post">
-                <!-- Step 1: Shipping Information -->
-                <div class="form-step active" id="step1">
-                    <h2 class="h5 fw-bold mb-4">Détails de la commande</h2>
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Nom</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Naïo">
-                    </div>
-                    <div class="mb-3">
-                        <label for="surname" class="form-label">Prénom</label>
-                        <input type="text" class="form-control" id="surname" name="surname" placeholder="Wailord">
-                    </div>
-                    <div class="mb-3">
-                        <label for="address" class="form-label">Adresse</label>
-                        <input type="text" class="form-control" id="address" name="address" placeholder="22 Rue des Skibidis">
-                    </div>
-                    <div class="row g-3">
-                        <div class="col-md-7">
-                            <label for="city" class="form-label">Ville</label>
-                            <input type="text" class="form-control" id="city" name="city" placeholder="Anglet">
-                        </div>
-                        <div class="col-md-5">
-                            <label for="zipCode" class="form-label">Code Postal</label>
-                            <input type="text" class="form-control" id="zipCode" name="zipCode" placeholder="64600">
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-end mt-4">
-                        <button type="button" class="next-btn btn btn-primary">Suivant</button>
-                    </div>
-                </div>
+            <div class="col-md-6">
+                <label class="form-label">Code de Sécurité</label>
+                <input type="text" name="codeSecurite" class="form-control" placeholder="CVC" required>
             </div>
         </div>
-    </div>
+        <div class="mb-4">
+            <label class="form-label">Nom sur la carte</label>
+            <input type="text" name="nomCarte" class="form-control" placeholder="Votre nom" required>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <a href="index.php?controleur=recapitulatif&methode=achat&id={{ annonce.idAnnonce }}" name="btnPayer" class="btn btn-primary mt-3">Payer</a>
+            </div>
+            <div class="col-md-6">
+                <a href="index.php?controleur=livraison&methode=achat&id={{ annonce.idAnnonce }}" name="btnAnnuler" class="btn btn-secondary mt-3">Annuler</a>
+            </div>
+        </div>
+    </form>
+</div>
 
+
+<div class="row mt-2">
+		<div class="col mt-2">
+			{% if erreurs is defined and erreurs|length > 0 %}
+				<div class="alert alert-danger mt-3">
+					<ul class="mb-0">
+						{% for erreur in erreurs %}
+							<li>{{ erreur }}</li>
+						{% endfor %}
+					</ul>
+				</div>
+			{% endif %}
 {% endblock %}
