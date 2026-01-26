@@ -26,6 +26,7 @@ require_once 'controllers/controller_compte.class.php';
 require_once 'controllers/controller_signalement.class.php';
 require_once 'controllers/controller_forum.class.php';
 require_once 'controllers/controller_photo.class.php';
+require_once 'controllers/controller_paiement.class.php';
 require_once 'controllers/controller_annonce.class.php';
 require_once 'controllers/controller_bannissement.class.php';
 require_once 'controllers/controller_messagerie.class.php';
