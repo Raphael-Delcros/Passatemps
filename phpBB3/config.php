@@ -2,11 +2,11 @@
 // phpBB 3.3.x auto-generated configuration file
 // Do not change anything in this file!
 $dbms = 'phpbb\\db\\driver\\mysqli';
-$dbhost = 'lakartxela.iutbayonne.univ-pau.fr';
+$dbhost = 'xxxxxxxxxxxxxxxxxxxxxx';
 $dbport = '';
-$dbname = 'nmondeteguy_pro';
-$dbuser = 'nmondeteguy_pro';
-$dbpasswd = 'nmondeteguy_pro';
+$dbname = 'xxxxxxxxxxxxxxxx';
+$dbuser = 'xxxxxxxxxxxxxxxxxxx';
+$dbpasswd = 'xxxxxxxxxxxxxxxxxxxxxxxx';
 $table_prefix = 'phpbb_';
 $phpbb_adm_relative_path = 'adm/';
 $acm_type = 'phpbb\\cache\\driver\\file';
