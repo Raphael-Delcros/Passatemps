@@ -315,7 +315,7 @@ class JeuDao
     }
 
     /**
-     * Met à jour un jeu existant
+     * @brief Met à jour les informations d'un Jeu dans la base de données
      */
     public function update(Jeu $jeu): bool
     {
