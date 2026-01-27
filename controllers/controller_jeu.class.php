@@ -332,92 +332,92 @@ class ControllerJeu extends Controller
     }
 
     /**
- * Filtre les jeux selon plusieurs critères dynamiques
- */
-public function filtrer()
-{
-    $dao = new JeuDao($this->getPdo());
-    $categorieDao = new CategorieDao($this->getPdo());
-    
-    // Création du filtre
-    $filter = JeuFilter::create();
-    
-    // Application des filtres selon les paramètres GET
-    
-    // Catégories (peut être un tableau ou une valeur unique)
-    if (!empty($_GET['categories'])) {
-        $categories = is_array($_GET['categories']) 
-            ? $_GET['categories'] 
-            : [$_GET['categories']];
-        $filter->parCategories($categories);
+     * @brief Filtre les jeux selon plusieurs critères dynamiques
+     */
+    public function filtrer()
+    {
+        $dao = new JeuDao($this->getPdo());
+        $categorieDao = new CategorieDao($this->getPdo());
+
+        // Création du filtre
+        $filter = JeuFilter::create();
+
+        // Application des filtres selon les paramètres GET
+
+        // Catégories (peut être un tableau ou une valeur unique)
+        if (!empty($_GET['categories'])) {
+            $categories = is_array($_GET['categories'])
+                ? $_GET['categories']
+                : [$_GET['categories']];
+            $filter->parCategories($categories);
+        }
+
+        // Nombre de joueurs exact
+        if (!empty($_GET['nbJoueurs']) && is_numeric($_GET['nbJoueurs'])) {
+            $filter->pourNombreJoueurs((int)$_GET['nbJoueurs']);
+        }
+
+        // Plage de joueurs
+        $nbJoueursMin = !empty($_GET['nbJoueursMin']) ? (int)$_GET['nbJoueursMin'] : null;
+        $nbJoueursMax = !empty($_GET['nbJoueursMax']) ? (int)$_GET['nbJoueursMax'] : null;
+        if ($nbJoueursMin || $nbJoueursMax) {
+            $filter->plageJoueurs($nbJoueursMin, $nbJoueursMax);
+        }
+
+        // Durée de partie
+        $dureeMin = !empty($_GET['dureeMin']) ? (int)$_GET['dureeMin'] : null;
+        $dureeMax = !empty($_GET['dureeMax']) ? (int)$_GET['dureeMax'] : null;
+        if ($dureeMin || $dureeMax) {
+            $filter->dureeParcelle($dureeMin, $dureeMax);
+        }
+
+        // Est une extension ?
+        if (isset($_GET['estExtension'])) {
+            $filter->estExtension($_GET['estExtension'] === '1');
+        }
+
+        // A des extensions ?
+        if (isset($_GET['aExtensions'])) {
+            $filter->aDesExtensions($_GET['aExtensions'] === '1');
+        }
+
+        // Recherche par nom
+        if (!empty($_GET['nom'])) {
+            $filter->parNom($_GET['nom']);
+        }
+
+        // Date de sortie
+        $dateApres = !empty($_GET['dateApres']) ? $_GET['dateApres'] : null;
+        $dateAvant = !empty($_GET['dateAvant']) ? $_GET['dateAvant'] : null;
+        if ($dateApres || $dateAvant) {
+            $filter->dateSortie($dateApres, $dateAvant);
+        }
+
+        // Exécution de la requête
+        $jeux = $dao->findWithFilters($filter);
+        $categories = $categorieDao->findAllAssoc();
+
+        // Préparer les valeurs actives pour le formulaire
+        $filtresActifs = [
+            'categories' => $_GET['categories'] ?? [],
+            'nbJoueurs' => $_GET['nbJoueurs'] ?? '',
+            'nbJoueursMin' => $_GET['nbJoueursMin'] ?? '',
+            'nbJoueursMax' => $_GET['nbJoueursMax'] ?? '',
+            'dureeMin' => $_GET['dureeMin'] ?? '',
+            'dureeMax' => $_GET['dureeMax'] ?? '',
+            'estExtension' => $_GET['estExtension'] ?? '',
+            'aExtensions' => $_GET['aExtensions'] ?? '',
+            'nom' => $_GET['nom'] ?? '',
+            'dateApres' => $_GET['dateApres'] ?? '',
+            'dateAvant' => $_GET['dateAvant'] ?? '',
+        ];
+
+        $template = $this->getTwig()->load('jeux.html.twig');
+        echo $template->render([
+            'jeux' => $jeux,
+            'categories' => $categories,
+            'filtresActifs' => $filtresActifs,
+            'nbResultats' => count($jeux)
+        ]);
     }
-    
-    // Nombre de joueurs exact
-    if (!empty($_GET['nbJoueurs']) && is_numeric($_GET['nbJoueurs'])) {
-        $filter->pourNombreJoueurs((int)$_GET['nbJoueurs']);
-    }
-    
-    // Plage de joueurs
-    $nbJoueursMin = !empty($_GET['nbJoueursMin']) ? (int)$_GET['nbJoueursMin'] : null;
-    $nbJoueursMax = !empty($_GET['nbJoueursMax']) ? (int)$_GET['nbJoueursMax'] : null;
-    if ($nbJoueursMin || $nbJoueursMax) {
-        $filter->plageJoueurs($nbJoueursMin, $nbJoueursMax);
-    }
-    
-    // Durée de partie
-    $dureeMin = !empty($_GET['dureeMin']) ? (int)$_GET['dureeMin'] : null;
-    $dureeMax = !empty($_GET['dureeMax']) ? (int)$_GET['dureeMax'] : null;
-    if ($dureeMin || $dureeMax) {
-        $filter->dureeParcelle($dureeMin, $dureeMax);
-    }
-    
-    // Est une extension ?
-    if (isset($_GET['estExtension'])) {
-        $filter->estExtension($_GET['estExtension'] === '1');
-    }
-    
-    // A des extensions ?
-    if (isset($_GET['aExtensions'])) {
-        $filter->aDesExtensions($_GET['aExtensions'] === '1');
-    }
-    
-    // Recherche par nom
-    if (!empty($_GET['nom'])) {
-        $filter->parNom($_GET['nom']);
-    }
-    
-    // Date de sortie
-    $dateApres = !empty($_GET['dateApres']) ? $_GET['dateApres'] : null;
-    $dateAvant = !empty($_GET['dateAvant']) ? $_GET['dateAvant'] : null;
-    if ($dateApres || $dateAvant) {
-        $filter->dateSortie($dateApres, $dateAvant);
-    }
-    
-    // Exécution de la requête
-    $jeux = $dao->findWithFilters($filter);
-    $categories = $categorieDao->findAllAssoc();
-    
-    // Préparer les valeurs actives pour le formulaire
-    $filtresActifs = [
-        'categories' => $_GET['categories'] ?? [],
-        'nbJoueurs' => $_GET['nbJoueurs'] ?? '',
-        'nbJoueursMin' => $_GET['nbJoueursMin'] ?? '',
-        'nbJoueursMax' => $_GET['nbJoueursMax'] ?? '',
-        'dureeMin' => $_GET['dureeMin'] ?? '',
-        'dureeMax' => $_GET['dureeMax'] ?? '',
-        'estExtension' => $_GET['estExtension'] ?? '',
-        'aExtensions' => $_GET['aExtensions'] ?? '',
-        'nom' => $_GET['nom'] ?? '',
-        'dateApres' => $_GET['dateApres'] ?? '',
-        'dateAvant' => $_GET['dateAvant'] ?? '',
-    ];
-    
-    $template = $this->getTwig()->load('jeux.html.twig');
-    echo $template->render([
-        'jeux' => $jeux,
-        'categories' => $categories,
-        'filtresActifs' => $filtresActifs,
-        'nbResultats' => count($jeux)
-    ]);
-}
 }
