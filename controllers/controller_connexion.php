@@ -21,6 +21,8 @@ class ControllerConnexion extends controller
             $dao = new CompteDao($this->getPdo());
             $compte = $dao->find($id);
 
+            header('Location: index.php?controleur=compte&methode=afficher&');
+
             $template = $this->getTwig()->load('compte.html.twig');
             echo $template->render([
                 'compte' => $compte,

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file controller_compte.class.php
  * @brief Définit la classe ControllerCompte pour gérer les actions liées aux comptes.
@@ -70,11 +71,11 @@ class ControllerCompte extends Controller
         ];
     }
 
-/**
- * affiche tous les comptes
- *
- * @return void
- */
+    /**
+     * affiche tous les comptes
+     *
+     * @return void
+     */
     public function lister()
     {
         $dao = new CompteDao($this->getPdo());
@@ -93,21 +94,40 @@ class ControllerCompte extends Controller
      */
     public function afficher()
     {
-        $id = isset($_GET['id']) ? intval($_GET['id']) : null;
-        $dao = new CompteDao($this->getPdo());
-        $compte = $dao->find($id);
+        if (isset($_SESSION['idCompte'])) {
 
-        $dao = new AnnonceDao($this->getPdo());
-        $annonce = $dao->find($id);
+            if (isset($_GET['id'])) {
+                $id = intval($_GET['id']);
+                $dao = new CompteDao($this->getPdo());
+                $compte = $dao->find($id);
 
-        $template = $this->getTwig()->load('compte.html.twig');
-        $vars = [
-            'session' => $_SESSION
-        ];
-        echo $template->render([
-            'compte' => $compte,
-            'annonce' => $annonce, 
-        ]);
+                $dao = new AnnonceDao($this->getPdo());
+                $annonces = $dao->findByAccount($id);
+
+                $template = $this->getTwig()->load('compte.html.twig');
+                echo $template->render([
+                    'other' => true,
+                    'compte' => $compte,
+                    'annonces' => $annonces,
+                ]);
+            }
+            else {
+            $id = $_SESSION['idCompte'];
+            $dao = new CompteDao($this->getPdo());
+            $compte = $dao->find($id);
+
+            $dao = new AnnonceDao($this->getPdo());
+            $annonces = $dao->findByAccount($id);
+
+            $template = $this->getTwig()->load('compte.html.twig');
+            echo $template->render([
+                'other' => false,
+                'compte' => $compte,
+                'annonces' => $annonces,
+            ]);}
+        } else {
+            header('Location: index.php?controleur=connexion&methode=connexion');
+        }
     }
 
     /**
@@ -127,7 +147,7 @@ class ControllerCompte extends Controller
      * - Nom et Prénom sont entre [3;50] caractères, sont inscrits et sont alphabétiques
      * - Email est sous format email, est entre [5:254] caractères et est inscrit
      * - password & passwordMatch sont égaux, inscrit, entre [8;32] caractères et sont alphanumériques avec un symbole et une majuscule minimum.
-    *
+     *
      * @return void
      */
     public function inscrire(): void
@@ -135,8 +155,8 @@ class ControllerCompte extends Controller
 
         // Récupération des données
         $email = strip_tags($_POST['email']);
-        $password = password_hash($_POST['password'],PASSWORD_BCRYPT);
-        $passwordMatch = password_hash($_POST['passwordMatch'],PASSWORD_BCRYPT);
+        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        $passwordMatch = password_hash($_POST['passwordMatch'], PASSWORD_BCRYPT);
         $nom = strip_tags($_POST['nom']);
         $prenom = strip_tags($_POST['prenom']);
 
@@ -172,7 +192,7 @@ class ControllerCompte extends Controller
         header('Location: index.php?controleur=connexion&methode=connexion');
         exit();
     }
-    
+
     /**
      * @brief Affiche les erreurs d'inscription
      * 

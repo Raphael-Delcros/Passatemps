@@ -7,8 +7,7 @@
 {% endblock %}
 
 {% block body %}
-	<div
-		class="bg-white p-2 border border-2 rounded">
+	<div class="bg-white p-2 border border-2 rounded">
 
 		{# Avatar généré avec les initiales basées sur nom et prenom #}
 		<div class="row m-2 align-items-center">
@@ -20,43 +19,56 @@
 					{{ compte.nom }}</h1>
 			</div>
 		</div>
-		
-        <div class="mt-5">
-             <p>{{ compte.email }}</p>
-		    <p> inscrit depuis le {{ compte.dateInscription }}</p>
-            {% if compte.note %}
-                <p>
-                    {{ compte.note }}</p>
-            {% endif %}
-        </div>
 
-		{% if compte.role == 'administrateur' %}
-			<a href="index.php?controleur=admin&methode=dashboard" class="btn btn-danger mb-3">
-				Accéder au Back-Office
-			</a>
-		{% endif %}
+		<div class="mt-5">
+			<p>{{ compte.email }}</p>
+			<p>
+				inscrit depuis le
+				{{ compte.dateInscription }}</p>
+			{% if compte.note %}
+				<p>
+					{{ compte.note }}</p>
+			{% endif %}
+		</div>
 
-		<form method="POST" action="index.php?controleur=connexion&methode=deconnexion" class="row g-3 position-relative" autocomplete="off">
-			<div>
-				<button type="submit" class="btn btn-primary me-md-2">Se déconnecter</button>
+		{% if other == false %}
+			{% if compte.role == 'administrateur' %}
+				<a href="index.php?controleur=admin&methode=dashboard" class="btn btn-danger mb-3">
+					Accéder au Back-Office
+				</a>
+			{% endif %}
+
+			<form method="POST" action="index.php?controleur=connexion&methode=deconnexion" class="row g-3 position-relative" autocomplete="off">
+				<div>
+					<button type="submit" class="btn btn-primary me-md-2">Se déconnecter</button>
+				</div>
+			</form>
+	{% endif %}
+	{% if annonces is not empty %}
+		<div class="container-fluid overflow-scroll">
+			<h1 class="mt-5">Annonces</h1>
+			<div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2">
+
+				{% for ann in annonces %}
+					<div class="col-5">
+						<a href="index.php?controleur=annonce&methode=afficher&id={{ ann.idAnnonce }}" class="card card-block card-1">
+							<div class="m-2">
+								<h3>{{ ann.titre }}</h3>
+								<p>{{ ann.description }}</p>
+								<p>
+									<strong>Prix :</strong>
+									{{ ann.prix }}
+									€</p>
+								<p>
+									<strong>Date de publication :</strong>
+									{{ ann.datePublication }}</p>
+								<img src="{{ ann.url }}" alt="Image de l'annonce" class="img-fluid" style="max-width: 200px; height: auto;"/>
+							</div>
+						</a>
+					</div>
+				{% endfor %}
 			</div>
-		</form>
-
-        <div class="mt-5">
-            <h2> Annonces publiées par {{ compte.prenom }} {{ compte.nom }} </h2>
-            {% for ann in annonce %}
-                {% if ann.idCompte == compte.idCompte %}
-                    <div class="border border-2 rounded p-3 mb-3">
-                        <h3>{{ ann.titre }}</h3>
-                        <p>{{ ann.description }}</p>
-                        <p><strong>Prix :</strong> {{ ann.prix }} €</p>
-                        <p><strong>Date de publication :</strong> {{ ann.datePublication }}</p>
-                    </div>
-                {% endif %}
-            {% else %}
-                <p>Aucune annonce publiée.</p>
-            {% endfor %}
-
-	</div>
-
+		</div>
+	{% endif %}
+</div>
 {% endblock %}
