@@ -1,10 +1,21 @@
 <?php
+/**
+ * @file controller_jeu.class.php
+ * @brief Contrôleur pour les actions liées aux jeux
+ */
 
 class ControllerJeu extends Controller
 {
 
     private array $reglesValidation;
-
+    /**
+     * Constructeur
+     *
+     * Initialise les règles de validation pour les formulaires liés aux jeux.
+     *
+     * @param \Twig\Environment $twig L'environnement Twig pour le rendu des templates
+     * @param \Twig\Loader\FilesystemLoader $loader Le chargeur de fichiers Twig
+     */
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
@@ -55,7 +66,17 @@ class ControllerJeu extends Controller
         ];
     }
 
-    // Liste tous les Jeux
+    /**
+     * Affiche la liste de tous les jeux avec génération des vignettes
+     *
+     * Cette méthode :
+     * - Récupère tous les jeux depuis la base de données
+     * - Génère des vignettes pour chaque jeu si nécessaire
+     * - Charge les catégories pour le filtrage
+     * - Transmet les données à la vue Twig
+     *
+     * @return void
+     */
     public function lister()
     {
         $dao = new JeuDao($this->getPdo());
@@ -133,7 +154,16 @@ class ControllerJeu extends Controller
         ]);
     }
 
-
+    /**
+     * Fournit des suggestions de jeux pour l'autocomplétion
+     *
+     * Cette méthode :
+     * - Récupère la chaîne de recherche depuis la requête GET
+     * - Cherche les jeux correspondants dans la base de données
+     * - Retourne les résultats au format JSON
+     *
+     * @return void
+     */
     public function autocomplete()
     {
         $q = $_GET['q'] ?? '';
@@ -159,6 +189,16 @@ class ControllerJeu extends Controller
         exit;
     }
 
+    /**
+     * Affiche la page de recherche de jeux
+     *
+     * Cette méthode :
+     * - Récupère la chaîne de recherche depuis la requête GET
+     * - Cherche les jeux correspondants dans la base de données
+     * - Transmet les résultats à la vue Twig
+     *
+     * @return void
+     */
     public function rechercherPage()
     {
         $q = $_GET['q'] ?? '';
