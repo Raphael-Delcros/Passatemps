@@ -247,4 +247,22 @@ class AnnonceDao
             'idAnnonce'   => $annonce->getIdAnnonce()
         ]);
     }
+
+    /**
+     * Retrouve le compte qui à posté l'annonce
+     * 
+     * @return array
+     * 
+     */
+
+     public function findAccount(int $q)
+    {
+        $sql = "SELECT C.Nom, C.prenom FROM annonce A
+            JOIN Compte C ON A.idCompte = C.idCompte 
+            WHERE A.idCompte LIKE :q";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['q' => '%' . strtolower($q) . '%']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

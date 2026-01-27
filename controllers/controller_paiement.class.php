@@ -33,15 +33,40 @@ class ControllerPaiement extends controller {
             echo $template->render();
             return;
         } else {
+        $ville = $_POST['ville'] ?? null;
+        $codePostal = $_POST['codePostal'] ?? null;
+        $adresse = $_POST['adresse'] ?? null;
+        $complementAdresse = $_POST['complementAdresse'] ?? null;
+        $id = $_POST['idAnnonce'] ?? null;
+        $dao = new AnnonceDao($this->getPdo());
+        $annonce = $dao->find($id);
+
+        $template = $this->getTwig()->load('paiement.html.twig');
+        echo $template->render([
+            'annonce' => $annonce,
+            'ville' => $ville,
+            'codePostal' => $codePostal,
+            'adresse' => $adresse,
+            'complementAdresse' => $complementAdresse,
+        ]);
+        }
+    }
+
+
+    /**
+     * Fonction qui amène et affiche la page de récapitulatif d'un achat
+     *
+     * @return void
+     */
+    public function afficherResume(){
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
         $dao = new AnnonceDao($this->getPdo());
         $annonce = $dao->findAssoc($id);
 
 
-        $template = $this->getTwig()->load('paiement.html.twig');
+        $template = $this->getTwig()->load('recapitulatif.html.twig');
         echo $template->render([
             'annonce' => $annonce,
         ]);
-        }
     }
 }
