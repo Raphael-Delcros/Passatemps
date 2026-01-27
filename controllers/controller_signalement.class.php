@@ -1,11 +1,19 @@
 <?php
-
+/**
+ * @file controller_signalement.class.php
+ * @brief Contrôleur pour la gestion des signalements
+ */
 class ControllerSignalement extends Controller {
-
+    /**
+     * @brief Constructeur
+     */
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader) {
         parent::__construct($twig, $loader);
     }
-
+    /**
+     * @brief Liste tous les signalements
+     *
+     */
     public function lister() {
         $dao = new SignalementDao($this->getPdo());
         $signalementsAssoc = $dao->findAllAssoc();
@@ -16,7 +24,10 @@ class ControllerSignalement extends Controller {
             'signalements' => $signalements,
         ]);
     }
-
+    /**
+     * @brief Affiche un seul signalement
+     *
+     */
     public function afficher() {
     try {
         // Vérifie la présence et la validité de l'ID

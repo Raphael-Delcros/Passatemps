@@ -1,12 +1,18 @@
 <?php
-
+/**
+ * @file controller.class.php
+ * @brief Classe de base pour les contrôleurs
+ * 
+ */
 class Controller{
     private PDO $pdo;
     private \Twig\Loader\FilesystemLoader $loader;
     private \Twig\Environment $twig;
     private ?array $get = null;
     private ?array $post =null;
-
+    /**
+     * @brief Constructeur
+     */
    public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader) {
         $db = Bd::getInstance();
         $this->pdo = $db->getConnexion();
@@ -21,7 +27,13 @@ class Controller{
             $this->post = $_POST;
         }
     }
-
+    /**
+     * @brief Appelle une méthode du contrôleur
+     *
+     * @param string $methode Le nom de la méthode à appeler
+     * @return mixed Le résultat de l'appel de la méthode
+     * @throws Exception Si la méthode n'existe pas
+     */
     public function call(string $methode): mixed{
 
         if (!method_exists($this, $methode)){
