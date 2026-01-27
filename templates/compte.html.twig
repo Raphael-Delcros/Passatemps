@@ -1,5 +1,10 @@
 {% extends 'base_template.html.twig' %}
-{% block title %}{{constantes.application.website_name}} - {{ compte.prenom }} {{ compte.nom }}{% endblock %}
+{% block title %}
+	{{constantes.application.website_name}}
+	-
+	{{ compte.prenom }}
+	{{ compte.nom }}
+{% endblock %}
 
 {% block body %}
     <h1>{{ compte.prenom }} {{ compte.nom }}</h1>
@@ -15,9 +20,26 @@
     </a>
     {% endif %}
 
-    <form method="POST" action="index.php?controleur=connexion&methode=deconnexion" class="row g-3 position-relative" autocomplete="off">
-        <div >
-            <button type="submit" class="btn btn-primary me-md-2">Se déconnecter</button>
-        </div>
-    </form>
+				{% for ann in annonces %}
+					<div class="col-5">
+						<a href="index.php?controleur=annonce&methode=afficher&id={{ ann.idAnnonce }}" class="card card-block card-1">
+							<div class="m-2">
+								<h3>{{ ann.titre }}</h3>
+								<p>{{ ann.description }}</p>
+								<p>
+									<strong>Prix :</strong>
+									{{ ann.prix }}
+									€</p>
+								<p>
+									<strong>Date de publication :</strong>
+									{{ ann.datePublication }}</p>
+								<img src="{{ ann.url }}" alt="Image de l'annonce" class="img-fluid" style="max-width: 200px; height: auto;"/>
+							</div>
+						</a>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	{% endif %}
+</div>
 {% endblock %}
