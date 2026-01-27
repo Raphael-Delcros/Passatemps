@@ -97,13 +97,17 @@ class ControllerCompte extends Controller
         $dao = new CompteDao($this->getPdo());
         $compte = $dao->find($id);
 
+        $dao = new AnnonceDao($this->getPdo());
+        $annonce = $dao->find($id);
+
         $template = $this->getTwig()->load('compte.html.twig');
         $vars = [
             'session' => $_SESSION
         ];
-        echo $template->render(array_merge($vars, [
-            'compte' => $compte, 
-        ]));
+        echo $template->render([
+            'compte' => $compte,
+            'annonce' => $annonce, 
+        ]);
     }
 
     /**
