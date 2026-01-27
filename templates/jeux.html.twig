@@ -27,7 +27,19 @@
 							class="row g-3">
 							<!-- Catégories -->
 							<div class="col-md-6">
-								<label class="form-label">Catégories</label>
+								<label class="form-label">Catégories</label><br>
+								<!-- Option de filtrage AND/OR -->
+								<div class="form-check mb-2">
+									<input class="form-check-input" type="checkbox" name="categoriesStrictes" value="1" id="categoriesStrictes" {% if filtresActifs.categoriesStrictes == '1' %} checked {% endif %}>
+									<label class="form-check-label" for="categoriesStrictes">
+										<small class="text-muted">
+											Afficher uniquement les jeux ayant
+											<strong>toutes</strong>
+											les catégories sélectionnées
+										</small>
+									</label>
+								</div>
+								<!-- Liste des catégories -->
 								<div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
 									{% for categorie in categories %}
 										<div class="form-check">

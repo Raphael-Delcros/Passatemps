@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file controller_jeu.class.php
  * @brief Contrôleur pour les actions liées aux jeux
@@ -389,7 +390,11 @@ class ControllerJeu extends Controller
             $categories = is_array($_GET['categories'])
                 ? $_GET['categories']
                 : [$_GET['categories']];
-            $filter->parCategories($categories);
+
+            // Vérifier si le mode strict est activé
+            $categoriesStrictes = isset($_GET['categoriesStrictes']) && $_GET['categoriesStrictes'] === '1';
+
+            $filter->parCategories($categories, $categoriesStrictes);
         }
 
         // Nombre de joueurs exact
@@ -440,6 +445,7 @@ class ControllerJeu extends Controller
         // Préparer les valeurs actives pour le formulaire
         $filtresActifs = [
             'categories' => $_GET['categories'] ?? [],
+            'categoriesStrictes' => $_GET['categoriesStrictes'] ?? '',
             'nbJoueurs' => $_GET['nbJoueurs'] ?? '',
             'nbJoueursMin' => $_GET['nbJoueursMin'] ?? '',
             'nbJoueursMax' => $_GET['nbJoueursMax'] ?? '',

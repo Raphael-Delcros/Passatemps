@@ -10,6 +10,7 @@ class JeuFilter
     private array $conditions = [];
     private array $params = [];
     private array $joins = [];
+    private ?int $strictCategoriesCount = null;
 
     /**
      * @brief Filtre par catégories (tableau ou chaîne unique)
@@ -17,29 +18,52 @@ class JeuFilter
      * @param array|string $categories Une catégorie ou un tableau de catégories
      * @return self
      */
-    public function parCategories($categories): self
+    /**
+     * Filtre par catégories (tableau ou chaîne unique)
+     * 
+     * @param array|string $categories Une catégorie ou un tableau de catégories
+     * @param bool $stricte Si true, le jeu doit avoir TOUTES les catégories (AND), sinon AU MOINS UNE (OR)
+     * @return self
+     */
+    public function parCategories($categories, bool $stricte = false): self
     {
         if (empty($categories)) {
             return $this;
         }
 
         $categories = is_array($categories) ? $categories : [$categories];
-
+        
         $this->ensureJoin('cataloguer');
         $this->ensureJoin('categorie');
 
-        $placeholders = [];
-        foreach ($categories as $index => $cat) {
-            $key = "cat_$index";
-            $placeholders[] = ":$key";
-            $this->params[$key] = $cat;
+        if ($stricte) {
+            // Mode TOUTES (AND) : le jeu doit avoir TOUTES les catégories
+            // On utilise HAVING COUNT(DISTINCT ...) = nombre de catégories recherchées
+            $placeholders = [];
+            foreach ($categories as $index => $cat) {
+                $key = "cat_$index";
+                $placeholders[] = ":$key";
+                $this->params[$key] = $cat;
+            }
+            
+            $this->conditions[] = "LOWER(categorie.nom) IN (" . implode(', ', $placeholders) . ")";
+            
+            // On stocke qu'on doit ajouter un HAVING
+            $this->strictCategoriesCount = count($categories);
+        } else {
+            // Mode AU MOINS UNE (OR) : comportement par défaut
+            $placeholders = [];
+            foreach ($categories as $index => $cat) {
+                $key = "cat_$index";
+                $placeholders[] = ":$key";
+                $this->params[$key] = $cat;
+            }
+            
+            $this->conditions[] = "LOWER(categorie.nom) IN (" . implode(', ', $placeholders) . ")";
         }
-
-        $this->conditions[] = "LOWER(categorie.nom) IN (" . implode(', ', $placeholders) . ")";
-
+        
         return $this;
     }
-
     /**
      * @brief Filtre par nombre de joueurs (cherche les jeux qui acceptent ce nombre)
      */
@@ -185,6 +209,17 @@ class JeuFilter
     }
 
     /**
+     * Génère la clause HAVING (pour les filtres stricts de catégories)
+     */
+    public function buildHavingClause(): string
+    {
+        if ($this->strictCategoriesCount === null) {
+            return '';
+        }
+        return "HAVING COUNT(DISTINCT categorie.nom) = " . $this->strictCategoriesCount;
+    }
+
+    /**
      * @brief Génère les JOINs nécessaires
      */
     public function buildJoins(): string
@@ -218,6 +253,7 @@ class JeuFilter
         $this->conditions = [];
         $this->params = [];
         $this->joins = [];
+        $this->strictCategoriesCount = null;
         return $this;
     }
 

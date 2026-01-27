@@ -346,8 +346,9 @@ class JeuDao
         ]);
     }
 
+
     /**
-     * @brief Recherche de jeux avec filtres dynamiques
+     * Recherche de jeux avec filtres dynamiques
      * 
      * @param JeuFilter $filter Instance de JeuFilter configurée
      * @return array Liste des jeux correspondant aux filtres
@@ -360,8 +361,18 @@ class JeuDao
         FROM jeu J
         LEFT JOIN photo P ON J.idPhoto = P.idPhoto"
             . $filter->buildJoins() . " "
-            . $filter->buildWhereClause() . "
-        ORDER BY J.nom";
+            . $filter->buildWhereClause();
+
+        // Si on a un filtre strict sur les catégories,  grouper et utiliser HAVING
+        $havingClause = $filter->buildHavingClause();
+        if (!empty($havingClause)) {
+            $sql .= " GROUP BY J.idJeu, J.nom, J.description, J.contenu, 
+                         J.nbJoueursMin, J.nbJoueursMax, J.dateSortie, 
+                         J.idJeuPrincipal, J.idPhoto, J.dureePartie, P.url "
+                . $havingClause;
+        }
+
+        $sql .= " ORDER BY J.nom";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($filter->getParams());
@@ -370,17 +381,31 @@ class JeuDao
     }
 
     /**
-     * @brief Compte le nombre de jeux correspondant aux filtres
+     * Compte le nombre de jeux correspondant aux filtres
      * 
      * @param JeuFilter $filter Instance de JeuFilter configurée
      * @return int Nombre de jeux trouvés
      */
     public function countWithFilters(JeuFilter $filter): int
     {
-        $sql = "SELECT COUNT(DISTINCT J.idJeu) 
-        FROM jeu J"
-            . $filter->buildJoins() . " "
-            . $filter->buildWhereClause();
+        $havingClause = $filter->buildHavingClause();
+
+        if (!empty($havingClause)) {
+            // Avec HAVING, on doit faire un sous-requête
+            $sql = "SELECT COUNT(*) FROM (
+            SELECT J.idJeu
+            FROM jeu J"
+                . $filter->buildJoins() . " "
+                . $filter->buildWhereClause() . "
+            GROUP BY J.idJeu "
+                . $havingClause . "
+        ) AS filtered_jeux";
+        } else {
+            $sql = "SELECT COUNT(DISTINCT J.idJeu) 
+            FROM jeu J"
+                . $filter->buildJoins() . " "
+                . $filter->buildWhereClause();
+        }
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($filter->getParams());
