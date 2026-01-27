@@ -60,5 +60,6 @@ require_once 'modeles/livraison.dao.php';
 require_once 'modeles/newsletter.class.php';
 require_once 'modeles/newsletter.dao.php';
 require_once 'modeles/validator.class.php';
+require_once 'modeles/jeuFiltre.class.php';
 
 ?>
