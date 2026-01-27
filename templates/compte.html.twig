@@ -7,7 +7,7 @@
     <p><strong>Date d'inscription :</strong> {{ compte.dateInscription }}</p>
     <p><strong>Note :</strong> {{ compte.note }}</p>
     <p><strong>Rôle :</strong> {{ compte.role }}</p>
-    {% if compte.role == 'administrateur' %}
+    {% if compte.role == 'administrateur' or compte.role == 'moderateur' %}
     <hr>
     <a href="index.php?controleur=admin&methode=dashboard"
        class="btn btn-danger">
