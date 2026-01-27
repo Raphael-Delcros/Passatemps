@@ -1,199 +1,186 @@
 {% extends 'base_template.html.twig' %}
 
 {% block title %}
-	{{constantes.application.website_name}} - Jeux disponibles
+	{{constantes.application.website_name}}
+	- Jeux disponibles
 {% endblock %}
 
 {% block body %}
 
-<div class="container mt-5">
-	<h1 class="text-center mb-4">Jeux disponibles</h1>
+	<div class="container mt-5">
+		<h1 class="text-center mb-4">Jeux disponibles</h1>
 
-	<!-- Formulaire de filtres avancés -->
-	<div class="card mb-4">
-		<div class="card-header">
-			<button class="btn btn-link w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#filtresAvances">
-				Filtres avancés
-			</button>
-		</div>
-		<div id="filtresAvances" class="collapse">
-			<div class="card-body">
-				<form method="get" id="filtre-form">
-					<input type="hidden" name="controleur" value="jeu">
-					<input type="hidden" name="methode" value="filtrer">
-
-					<div class="row g-3">
-						<!-- Catégories -->
-						<div class="col-md-6">
-							<label class="form-label">Catégories</label>
-							<select name="categories[]" class="form-select" multiple size="5">
-								{% for categorie in categories %}
-									<option value="{{ categorie.nom }}" 
-										{% if categorie.nom in filtresActifs.categories %}selected{% endif %}>
-										{{ categorie.nom }}
-									</option>
-								{% endfor %}
-							</select>
-							<small class="form-text text-muted">Maintenez Ctrl pour sélectionner plusieurs catégories</small>
-						</div>
-
-						<!-- Nombre de joueurs -->
-						<div class="col-md-6">
-							<label class="form-label">Nombre de joueurs</label>
-							<input type="number" name="nbJoueurs" class="form-control" 
-								placeholder="Ex: 4 (jeux pour 4 joueurs)"
-								value="{{ filtresActifs.nbJoueurs }}"
-								min="1" max="100">
-							<small class="form-text text-muted">Ou spécifiez une plage :</small>
-							<div class="row mt-2">
-								<div class="col-6">
-									<input type="number" name="nbJoueursMin" class="form-control" 
-										placeholder="Min"
-										value="{{ filtresActifs.nbJoueursMin }}"
-										min="1" max="100">
-								</div>
-								<div class="col-6">
-									<input type="number" name="nbJoueursMax" class="form-control" 
-										placeholder="Max"
-										value="{{ filtresActifs.nbJoueursMax }}"
-										min="1" max="100">
-								</div>
-							</div>
-						</div>
-
-						<!-- Durée de partie -->
-						<div class="col-md-6">
-							<label class="form-label">Durée de partie (minutes)</label>
-							<div class="row">
-								<div class="col-6">
-									<input type="number" name="dureeMin" class="form-control" 
-										placeholder="Min"
-										value="{{ filtresActifs.dureeMin }}"
-										min="1" max="1440">
-								</div>
-								<div class="col-6">
-									<input type="number" name="dureeMax" class="form-control" 
-										placeholder="Max"
-										value="{{ filtresActifs.dureeMax }}"
-										min="1" max="1440">
-								</div>
-							</div>
-						</div>
-
-						<!-- Recherche par nom -->
-						<div class="col-md-6">
-							<label class="form-label">Nom du jeu</label>
-							<input type="text" name="nom" class="form-control" 
-								placeholder="Rechercher un jeu..."
-								value="{{ filtresActifs.nom }}">
-						</div>
-
-						<!-- Extensions -->
-						<div class="col-md-6">
-							<label class="form-label">Type de jeu</label>
-							<select name="estExtension" class="form-select">
-								<option value="">-- Tous --</option>
-								<option value="0" {% if filtresActifs.estExtension == '0' %}selected{% endif %}>
-									Jeux de base uniquement
-								</option>
-								<option value="1" {% if filtresActifs.estExtension == '1' %}selected{% endif %}>
-									Extensions uniquement
-								</option>
-							</select>
-						</div>
-
-						<!-- A des extensions -->
-						<div class="col-md-6">
-							<label class="form-label">Extensions disponibles</label>
-							<select name="aExtensions" class="form-select">
-								<option value="">-- Peu importe --</option>
-								<option value="1" {% if filtresActifs.aExtensions == '1' %}selected{% endif %}>
-									Avec extensions
-								</option>
-								<option value="0" {% if filtresActifs.aExtensions == '0' %}selected{% endif %}>
-									Sans extensions
-								</option>
-							</select>
-						</div>
-
-						<!-- Date de sortie -->
-						<div class="col-md-6">
-							<label class="form-label">Date de sortie</label>
-							<div class="row">
-								<div class="col-6">
-									<input type="date" name="dateApres" class="form-control" 
-										value="{{ filtresActifs.dateApres }}">
-									<small class="form-text text-muted">Après</small>
-								</div>
-								<div class="col-6">
-									<input type="date" name="dateAvant" class="form-control" 
-										value="{{ filtresActifs.dateAvant }}">
-									<small class="form-text text-muted">Avant</small>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="mt-3 d-flex gap-2">
-						<button type="submit" class="btn btn-primary">
-						 Rechercher
-						</button>
-						<a href="index.php?controleur=jeu&methode=lister" class="btn btn-secondary">
-						 Réinitialiser
-						</a>
-					</div>
-				</form>
+		<!-- Formulaire de filtres avancés -->
+		<div class="card mb-4">
+			<div class="card-header">
+				<button class="btn btn-link w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#filtresAvances">
+					Filtres avancés
+				</button>
 			</div>
-		</div>
-	</div>
+			<div id="filtresAvances" class="collapse">
+				<div class="card-body">
+					<form method="get" id="filtre-form">
+						<input type="hidden" name="controleur" value="jeu">
+						<input type="hidden" name="methode" value="filtrer">
 
-	<!-- Résultats -->
-	{% if nbResultats is defined %}
-		<p class="text-muted mb-3">{{ nbResultats }} jeu(x) trouvé(s)</p>
-	{% endif %}
-
-	{% if jeux is empty %}
-		<p class="text-center text-muted">Aucun jeu ne correspond à vos critères.</p>
-	{% else %}
-		<div class="row g-4">
-			{% for jeu in jeux %}
-				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
-					<div class="card h-100 shadow-sm d-flex flex-column">
-						{% if jeu.url is defined and jeu.url %}
-							<div class="pt-4 d-flex flex-column align-items-center">
-								<img src="{{ constantes.application.thumbnail_image_path }}{{ jeu.url }}" 
-									class="card-img-top" 
-									alt="{{ jeu.nom }}">
-							</div>
-						{% endif %}
-
-						<div class="card-body d-flex flex-column justify-content-end">
-							<h5 class="card-title text-center">{{ jeu.nom }}</h5>
-
-							<div class="text-center mb-2">
-								<p class="card-text text-muted small mb-1">
-									{{ jeu.nbJoueursMin }} à {{ jeu.nbJoueursMax }} joueurs
-								</p>
-								{% if jeu.dureePartie %}
-									<p class="card-text text-muted small mb-1">
-										{{ jeu.dureePartie }} min
-									</p>
-								{% endif %}
-								{% if jeu.idJeuPrincipal %}
-									<span class="badge bg-info">Extension</span>
-								{% endif %}
+						<div
+							class="row g-3">
+							<!-- Catégories -->
+							<div class="col-md-6">
+								<label class="form-label">Catégories</label>
+								<div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
+									{% for categorie in categories %}
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" name="categories[]" value="{{ categorie.nom }}" id="cat_{{ categorie.idCategorie }}" {% if categorie.nom in filtresActifs.categories %} checked {% endif %}>
+											<label class="form-check-label" for="cat_{{ categorie.idCategorie }}">
+												{{ categorie.nom }}
+											</label>
+										</div>
+									{% endfor %}
+								</div>
+								<small class="form-text text-muted">Sélectionnez une ou plusieurs catégories</small>
 							</div>
 
-							<a href="index.php?controleur=Jeu&methode=afficher&id={{ jeu.idJeu }}" 
-								class="btn btn-primary w-100">
-								Voir plus
+							<!-- Nombre de joueurs -->
+							<div class="col-md-6">
+								<label class="form-label">Nombre de joueurs</label>
+								<input type="number" name="nbJoueurs" class="form-control" placeholder="Ex: 4 (jeux pour 4 joueurs)" value="{{ filtresActifs.nbJoueurs }}" min="1" max="100">
+								<small class="form-text text-muted">Ou spécifiez une plage :</small>
+								<div class="row mt-2">
+									<div class="col-6">
+										<input type="number" name="nbJoueursMin" class="form-control" placeholder="Min" value="{{ filtresActifs.nbJoueursMin }}" min="1" max="100">
+									</div>
+									<div class="col-6">
+										<input type="number" name="nbJoueursMax" class="form-control" placeholder="Max" value="{{ filtresActifs.nbJoueursMax }}" min="1" max="100">
+									</div>
+								</div>
+							</div>
+
+							<!-- Durée de partie -->
+							<div class="col-md-6">
+								<label class="form-label">Durée de partie (minutes)</label>
+								<div class="row">
+									<div class="col-6">
+										<input type="number" name="dureeMin" class="form-control" placeholder="Min" value="{{ filtresActifs.dureeMin }}" min="1" max="1440">
+									</div>
+									<div class="col-6">
+										<input type="number" name="dureeMax" class="form-control" placeholder="Max" value="{{ filtresActifs.dureeMax }}" min="1" max="1440">
+									</div>
+								</div>
+							</div>
+
+							<!-- Recherche par nom -->
+							<div class="col-md-6">
+								<label class="form-label">Nom du jeu</label>
+								<input type="text" name="nom" class="form-control" placeholder="Rechercher un jeu..." value="{{ filtresActifs.nom }}">
+							</div>
+
+							<!-- Extensions -->
+							<div class="col-md-6">
+								<label class="form-label">Type de jeu</label>
+								<select name="estExtension" class="form-select">
+									<option value="">-- Tous --</option>
+									<option value="0" {% if filtresActifs.estExtension == '0' %} selected {% endif %}>
+										Jeux de base uniquement
+									</option>
+									<option value="1" {% if filtresActifs.estExtension == '1' %} selected {% endif %}>
+										Extensions uniquement
+									</option>
+								</select>
+							</div>
+
+							<!-- A des extensions -->
+							<div class="col-md-6">
+								<label class="form-label">Extensions disponibles</label>
+								<select name="aExtensions" class="form-select">
+									<option value="">-- Peu importe --</option>
+									<option value="1" {% if filtresActifs.aExtensions == '1' %} selected {% endif %}>
+										Avec extensions
+									</option>
+									<option value="0" {% if filtresActifs.aExtensions == '0' %} selected {% endif %}>
+										Sans extensions
+									</option>
+								</select>
+							</div>
+
+							<!-- Date de sortie -->
+							<div class="col-md-6">
+								<label class="form-label">Date de sortie</label>
+								<div class="row">
+									<div class="col-6">
+										<input type="date" name="dateApres" class="form-control" value="{{ filtresActifs.dateApres }}">
+										<small class="form-text text-muted">Après</small>
+									</div>
+									<div class="col-6">
+										<input type="date" name="dateAvant" class="form-control" value="{{ filtresActifs.dateAvant }}">
+										<small class="form-text text-muted">Avant</small>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="mt-3 d-flex gap-2">
+							<button type="submit" class="btn btn-primary">
+								Rechercher
+							</button>
+							<a href="index.php?controleur=jeu&methode=lister" class="btn btn-secondary">
+								Réinitialiser
 							</a>
 						</div>
-					</div>
+					</form>
 				</div>
-			{% endfor %}
+			</div>
 		</div>
-	{% endif %}
-</div>
+
+		<!-- Résultats -->
+		{% if nbResultats is defined %}
+			<p class="text-muted mb-3">{{ nbResultats }}
+				jeu(x) trouvé(s)</p>
+		{% endif %}
+
+		{% if jeux is empty %}
+			<p class="text-center text-muted">Aucun jeu ne correspond à vos critères.</p>
+		{% else %}
+			<div class="row g-4">
+				{% for jeu in jeux %}
+					<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+						<div class="card h-100 shadow-sm d-flex flex-column">
+							{% if jeu.url is defined and jeu.url %}
+								<div class="pt-4 d-flex flex-column align-items-center">
+									<img src="{{ constantes.application.thumbnail_image_path }}{{ jeu.url }}" class="card-img-top" alt="{{ jeu.nom }}">
+								</div>
+							{% endif %}
+
+							<div class="card-body d-flex flex-column justify-content-end">
+								<h5 class="card-title text-center">{{ jeu.nom }}</h5>
+
+								<div class="text-center mb-2">
+									<p class="card-text text-muted small mb-1">
+										{{ jeu.nbJoueursMin }}
+										à
+										{{ jeu.nbJoueursMax }}
+										joueurs
+									</p>
+									{% if jeu.dureePartie %}
+										<p class="card-text text-muted small mb-1">
+											{{ jeu.dureePartie }}
+											min
+										</p>
+									{% endif %}
+									{% if jeu.idJeuPrincipal %}
+										<span class="badge bg-info">Extension</span>
+									{% endif %}
+								</div>
+
+								<a href="index.php?controleur=Jeu&methode=afficher&id={{ jeu.idJeu }}" class="btn btn-primary w-100">
+									Voir plus
+								</a>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
 
 {% endblock %}
