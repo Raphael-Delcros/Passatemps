@@ -1,11 +1,20 @@
 <?php
-
+/**
+ * @file controller_photo.class.php
+ * @brief Contrôleur pour la gestion des photos
+ */
 class ControllerPhoto extends Controller {
+    /**
+     * @brief Constructeur
+     */
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader) {
         parent::__construct($twig, $loader);
     }
 
-    // Liste toutes les photos
+    /**
+     * @brief Liste toutes les photos
+     *
+     */
     public function lister() {
         $dao = new PhotoDao($this->getPdo());
         $photosAssoc = $dao->findAllAssoc();       
@@ -15,7 +24,10 @@ class ControllerPhoto extends Controller {
         echo $template->render(['photos' => $photos]);
     }
 
-    // Affiche une seule photo
+    /**
+     * @brief Affiche une photo spécifique
+     *
+     */
     public function afficher() {
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
         if (!$id) {
