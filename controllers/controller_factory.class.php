@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file controller_factory.class.php
+ * @brief gère les instances des contrôleurs
+ */
 class ControllerFactory
 {
     public static function getController($controleur, \Twig\Loader\FilesystemLoader $loader, \Twig\Environment $twig)

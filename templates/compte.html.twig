@@ -7,47 +7,18 @@
 {% endblock %}
 
 {% block body %}
-	<div class="bg-white p-2 border border-2 rounded">
-
-		{# Avatar généré avec les initiales basées sur nom et prenom #}
-		<div class="row m-2 align-items-center">
-			<div class="  col-1 rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; font-weight: bold;">
-				{{ compte.prenom|first|upper }}{{ compte.nom|first|upper }}
-			</div>
-			<div class="col">
-				<h1>{{ compte.prenom }}
-					{{ compte.nom }}</h1>
-			</div>
-		</div>
-
-		<div class="mt-5">
-			<p>{{ compte.email }}</p>
-			<p>
-				inscrit depuis le
-				{{ compte.dateInscription }}</p>
-			{% if compte.note %}
-				<p>
-					{{ compte.note }}</p>
-			{% endif %}
-		</div>
-
-		{% if other == false %}
-			{% if compte.role == 'administrateur' %}
-				<a href="index.php?controleur=admin&methode=dashboard" class="btn btn-danger mb-3">
-					Accéder au Back-Office
-				</a>
-			{% endif %}
-
-			<form method="POST" action="index.php?controleur=connexion&methode=deconnexion" class="row g-3 position-relative" autocomplete="off">
-				<div>
-					<button type="submit" class="btn btn-primary me-md-2">Se déconnecter</button>
-				</div>
-			</form>
-	{% endif %}
-	{% if annonces is not empty %}
-		<div class="container-fluid overflow-scroll">
-			<h1 class="mt-5">Annonces</h1>
-			<div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2">
+    <h1>{{ compte.prenom }} {{ compte.nom }}</h1>
+    <p><strong>Email :</strong> {{ compte.email }}</p>
+    <p><strong>Date d'inscription :</strong> {{ compte.dateInscription }}</p>
+    <p><strong>Note :</strong> {{ compte.note }}</p>
+    <p><strong>Rôle :</strong> {{ compte.role }}</p>
+    {% if compte.role == 'administrateur' or compte.role == 'moderateur' %}
+    <hr>
+    <a href="index.php?controleur=admin&methode=dashboard"
+       class="btn btn-danger">
+        Accéder au Back-Office
+    </a>
+    {% endif %}
 
 				{% for ann in annonces %}
 					<div class="col-5">

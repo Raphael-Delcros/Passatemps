@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file controller_connexion.php
+ * @brief Contrôleur pour la gestion de la connexion et de l'authentification des utilisateurs
+ */
 use LDAP\Result;
 
 class ControllerConnexion extends controller
