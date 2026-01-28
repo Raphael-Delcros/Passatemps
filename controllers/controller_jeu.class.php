@@ -1,10 +1,22 @@
 <?php
 
+/**
+ * @file controller_jeu.class.php
+ * @brief Contrôleur pour les actions liées aux jeux
+ */
+
 class ControllerJeu extends Controller
 {
 
     private array $reglesValidation;
-
+    /**
+     * Constructeur
+     *
+     * Initialise les règles de validation pour les formulaires liés aux jeux.
+     *
+     * @param \Twig\Environment $twig L'environnement Twig pour le rendu des templates
+     * @param \Twig\Loader\FilesystemLoader $loader Le chargeur de fichiers Twig
+     */
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
@@ -55,11 +67,22 @@ class ControllerJeu extends Controller
         ];
     }
 
-    // Liste tous les Jeux
+    /**
+     * Affiche la liste de tous les jeux avec génération des vignettes
+     *
+     * Cette méthode :
+     * - Récupère tous les jeux depuis la base de données
+     * - Génère des vignettes pour chaque jeu si nécessaire
+     * - Charge les catégories pour le filtrage
+     * - Transmet les données à la vue Twig
+     *
+     * @return void
+     */
     public function lister()
     {
         $dao = new JeuDao($this->getPdo());
-        $jeux = $dao->findAllAssoc(); // récupère tous les jeux en tableau associatif
+
+        $jeux = $dao->findAllAssoc();
 
         // Génération automatique des vignettes dans images/vignette/
         $imagesDir = Config::get()['application']['game_image_path'];
@@ -88,10 +111,13 @@ class ControllerJeu extends Controller
                 $this->generateThumbnail($srcPath, $destPath, 300, 200);
             }
         }
+        $categorieDao = new CategorieDao($this->getPdo());
+        $categories = $categorieDao->findAllAssoc();
 
         $template = $this->getTwig()->load('jeux.html.twig');
         echo $template->render([
             'jeux' => $jeux,
+            'categories' => $categories
         ]);
     }
     /**
@@ -129,7 +155,16 @@ class ControllerJeu extends Controller
         ]);
     }
 
-
+    /**
+     * Fournit des suggestions de jeux pour l'autocomplétion
+     *
+     * Cette méthode :
+     * - Récupère la chaîne de recherche depuis la requête GET
+     * - Cherche les jeux correspondants dans la base de données
+     * - Retourne les résultats au format JSON
+     *
+     * @return void
+     */
     public function autocomplete()
     {
         $q = $_GET['q'] ?? '';
@@ -155,6 +190,16 @@ class ControllerJeu extends Controller
         exit;
     }
 
+    /**
+     * Affiche la page de recherche de jeux
+     *
+     * Cette méthode :
+     * - Récupère la chaîne de recherche depuis la requête GET
+     * - Cherche les jeux correspondants dans la base de données
+     * - Transmet les résultats à la vue Twig
+     *
+     * @return void
+     */
     public function rechercherPage()
     {
         $q = $_GET['q'] ?? '';
@@ -324,6 +369,101 @@ class ControllerJeu extends Controller
         $template = $this->getTwig()->load('backOffice.html.twig');
         echo $template->render([
             'erreurs' => $erreurs
+        ]);
+    }
+
+    /**
+     * @brief Filtre les jeux selon plusieurs critères dynamiques
+     */
+    public function filtrer()
+    {
+        $dao = new JeuDao($this->getPdo());
+        $categorieDao = new CategorieDao($this->getPdo());
+
+        // Création du filtre
+        $filter = JeuFilter::create();
+
+        // Application des filtres selon les paramètres GET
+
+        // Catégories (peut être un tableau ou une valeur unique)
+        if (!empty($_GET['categories'])) {
+            $categories = is_array($_GET['categories'])
+                ? $_GET['categories']
+                : [$_GET['categories']];
+
+            // Vérifier si le mode strict est activé
+            $categoriesStrictes = isset($_GET['categoriesStrictes']) && $_GET['categoriesStrictes'] === '1';
+
+            $filter->parCategories($categories, $categoriesStrictes);
+        }
+
+        // Nombre de joueurs exact
+        if (!empty($_GET['nbJoueurs']) && is_numeric($_GET['nbJoueurs'])) {
+            $filter->pourNombreJoueurs((int)$_GET['nbJoueurs']);
+        }
+
+        // Plage de joueurs
+        $nbJoueursMin = !empty($_GET['nbJoueursMin']) ? (int)$_GET['nbJoueursMin'] : null;
+        $nbJoueursMax = !empty($_GET['nbJoueursMax']) ? (int)$_GET['nbJoueursMax'] : null;
+        if ($nbJoueursMin || $nbJoueursMax) {
+            $filter->plageJoueurs($nbJoueursMin, $nbJoueursMax);
+        }
+
+        // Durée de partie
+        $dureeMin = !empty($_GET['dureeMin']) ? (int)$_GET['dureeMin'] : null;
+        $dureeMax = !empty($_GET['dureeMax']) ? (int)$_GET['dureeMax'] : null;
+        if ($dureeMin || $dureeMax) {
+            $filter->dureeParcelle($dureeMin, $dureeMax);
+        }
+
+        // Est une extension ?
+        if (isset($_GET['estExtension'])) {
+            $filter->estExtension($_GET['estExtension'] === '1');
+        }
+
+        // A des extensions ?
+        if (isset($_GET['aExtensions'])) {
+            $filter->aDesExtensions($_GET['aExtensions'] === '1');
+        }
+
+        // Recherche par nom
+        if (!empty($_GET['nom'])) {
+            $filter->parNom($_GET['nom']);
+        }
+
+        // Date de sortie
+        $dateApres = !empty($_GET['dateApres']) ? $_GET['dateApres'] : null;
+        $dateAvant = !empty($_GET['dateAvant']) ? $_GET['dateAvant'] : null;
+        if ($dateApres || $dateAvant) {
+            $filter->dateSortie($dateApres, $dateAvant);
+        }
+
+        // Exécution de la requête
+        $jeux = $dao->findWithFilters($filter);
+        $categories = $categorieDao->findAllAssoc();
+
+        // Préparer les valeurs actives pour le formulaire
+        $filtresActifs = [
+            'categories' => $_GET['categories'] ?? [],
+            'categoriesStrictes' => $_GET['categoriesStrictes'] ?? '',
+            'nbJoueurs' => $_GET['nbJoueurs'] ?? '',
+            'nbJoueursMin' => $_GET['nbJoueursMin'] ?? '',
+            'nbJoueursMax' => $_GET['nbJoueursMax'] ?? '',
+            'dureeMin' => $_GET['dureeMin'] ?? '',
+            'dureeMax' => $_GET['dureeMax'] ?? '',
+            'estExtension' => $_GET['estExtension'] ?? '',
+            'aExtensions' => $_GET['aExtensions'] ?? '',
+            'nom' => $_GET['nom'] ?? '',
+            'dateApres' => $_GET['dateApres'] ?? '',
+            'dateAvant' => $_GET['dateAvant'] ?? '',
+        ];
+
+        $template = $this->getTwig()->load('jeux.html.twig');
+        echo $template->render([
+            'jeux' => $jeux,
+            'categories' => $categories,
+            'filtresActifs' => $filtresActifs,
+            'nbResultats' => count($jeux)
         ]);
     }
 }

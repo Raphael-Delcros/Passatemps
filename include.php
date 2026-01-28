@@ -24,12 +24,10 @@ require_once 'controllers/controller_factory.class.php';
 require_once 'controllers/controller_jeu.class.php';
 require_once 'controllers/controller_compte.class.php';
 require_once 'controllers/controller_signalement.class.php';
-require_once 'controllers/controller_forum.class.php';
-require_once 'controllers/controller_photo.class.php';
-require_once 'controllers/controller_paiement.class.php';
 require_once 'controllers/controller_annonce.class.php';
 require_once 'controllers/controller_bannissement.class.php';
 require_once 'controllers/controller_messagerie.class.php';
+require_once 'controllers/controller_paiement.class.php';
 require_once 'controllers/controller_vendre.class.php';
 require_once 'controllers/controller_livraison.class.php';
 require_once 'controllers/controller_connexion.php';
@@ -63,5 +61,6 @@ require_once 'modeles/livraison.dao.php';
 require_once 'modeles/newsletter.class.php';
 require_once 'modeles/newsletter.dao.php';
 require_once 'modeles/validator.class.php';
+require_once 'modeles/jeuFiltre.class.php';
 
 ?>

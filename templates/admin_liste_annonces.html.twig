@@ -1,64 +1,73 @@
 {% extends 'base_template.html.twig' %}
 
-{% block body %}
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Gestion des Annonces</h1>
-    </div>
-
-    <div class="card shadow-sm border-0">
-        <table class="table table-striped align-middle mb-0">
-            <thead class="table-dark">
-                <tr>
-                    <th>Photo</th>
-                    <th>Titre</th>
-                    <th>Prix</th>
-                    <th>État Jeu</th>
-                    <th>Vente</th>
-                    <th class="text-end">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for annonce in annonces %}
-                <tr>
-                    <td>
-                        {% if annonce.url %}
-                            <img src="{{ annonce.url }}" width="50" class="rounded shadow-sm">
-                        {% else %}
-                            <span class="badge bg-secondary">Pas d'image</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <strong>{{ annonce.titre }}</strong><br>
-                        <small class="text-muted">ID: #{{ annonce.idAnnonce }}</small>
-                    </td>
-                    <td><span class="text-success fw-bold">{{ annonce.prix }} €</span></td>
-                    <td>{{ annonce.etatJeu }}</td>
-                    <td>
-                        <span class="badge {{ annonce.etatVente == 'en Vente' ? 'bg-primary' : 'bg-success' }}">
-                            {{ annonce.etatVente }}
-                        </span>
-                    </td>
-                    <td class="text-end">
-                        <a href="index.php?controleur=admin&methode=formulaireModifAnnonce&id={{ annonce.idAnnonce }}" 
-                           class="btn btn-sm btn-warning">Modifier</a>
-                        
-                        <a href="index.php?controleur=admin&methode=supprimerAnnonce&id={{ annonce.idAnnonce }}" 
-                           class="btn btn-sm btn-danger" 
-                           onclick="return confirm('Supprimer l\'annonce : {{ annonce.titre}} ?')">Supprimer</a>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="6" class="text-center py-4">Aucune annonce en ligne.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    
-    <div class="mt-4">
-        <a href="index.php?controleur=admin&methode=dashboard" class="btn btn-outline-secondary">Retour Dashboard</a>
-    </div>
-</div>
+{% block title %}
+	{{constantes.application.website_name}}
+	- Gestion des Annonces
 {% endblock %}
+
+
+{% block body %}
+	<div class="container mt-5">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1>Gestion des Annonces</h1>
+			<a href="index.php?controleur=admin&methode=dashboard" class="btn btn-outline-secondary">Retour Dashboard</a>
+		</div>
+
+
+		<div class="card shadow-sm border-0">
+			<div class="table-responsive">
+				<table class="table table-striped align-middle mb-0">
+					<thead class="table-dark">
+						<tr>
+							<th class="text-nowrap">Photo</th>
+							<th class="text-nowrap">Titre</th>
+							<th class="text-nowrap">Prix</th>
+							<th class="text-nowrap">État Jeu</th>
+							<th class="text-nowrap">Vente</th>
+							<th class="text-nowrap text-end">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for annonce in annonces %}
+							<tr>
+								<td>
+									{% if annonce.url %}
+										<img src="{{ annonce.url }}" width="50" class="rounded shadow-sm">
+									{% else %}
+										<span class="badge bg-secondary">Pas d'image</span>
+									{% endif %}
+								</td>
+								<td>
+									<strong>{{ annonce.titre }}</strong><br>
+									<small class="text-muted">ID: #{{ annonce.idAnnonce }}</small>
+								</td>
+								<td>
+									<span class="text-success fw-bold">{{ annonce.prix }}€</span>
+								</td>
+								<td>{{ annonce.etatJeu }}</td>
+								<td>
+									<span class="badge {{ annonce.etatVente == 'en Vente' ? 'bg-primary' : 'bg-success' }}">
+										{{ annonce.etatVente|capitalize }}
+									</span>
+								</td>
+								<td class="text-nowrap text-end">
+									<a href="index.php?controleur=admin&methode=formulaireModifAnnonce&id={{ annonce.idAnnonce }}" class="btn btn-sm me-2"><i class="bi bi-pencil-square"></i></a>
+
+									<a href="index.php?controleur=admin&methode=supprimerAnnonce&id={{ annonce.idAnnonce }}" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer l\'annonce : {{ annonce.titre}} ?')"><i class="bi bi-trash"></i></a>
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="6" class="text-center py-4">Aucune annonce en ligne.</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="mt-4">
+			<a href="index.php?controleur=admin&methode=dashboard" class="btn btn-outline-secondary">Retour Dashboard</a>
+		</div>
+	</div>
+    {% endblock %}

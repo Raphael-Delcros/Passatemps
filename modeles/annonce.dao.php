@@ -47,6 +47,28 @@ class AnnonceDao
         }
         return null;
     }
+
+    /**
+     * Renvoie une annonce selon son identifiant sous forme d'objet Annonce
+     *
+     * @param integer|null $id
+     * @return Annonce|null
+     */
+    public function findByAccount(?int $id): ?array
+    {
+        $sql = "SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub, a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur, p.url
+        FROM annonce a
+        JOIN compte c ON c.idCompte = a.idCompteVendeur
+        JOIN photo p ON p.idAnnonce = a.idAnnonce
+        WHERE c.idCompte = :id";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll();
+    }
+
+
     /**
      * Renvoie toutes les annonces sous forme de tableau d'objets Annonce
      *
@@ -68,7 +90,7 @@ class AnnonceDao
     {
         $sql = "SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub, a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur, p.url
         FROM annonce a
-        LEFT JOIN photo p ON p.idAnnonce = a.idAnnonce
+        JOIN photo p ON p.idAnnonce = a.idAnnonce
         WHERE a.idAnnonce = :id";
 
 

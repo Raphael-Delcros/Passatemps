@@ -1,9 +1,12 @@
 {% extends 'base_template.html.twig' %}
 
+{% block title %}{{constantes.application.website_name}} - Modification d'une annonce{% endblock %}
+
+
 {% block body %}
 	<div class="container mt-5">
 		<div class="card shadow">
-			<div class="card-header bg-warning">
+			<div class="card-header primary bg-primary">
 				<h2>Modifier l'annonce #{{ annonce.idAnnonce }}</h2>
 			</div>
 			<div class="card-body">
@@ -55,7 +58,7 @@
 						</div>
 					</div>
 					<div class="d-flex justify-content-between">
-						<a href="index.php?controleur=admin&methode=listeAnnonces" class="btn btn-secondary">Annuler</a>
+						<a href="index.php?controleur=admin&methode=listeAnnonces" class="btn btn-outline-secondary">Annuler</a>
 						<button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
 					</div>
 				</form>

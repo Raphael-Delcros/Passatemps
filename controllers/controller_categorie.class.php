@@ -1,11 +1,21 @@
 <?php
+/**
+ * @file controller_categorie.class.php
+ * @brief Contrôleur pour les catégories
+ */
 class ControllerCategorie  extends Controller
 {
+    /**
+     * @brief Constructeur
+     */
     public function __construct(Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
     }
 
+    /**
+     * @brief Affiche une catégorie spécifique
+     */
     public function afficher()
     {
          $id = isset($_GET['id']) ? intval($_GET['id']) : null;
@@ -18,6 +28,9 @@ class ControllerCategorie  extends Controller
         ]);
     }
 
+    /**
+     * @brief Liste toutes les catégories
+     */
     public function lister()
     {
        $dao = new CategorieDao($this->getPdo());

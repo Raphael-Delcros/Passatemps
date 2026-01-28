@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * @file controller_annonce.class.php
  * @brief Définit la classe ControllerAnnonce pour gérer les actions liées aux annonces.
@@ -8,14 +9,16 @@
 /**
  * @brief Classe ControllerAnnonce pour gérer les actions liées aux annonces
  */
-Class ControllerAnnonce extends controller {
+class ControllerAnnonce extends controller
+{
     /**
      * Constructeur de la classe ControllerAnnonce
      *
      * @param Twig\Environment $twig Environnement Twig pour le rendu des templates
      * @param Twig\Loader\FilesystemLoader $loader Chargeur de fichiers Twig
      */
-    public function __construct( Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader) {
+    public function __construct(Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader)
+    {
         parent::__construct($twig, $loader);
     }
 
@@ -31,7 +34,7 @@ Class ControllerAnnonce extends controller {
 
         $template = $this->getTwig()->load('annonces.html.twig');
         echo $template->render([
-        'annonces' => $annonces
+            'annonces' => $annonces
         ]);
     }
 
@@ -40,14 +43,26 @@ Class ControllerAnnonce extends controller {
      * 
      * @return void
      */
-    public function afficher() {
+    public function afficher()
+    {
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
         $dao = new AnnonceDao($this->getPdo());
         $annonce = $dao->find($id);
 
+        $idVendeur = $annonce->getIdCompteVendeur();
+        $daoCompte = new CompteDao($this->getPdo());
+        $compteVendeur = $daoCompte->find($idVendeur);
+
+        $nom = $compteVendeur->getPrenom();
+        $prenom = $compteVendeur->getNom();
+        $idVendeur = $compteVendeur->getIdCompte();
+
         $template = $this->getTwig()->load('annonce.html.twig');
         echo $template->render([
             'annonce' => $annonce,
+            'nom' => $nom,
+            'prenom' => $prenom,
+            'idVendeur' => $idVendeur
         ]);
     }
 
@@ -68,5 +83,4 @@ Class ControllerAnnonce extends controller {
             'q' => $q
         ]);
     }
-
 }
