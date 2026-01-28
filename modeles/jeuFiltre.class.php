@@ -13,12 +13,6 @@ class JeuFilter
     private ?int $strictCategoriesCount = null;
 
     /**
-     * @brief Filtre par catégories (tableau ou chaîne unique)
-     * * 
-     * @param array|string $categories Une catégorie ou un tableau de catégories
-     * @return self
-     */
-    /**
      * Filtre par catégories (tableau ou chaîne unique)
      * 
      * @param array|string $categories Une catégorie ou un tableau de catégories
