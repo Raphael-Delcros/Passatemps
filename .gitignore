@@ -1,12 +1,29 @@
-# Application
-/vendor
-/node_modules
-/CSS
-/config/config.php
-/config/constantes.yaml
-/images/vignettes/
-/docs
-/uploads
+# On ignore tout
+/*
 
-# PHPBB3
-/phpBB3
+# Sauf ces dossiers
+!modeles/
+!controlers/
+!templates/
+!SCSS/
+!config/*
+
+# Sauf ces fichiers
+!.gitignore
+!index.php
+!Doxyfile
+!index.php
+!include.php
+!legal.php
+!README.md
+
+# Config
+!config/constantesExemple.yaml
+!config/config.php
+!config/twig.php
+
+# Librairies externes
+!composer.json
+!composer.lock
+!package.json
+!package-lock.json
