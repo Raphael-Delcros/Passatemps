@@ -16,8 +16,33 @@ class ControllerPaiement extends controller {
      * @param Twig\Environment $twig Environnement Twig pour le rendu des templates
      * @param Twig\Loader\FilesystemLoader $loader Chargeur de fichiers Twig
      */
+    public array $reglesValidation;
+
     public function __construct( Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader) {
         parent::__construct($twig, $loader);
+        $config = Config::get();
+        $this->$reglesValidation = [
+            'ville' => [
+                'obligatoire' => true,
+                'type' => 'string',
+                'format' => $config['regex']['texte']
+            ],
+            'pays' => [
+                'obligatoire' => true,
+                'type' => 'string',
+                'format' => $config['regex']['texte']
+            ],
+            'codePostal' => [
+                'obligatoire' => true,
+                'type' => 'integer',
+                'longueurMin' => 5,
+                'longueurMax' => 5
+            ],
+            'adresse' => [
+                'onbligatoire' => true,
+                'type' => 'string'
+            ]
+            ];
     }
 
     /**
