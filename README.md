@@ -33,4 +33,7 @@ Ensuite, allez sur votre site, et ajouter "/emplacement" à la fin de l'URL.
 Exemple:
 nomdevotresite.fr/emplacement/
 
+Cette page vous permettra d'installer et de configuer phpbb à vos besoins.
+
 Les packs de langue se trouvent dans [https://www.phpbb.com/languages/](ce site). Pour l'installer, il suffit de placer le dossier dans le fichier .zip à l'intérieur du dossier "language" dans le dossier où phpbb a été installé.
+Des thèmes et des extensions peuvent être trouvés sur [le site phpbb officiel](https://www.phpbb.com/customise/)
