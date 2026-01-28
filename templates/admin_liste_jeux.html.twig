@@ -40,8 +40,8 @@
 								-
 								{{ jeu.nbJoueursMax }}</td>
 							<td class="text-nowrap text-end">
-								<a href="index.php?controleur=admin&methode=formulaireModif&id={{ jeu.idJeu }}" class="btn btn-sm btn-warning">Modifier</a>
-								<a href="index.php?controleur=admin&methode=supprimerJeu&id={{ jeu.idJeu }}" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer {{ jeu.nom }} ?')">Supprimer</a>
+								<a href="index.php?controleur=admin&methode=formulaireModif&id={{ jeu.idJeu }}" class="btn btn-sm"><i class="bi bi-pencil-square"></i></a>
+								<a href="index.php?controleur=admin&methode=supprimerJeu&id={{ jeu.idJeu }}" class="btn btn-sm btn-danger ms-2" onclick="return confirm('Supprimer {{ jeu.nom }} ?')"><i class="bi bi-trash"></i></a>
 							</td>
 						</tr>
 					{% endfor %}
