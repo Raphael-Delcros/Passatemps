@@ -20,14 +20,9 @@ class ControllerLivraison extends Controller
      * @param Twig\Environment $twig
      * @param Twig\Loader\FilesystemLoader $loader
      */
-    public array $reglesValidation;
-
     public function __construct(Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
-        $this->$reglesValidation = [
-       
-        ];
     }
 
     /**
@@ -45,7 +40,7 @@ class ControllerLivraison extends Controller
             $dao = new LivraisonDao($this->getPdo());
 
             $commande = $dao->findAllAssocFromIdWithAnnonceInfo($_SESSION['idCompte'], isset($_GET['id']) ? intval($_GET['id']) : null);
-            $template = $this->getTwig()->load('livraison.html.twig');
+            $template = $this->getTwig()->load('commande.html.twig');
             echo $template->render([
                 'commande' => $commande[0],
             ]);
@@ -73,28 +68,7 @@ class ControllerLivraison extends Controller
         }
     }
     
-    /**
-     * @brief Affiche la page d'achat d'une annonce
-     *
-     * @return void
-     */
-    public function achat()
-    {
-        if (!isset($_SESSION['idCompte'])) {
-            $template = $this->getTwig()->load('connexion.html.twig');
-            echo $template->render();
-            return;
-        } else {
-            $id = isset($_GET['id']) ? intval($_GET['id']) : null;
-            $dao = new AnnonceDao($this->getPdo());
-            $annonce = $dao->find($id);
-
-            $template = $this->getTwig()->load('achat.html.twig');
-            echo $template->render([
-                'annonce' => $annonce
-            ]);
-        }
-    }
+    
 
     /**
      * @brief Update les commandes lorsque qu'une annonce est achetée

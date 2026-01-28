@@ -14,36 +14,36 @@
         <p>Adresse de livraison→ <b>paiement</b> → récapituatif</p>
 
         <!-- Paiement -->
-        <div class="col-md-6">
+        <div class="col-md-6  mt-2 bg-light p-2 border border-2 rounded">
 
             <div class="mb-4">
                 <label class="form-label required">Numéro de la carte</label>
-                <input type="text" name="numCarte" class="form-control" placeholder="1234 1234 1234 1234" required>
+                <input type="text" name="numCarte" class="form-control shadow-sm" placeholder="1234 1234 1234 1234" required>
             </div>
 
             <div class="row mb-4">
                 <div class="col-md-6">
                     <label class="form-label required">Date d'expiration</label>
-                    <input type="text" name="dateExpiration" class="form-control" placeholder="MM/YY" required>
+                    <input type="text" name="dateExpiration" class="form-control shadow-sm" placeholder="MM/YY" required>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label required">Code de Sécurité</label>
-                    <input type="text" name="codeSecurite" class="form-control" placeholder="CVC" required>
+                    <input type="text" name="codeSecurite" class="form-control shadow-sm" placeholder="CVC" required>
                 </div>
             </div>
 
             <div class="mb-4">
                 <label class="form-label required">Nom sur la carte</label>
-                <input type="text" name="nomCarte" class="form-control" placeholder="Votre nom" required>
+                <input type="text" name="nomCarte" class="form-control shadow-sm" placeholder="Votre nom" required>
             </div>
 
             <div class="row">
                 <div class="col-md-6">
-                    <a href="index.php?controleur=livraison&methode=achat&id={{ annonce.idAnnonce }}"
-                       class="btn btn-secondary w-100 mt-3">Annuler</a>
+                    <a href="index.php?controleur=paiement&methode=adresseLivraison&id={{ annonce.idAnnonce }}"
+                       class="btn btn-secondary w-100 mt-3 shadow-sm">Annuler</a>
                 </div>
                 <div class="col-md-6">
-                    <button type="submit" class="btn btn-primary w-100 mt-3">
+                    <button type="submit" class="btn btn-primary w-100 mt-3 shadow-sm">
                     Payer
                     </button>
                 </div>
@@ -52,49 +52,50 @@
 
         <!-- Récapitulatif -->
         <div class="col-md-6">
-            <div class="bg-light rounded shadow-sm p-4">
-                <h4 class="mb-3">Récapitulatif</h4>
-
+            <div class="col mt-2 bg-light p-2 border border-1 rounded">
+                <h4 class="mb-3 fw-bold">Récapitulatif</h4>
+                <hr>
                 <div class="d-flex justify-content-between">
-                    <span>Titre de l'annonce </span>
-                    <strong>{{annonce.titre}}</strong>
+                    <span><b>Titre de l'annonce</b></span>
+                    {{annonce.titre}}
                 </div>
                 <br>
 
                 <div class="d-flex justify-content-between">
-                    <span>Jeu </span>
-                    <strong>{{annonce.idJeu}}</strong>
+                    <span><b>Jeu</b></span>
+                    {{jeu.nom}}
                 </div>
                 <br>
 
                 <div class="d-flex justify-content-between">
-                    <span>Prix de l'annonce</span>
-                    <strong> {{ annonce.prix }} €</strong>
+                    <span><b>Prix de l'annonce</b></span>
+                    {{ annonce.prix }} €
                 </div>
                 <br>
 
                 <div class="d-flex justify-content-between">
-                    <span>Ville</span>
-                    <strong> {{ville}}</strong>
+                    <span><b>Ville</b></span>
+                    {{ville}}
                 </div>
                 <br>
 
                 <div class="d-flex justify-content-between">
-                    <span>Code Postal</span>
-                    <strong> {{codePostal}}</strong>
+                    <span><b>Code Postal</b></span>
+                    {{codePostal}}
                 </div>
                 <br>
 
                 <div class="d-flex justify-content-between">
-                    <span>Adresse</span>
-                    <strong> {{adresse}}</strong>
+                    <span><b>Adresse</b></span>
+                    {{adresse}}
                 </div>
                 <br>
-
+                {% if complementAdresse is defined and complementAdresse != '' %}
                 <div class="d-flex justify-content-between">
-                    <span>Complément d'adresse</span>
+                    <span><b>Complément d'adresse</b></span>
                     <strong> {{complementAdresse}}</strong>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
