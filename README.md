@@ -36,4 +36,4 @@ nomdevotresite.fr/emplacement/
 Cette page vous permettra d'installer et de configuer phpbb à vos besoins.
 
 Les packs de langue se trouvent dans [ce site](https://www.phpbb.com/languages/). Pour l'installer, il suffit de placer le dossier dans le fichier .zip à l'intérieur du dossier "language" dans le dossier où phpbb a été installé.
-Des thèmes et des extensions peuvent être trouvés sur [le site phpbb officiel](https://www.phpbb.com/customise/)
+Des thèmes et des extensions peuvent être trouvés sur [le site phpbb officiel](https://www.phpbb.com/customise/).
