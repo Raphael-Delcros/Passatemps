@@ -52,21 +52,30 @@ class ControllerPaiement extends controller {
         }
     }
 
-
     /**
-     * Fonction qui amène et affiche la page de récapitulatif d'un achat
+     * Fonction affichant une page remerciement en récupérant le titre, prix de l'annonce ainsi que le compte utilisateur
      *
      * @return void
      */
-    public function afficherResume(){
+    public function recapitulatif() {
+        if (!isset($_SESSION['idCompte'])) {
+            $template = $this->getTwig()->load('connexion.html.twig');
+            echo $template->render();
+            return;
+        }
+    
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
-        $dao = new AnnonceDao($this->getPdo());
-        $annonce = $dao->findAssoc($id);
-
-
+    
+        $annonceDao = new AnnonceDao($this->getPdo());
+        $annonce = $annonceDao->find($id);
+    
+        $compteDao = new CompteDao($this->getPdo());
+        $utilisateur = $compteDao->findAssoc($_SESSION['idCompte']);
+    
         $template = $this->getTwig()->load('recapitulatif.html.twig');
         echo $template->render([
             'annonce' => $annonce,
+            'utilisateur' => $utilisateur
         ]);
     }
 }

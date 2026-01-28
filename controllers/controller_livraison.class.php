@@ -90,4 +90,41 @@ class ControllerLivraison extends Controller
             ]);
         }
     }
+
+    /**
+     * @brief Update les commandes lorsque qu'une annonce est achetée
+     * 
+     * @return void
+     */
+    public function afficherResume()
+    {
+        $id = isset($_POST['idAnnonce']) ? intval($_POST['idAnnonce']) : null;
+        $dao = new AnnonceDao($this->getPdo());
+        $annonce = $dao->findAssoc($id);
+        $array = [
+            'idLivraison'        => null,
+            'ville'              => $_POST['ville'] ?? null,
+            'pays'               => $_POST['pays'] ?? null,
+            'adresse'            => $_POST['adresse'] ?? null,
+            'codePostal'         => $_POST['codePostal'] ?? null,
+            'dateCommande'       => date('Y-m-d'),
+            'dateLivraison'      => null,
+            'dateReception'      => null,
+            'idAnnonce'          => $_POST['idAnnonce'] ?? null,
+            'idCompteAcheteur'   => $_SESSION['idCompte'],
+            'numeroDeSuivi'      => null,
+            'status'             => null
+        ];
+        $dao = new LivraisonDao($this->getPdo());
+        $livraison = $dao->hydrate($array);
+        $dao->insertIntoDatabase($livraison);
+
+
+        $template = $this->getTwig()->load('recapitulatif.html.twig');
+        echo $template->render([
+            'annonce' => $annonce,
+            'livraison' => $livraison
+        ]);
+
+    }
 }
