@@ -1,5 +1,4 @@
 {% extends 'base_template.html.twig' %}
-
 {% block title %}
 	{{constantes.application.website_name}}
 	- Jeux disponibles
@@ -8,13 +7,14 @@
 {% block body %}
 
 	<div class="container mt-5">
-		<h1 class="text-center mb-4">Jeux disponibles</h1>
 
+		<h1 class="text-center mb-4">Jeux disponibles</h1>
 		<!-- Formulaire de filtres avancés -->
 		<div class="card mb-4">
 			<div class="card-header">
-				<button class="btn btn-link w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#filtresAvances">
-					Filtres avancés
+				<button class="btn btn-link w-100 text-start text-decoration-none d-flex justify-content-between align-items-center p-3" type="button" data-bs-toggle="collapse" data-bs-target="#filtresAvances" aria-expanded="false" aria-controls="filtresAvances">
+					<b><i class="bi bi-funnel-fill"></i>Filtres avancés</b>
+					<i class="bi bi-chevron-right arrow-icon"></i>
 				</button>
 			</div>
 			<div id="filtresAvances" class="collapse">
@@ -56,50 +56,49 @@
 							<!-- Nombre de joueurs -->
 							<div class="col-md-6">
 								<label class="form-label">Nombre de joueurs</label>
-								<input type="number" name="nbJoueurs" class="form-control" placeholder="Ex: 4 (jeux pour 4 joueurs)" value="{{ filtresActifs.nbJoueurs }}" min="1" max="100">
-								<small class="form-text text-muted">Ou spécifiez une plage :</small>
+								<input
+								type="number" name="nbJoueurs" class="form-control" placeholder="Ex: 4 (jeux pour 4 joueurs)" value="{{ filtresActifs.nbJoueurs }}" min="1" max="100">
+								<!-- Durée de partie -->
 								<div class="row mt-2">
-									<div class="col-6">
-										<input type="number" name="nbJoueursMin" class="form-control" placeholder="Min" value="{{ filtresActifs.nbJoueursMin }}" min="1" max="100">
-									</div>
-									<div class="col-6">
-										<input type="number" name="nbJoueursMax" class="form-control" placeholder="Max" value="{{ filtresActifs.nbJoueursMax }}" min="1" max="100">
-									</div>
-								</div>
-							</div>
-
-							<!-- Durée de partie -->
-							<div class="col-md-6">
-								<label class="form-label">Durée de partie (minutes)</label>
-								<div class="row">
-									<div class="col-6">
+									<label class="form-label">Durée de partie (minutes)</label>
+									<div class="col">
 										<input type="number" name="dureeMin" class="form-control" placeholder="Min" value="{{ filtresActifs.dureeMin }}" min="1" max="1440">
 									</div>
-									<div class="col-6">
+									<div class="col">
 										<input type="number" name="dureeMax" class="form-control" placeholder="Max" value="{{ filtresActifs.dureeMax }}" min="1" max="1440">
 									</div>
 								</div>
+								{# <small class="form-text text-muted">Ou spécifiez une plage :</small>
+																								<div class="row mt-2">
+																									<div class="col">
+																										<input type="number" name="nbJoueursMin" class="form-control" placeholder="Min" value="{{ filtresActifs.nbJoueursMin }}" min="1" max="100">
+																									</div>
+																									<div class="col">
+																										<input type="number" name="nbJoueursMax" class="form-control" placeholder="Max" value="{{ filtresActifs.nbJoueursMax }}" min="1" max="100">
+																									</div>
+																								</div> #}
+
+								<!-- Recherche par nom -->
+								<div class="mt-2">
+									<label class="form-label">Nom du jeu</label>
+									<input
+									type="text" name="nom" class="form-control" placeholder="Rechercher un jeu..." value="{{ filtresActifs.nom }}">
+									<!-- Extensions -->
+									<div class="mt-2">
+										<label class="form-label">Type de jeu</label>
+										<select name="estExtension" class="form-select">
+											<option value="">-- Tous --</option>
+											<option value="0" {% if filtresActifs.estExtension == '0' %} selected {% endif %}>
+												Jeux de base uniquement
+											</option>
+											<option value="1" {% if filtresActifs.estExtension == '1' %} selected {% endif %}>
+												Extensions uniquement
+											</option>
+										</select>
+									</div>
+								</div>
 							</div>
 
-							<!-- Recherche par nom -->
-							<div class="col-md-6">
-								<label class="form-label">Nom du jeu</label>
-								<input type="text" name="nom" class="form-control" placeholder="Rechercher un jeu..." value="{{ filtresActifs.nom }}">
-							</div>
-
-							<!-- Extensions -->
-							<div class="col-md-6">
-								<label class="form-label">Type de jeu</label>
-								<select name="estExtension" class="form-select">
-									<option value="">-- Tous --</option>
-									<option value="0" {% if filtresActifs.estExtension == '0' %} selected {% endif %}>
-										Jeux de base uniquement
-									</option>
-									<option value="1" {% if filtresActifs.estExtension == '1' %} selected {% endif %}>
-										Extensions uniquement
-									</option>
-								</select>
-							</div>
 
 							<!-- A des extensions -->
 							<div class="col-md-6">
@@ -194,5 +193,4 @@
 			</div>
 		{% endif %}
 	</div>
-
 {% endblock %}
