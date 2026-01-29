@@ -20,6 +20,8 @@ class ControllerLivraison extends Controller
      * @param Twig\Environment $twig
      * @param Twig\Loader\FilesystemLoader $loader
      */
+    public array $reglesValidation;
+
     public function __construct(Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
@@ -66,5 +68,65 @@ class ControllerLivraison extends Controller
                 'commandes' => $commandes,
             ]);
         }
+    }
+    
+    /**
+     * @brief Affiche la page d'achat d'une annonce
+     *
+     * @return void
+     */
+    public function achat()
+    {
+        if (!isset($_SESSION['idCompte'])) {
+            $template = $this->getTwig()->load('connexion.html.twig');
+            echo $template->render();
+            return;
+        } else {
+            $id = isset($_GET['id']) ? intval($_GET['id']) : null;
+            $dao = new AnnonceDao($this->getPdo());
+            $annonce = $dao->find($id);
+
+            $template = $this->getTwig()->load('achat.html.twig');
+            echo $template->render([
+                'annonce' => $annonce
+            ]);
+        }
+    }
+
+    /**
+     * @brief Update les commandes lorsque qu'une annonce est achetée
+     * 
+     * @return void
+     */
+    public function afficherResume()
+    {
+        $id = isset($_POST['idAnnonce']) ? intval($_POST['idAnnonce']) : null;
+        $dao = new AnnonceDao($this->getPdo());
+        $annonce = $dao->findAssoc($id);
+        $array = [
+            'idLivraison'        => null,
+            'ville'              => $_POST['ville'] ?? null,
+            'pays'               => $_POST['pays'] ?? null,
+            'adresse'            => $_POST['adresse'] ?? null,
+            'codePostal'         => $_POST['codePostal'] ?? null,
+            'dateCommande'       => date('Y-m-d'),
+            'dateLivraison'      => null,
+            'dateReception'      => null,
+            'idAnnonce'          => $_POST['idAnnonce'] ?? null,
+            'idCompteAcheteur'   => $_SESSION['idCompte'],
+            'numeroDeSuivi'      => null,
+            'status'             => null
+        ];
+        $dao = new LivraisonDao($this->getPdo());
+        $livraison = $dao->hydrate($array);
+        $dao->insertIntoDatabase($livraison);
+
+
+        $template = $this->getTwig()->load('recapitulatif.html.twig');
+        echo $template->render([
+            'annonce' => $annonce,
+            'livraison' => $livraison
+        ]);
+
     }
 }
