@@ -100,8 +100,10 @@ class ControllerPaiement extends controller
             $adresse = $_POST['adresse'] ?? null;
             $complementAdresse = $_POST['complementAdresse'] ?? null;
             $id = isset($_POST['idAnnonce']) ? (int) $_POST['idAnnonce'] : null;
-            $dao = new AnnonceDao($this->getPdo());
-            $annonce = $dao->find($id);
+            $daoAnnonce = new AnnonceDao($this->getPdo());
+            $annonce = $daoAnnonce->find($id);
+            $daoJeu = new JeuDao($this->getPdo());
+            $jeu = $daoJeu->find($annonce->getIdJeu());
             
             $validator = new Validator($this->reglesValidation);
             $donnesValides = $validator->valider($data);
@@ -122,6 +124,7 @@ class ControllerPaiement extends controller
                 'codePostal' => $codePostal,
                 'adresse' => $adresse,
                 'complementAdresse' => $complementAdresse,
+                'jeu' => $jeu
             ]);
         }
     }
