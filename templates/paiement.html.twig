@@ -14,7 +14,7 @@
         <p>Adresse de livraison→ <b>paiement</b> → récapituatif</p>
 
         <!-- Paiement -->
-        <div class="col-md-6  mt-2 bg-light p-2 border border-2 rounded">
+        <div class="col-md-6  mt-2 bg-light p-3 border border-2 rounded shadow-sm">
 
             <div class="mb-4">
                 <label class="form-label required">Numéro de la carte</label>
@@ -33,7 +33,7 @@
             </div>
 
             <div class="mb-4">
-                <label class="form-label required">Nom sur la carte</label>
+                <label class="form-label required">Titulaire de la carte</label>
                 <input type="text" name="nomCarte" class="form-control shadow-sm" placeholder="Votre nom" required>
             </div>
 
@@ -52,7 +52,7 @@
 
         <!-- Récapitulatif -->
         <div class="col-md-6">
-            <div class="col mt-2 bg-light p-2 border border-1 rounded">
+            <div class="col mt-2 bg-light p-3 border border-1 rounded shadow-sm">
                 <h4 class="mb-3 fw-bold">Récapitulatif</h4>
                 <hr>
                 <div class="d-flex justify-content-between">
@@ -93,7 +93,7 @@
                 {% if complementAdresse is defined and complementAdresse != '' %}
                 <div class="d-flex justify-content-between">
                     <span><b>Complément d'adresse</b></span>
-                    <strong> {{complementAdresse}}</strong>
+                    {{complementAdresse}}
                 </div>
                 {% endif %}
             </div>
