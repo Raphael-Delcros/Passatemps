@@ -13,7 +13,6 @@ config/*
 !modeles/
 !SCSS/
 !templates/
-!uploads/
 
 # Fichiers
 !index.php
