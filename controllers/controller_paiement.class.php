@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file controller_paiement.class.php
  * @brief Définit la classe ControllerPaiement pour gérer ce qui est lié avec la gestion des paiements.
@@ -9,7 +10,7 @@
 /**
  * @brief Classe ControllerPaiement pour gérer les paiements liés à l'achat d'annonces
  */
-class ControllerPaiement extends controller 
+class ControllerPaiement extends controller
 {
 
     public array $reglesValidation;
@@ -20,14 +21,12 @@ class ControllerPaiement extends controller
      * @param Twig\Environment $twig Environnement Twig pour le rendu des templates
      * @param Twig\Loader\FilesystemLoader $loader Chargeur de fichiers Twig
      */
-    public function __construct( Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader) 
+    public function __construct(Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
         $config = Config::get();
-        
-        
     }
-    
+
     /**
      * @brief Affiche la page d'achat d'une annonce
      *
@@ -37,7 +36,7 @@ class ControllerPaiement extends controller
     {
         if (!isset($_SESSION['idCompte'])) {
             $template = $this->getTwig()->load('connexion.html.twig');
-            echo $template->render();
+            echo $template->render(['menu' => 'compte']);
             return;
         } else {
             $id = isset($_GET['id']) ? intval($_GET['id']) : null;
@@ -49,7 +48,8 @@ class ControllerPaiement extends controller
             $template = $this->getTwig()->load('adresseLivraison.html.twig');
             echo $template->render([
                 'annonce' => $annonce,
-                'jeu' => $jeu
+                'jeu' => $jeu,
+                'menu' => 'annonce'
             ]);
         }
     }
@@ -61,7 +61,8 @@ class ControllerPaiement extends controller
      *
      * @return void
      */
-    public function payer(){
+    public function payer()
+    {
 
         $data = $_POST;
 
@@ -92,7 +93,7 @@ class ControllerPaiement extends controller
 
         if (!isset($_SESSION['idCompte'])) {
             $template = $this->getTwig()->load('connexion.html.twig');
-            echo $template->render();
+            echo $template->render(['menu' => 'compte']);
             return;
         } else {
             $ville = $_POST['ville'] ?? null;
@@ -104,16 +105,17 @@ class ControllerPaiement extends controller
             $annonce = $daoAnnonce->find($id);
             $daoJeu = new JeuDao($this->getPdo());
             $jeu = $daoJeu->find($annonce->getIdJeu());
-            
+
             $validator = new Validator($this->reglesValidation);
             $donnesValides = $validator->valider($data);
             $messagesErreurs = $validator->getMessagesErreurs();
-            
-            if(!$donnesValides){
+
+            if (!$donnesValides) {
                 $template = $this->getTwig()->load('adresseLivraison.html.twig');
                 echo $template->render([
                     'erreurs' => $messagesErreurs,
-                    'donnees' => $data
+                    'donnees' => $data,
+                    'menu' => 'annonce'
                 ]);
                 return;
             }
@@ -124,7 +126,8 @@ class ControllerPaiement extends controller
                 'codePostal' => $codePostal,
                 'adresse' => $adresse,
                 'complementAdresse' => $complementAdresse,
-                'jeu' => $jeu
+                'jeu' => $jeu,
+                'menu' => 'annonce'
             ]);
         }
     }
@@ -134,25 +137,27 @@ class ControllerPaiement extends controller
      *
      * @return void
      */
-    public function recapitulatif() {
+    public function recapitulatif()
+    {
         if (!isset($_SESSION['idCompte'])) {
             $template = $this->getTwig()->load('connexion.html.twig');
-            echo $template->render();
+            echo $template->render(['menu' => 'compte']);
             return;
         }
-    
+
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
-    
+
         $annonceDao = new AnnonceDao($this->getPdo());
         $annonce = $annonceDao->find($id);
-    
+
         $compteDao = new CompteDao($this->getPdo());
         $utilisateur = $compteDao->findAssoc($_SESSION['idCompte']);
-    
+
         $template = $this->getTwig()->load('recapitulatif.html.twig');
         echo $template->render([
             'annonce' => $annonce,
-            'utilisateur' => $utilisateur
+            'utilisateur' => $utilisateur,
+            'menu' => 'annonce'
         ]);
     }
 
@@ -184,7 +189,7 @@ class ControllerPaiement extends controller
                 'longueurMin' => 3,
                 'longueurMax' => 3
             ]
-            ];
+        ];
 
         $id = isset($_POST['idAnnonce']) ? (int) $_POST['idAnnonce'] : null;
         $dao = new AnnonceDao($this->getPdo());
@@ -211,21 +216,20 @@ class ControllerPaiement extends controller
         $donnesValides = $validator->valider($data);
         $messagesErreurs = $validator->getMessagesErreurs();
 
-        if(!$donnesValides){
+        if (!$donnesValides) {
             $template = $this->getTwig()->load('paiement.html.twig');
             echo $template->render([
                 'erreurs' => $messagesErreurs,
-                'donnees' => $data
+                'donnees' => $data,
+                'menu' => 'annonce'
             ]);
             return;
         }
         $template = $this->getTwig()->load('recapitulatif.html.twig');
         echo $template->render([
             'annonce' => $annonce,
-            'livraison' => $livraison
+            'livraison' => $livraison,
+            'menu' => 'annonce'
         ]);
-
     }
-
-
 }
