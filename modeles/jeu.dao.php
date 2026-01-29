@@ -265,9 +265,16 @@ class JeuDao
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * @brief Recherche des jeux par nom (pour la page de recherche)
-     */
+        public function findNameWithId(int $id): array
+    {
+        $sql = "SELECT nom
+            FROM jeu
+            WHERE idJeu = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
     public function research(string $q): array
     {
         $sql = "SELECT J.idJeu, J.nom, J.nbJoueursMin, J.nbJoueursMax, P.url
