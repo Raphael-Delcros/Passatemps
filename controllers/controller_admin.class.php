@@ -1,7 +1,15 @@
 <?php
 
+/**
+ * @file controller_admin.class.php
+ * @brief Contrôleur pour les actions administratives
+ * 
+ */
 class ControllerAdmin extends Controller
 {
+    /**
+     * @brief Constructeur avec vérification de rôle administrateur
+     */
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
@@ -17,7 +25,9 @@ class ControllerAdmin extends Controller
             exit;
         }
     }
-
+    /**
+     * @brief Affiche le tableau de bord admin
+     */
     public function dashboard()
     {
         $template = $this->getTwig()->load('admin_dashboard.html.twig');
@@ -27,7 +37,10 @@ class ControllerAdmin extends Controller
             ]
         );
     }
-
+    /**
+     * 
+     * @brief Affiche le formulaire d'ajout de jeu
+     */
     public function ajouterJeu()
     {
         // On récupère toutes les catégories pour les afficher dans le formulaire
@@ -39,16 +52,22 @@ class ControllerAdmin extends Controller
             'categories' => $categories
         ]);
     }
+
+    /**
+     * @brief Pour lister tous les jeux avec options de modification/suppression
+     */
     public function listeJeux()
     {
         $dao = new JeuDao($this->getPdo());
-        $jeux = $dao->findAllAssoc(); // Ta méthode exacte
+        $jeux = $dao->findAllAssoc();
 
         echo $this->getTwig()->render('admin_liste_jeux.html.twig', [
             'jeux' => $jeux
         ]);
     }
 
+    /*  * @brief Supprime un jeu par son ID
+     */
     public function supprimerJeu()
     {
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
@@ -60,7 +79,8 @@ class ControllerAdmin extends Controller
         exit;
     }
 
-    // Affiche le formulaire avec les données existantes
+    /** * @brief Affiche le formulaire de modification d'un jeu
+     */
     public function formulaireModif()
     {
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
@@ -78,7 +98,8 @@ class ControllerAdmin extends Controller
         ]);
     }
 
-    // Traite la modification
+    /** @brief Traite la modification d'un jeu
+     */
     public function modifierJeu()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -107,6 +128,10 @@ class ControllerAdmin extends Controller
             exit;
         }
     }
+
+    /**
+     * @brief Liste des annonces avec options de modification/suppression
+     */
     public function listeAnnonces()
     {
         $dao = new AnnonceDao($this->getPdo());
@@ -117,6 +142,8 @@ class ControllerAdmin extends Controller
         ]);
     }
 
+    /** * @brief Supprime une annonce par son ID
+     */
     public function supprimerAnnonce()
     {
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
@@ -128,6 +155,8 @@ class ControllerAdmin extends Controller
         exit;
     }
 
+    /** * @brief Affiche le formulaire de modification d'une annonce
+     */
     public function formulaireModifAnnonce()
     {
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
@@ -143,6 +172,8 @@ class ControllerAdmin extends Controller
         ]);
     }
 
+    /** * @brief Traite la modification d'une annonce
+     */
     public function modifierAnnonce()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -171,6 +202,8 @@ class ControllerAdmin extends Controller
         }
     }
 
+    /** * @brief Liste des comptes utilisateurs avec options de modification/suppression
+     */
     public function listeComptes()
     {
         $dao = new CompteDao($this->getPdo());
@@ -181,6 +214,8 @@ class ControllerAdmin extends Controller
         ]);
     }
 
+    /** * @brief Affiche le formulaire de modification d'un compte
+     */
     public function formulaireModifCompte()
     {
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
@@ -192,6 +227,8 @@ class ControllerAdmin extends Controller
         ]);
     }
 
+    /** * @brief Traite la modification d'un compte
+     */
     public function modifierCompte()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -211,6 +248,8 @@ class ControllerAdmin extends Controller
         }
     }
 
+    /** * @brief Supprime un compte par son ID
+     */
     public function supprimerCompte()
     {
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;

@@ -1,8 +1,29 @@
-/vendor
-/node_modules
-/CSS
-/config/config.php
-/config/constantes.yaml
-/images/vignettes/
-/docs
-/uploads
+# On tracke RIEN.
+/*
+
+# Sauf
+# Dossiers
+# Config
+config/*
+!config/config.php
+!config/constantesExemple.yaml
+!config/twig.php
+# Autres dossiers
+!controllers/
+!modeles/
+!SCSS/
+!templates/
+!uploads/
+
+# Fichiers
+!index.php
+!composer.json
+!composer.lock
+!package.json
+!include.php
+!index.php
+!legal.php
+!README.md
+!package-lock.json
+!packege.json
+!.gitignore

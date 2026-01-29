@@ -29,11 +29,14 @@ $theme-colors: (
   "danger": $danger,
 );
 @import "../node_modules/bootstrap/scss/maps";
+
 @import "../node_modules/bootstrap/scss/mixins";
 @import "../node_modules/bootstrap/scss/root";
-
 @import "../node_modules/bootstrap/scss/bootstrap";
-
+// Icones
+$bootstrap-icons-font-src: url("../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2") format("woff2"), 
+                           url("../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff") format("woff");;
+@import "../node_modules/bootstrap-icons/font/bootstrap-icons.scss";
 // Custom
 .primaire {
   color: $primary;
@@ -55,4 +58,16 @@ body {
 .required::after {
   content: " *";
   color: red;
+}
+
+
+.arrow-icon {
+    display: inline-block; /* Crucial for transforms to work */
+    transition: transform 0.3s ease;
+    transform: rotate(0deg); /* Initial state */
+}
+
+/* When the parent/trigger is open */
+[aria-expanded="true"] .arrow-icon {
+    transform: rotate(90deg); /* Adjust degrees as needed */
 }

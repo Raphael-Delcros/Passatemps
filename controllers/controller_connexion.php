@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file controller_connexion.php
+ * @brief Contrôleur pour la gestion de la connexion et de l'authentification des utilisateurs
+ */
 use LDAP\Result;
 
 class ControllerConnexion extends controller
@@ -20,6 +23,8 @@ class ControllerConnexion extends controller
             $id = $_SESSION['idCompte'];
             $dao = new CompteDao($this->getPdo());
             $compte = $dao->find($id);
+
+            header('Location: index.php?controleur=compte&methode=afficher&');
 
             $template = $this->getTwig()->load('compte.html.twig');
             echo $template->render([

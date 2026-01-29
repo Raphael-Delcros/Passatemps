@@ -1,9 +1,12 @@
 {% extends 'base_template.html.twig' %}
 
+{% block title %}{{constantes.application.website_name}} - Modification d'un utilisateur{% endblock %}
+
+
 {% block body %}
 <div class="container mt-5">
     <div class="card shadow col-md-8 mx-auto">
-        <div class="card-header bg-warning">
+        <div class="card-header primary bg-primary">
             <h2 class="mb-0">Modifier le compte #{{ compte.idCompte }}</h2>
         </div>
         <div class="card-body">
@@ -36,7 +39,7 @@
                 </div>
 
                 <div class="d-flex justify-content-between">
-                    <a href="index.php?controleur=admin&methode=listeComptes" class="btn btn-secondary">Annuler</a>
+                    <a href="index.php?controleur=admin&methode=listeComptes" class="btn-outline-secondary">Annuler</a>
                     <button type="submit" class="btn btn-primary">Mettre à jour le compte</button>
                 </div>
             </form>

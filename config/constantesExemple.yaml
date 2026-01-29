@@ -18,6 +18,7 @@ application:
     max_connextions_echouees: 3 # Nombre maximum de tentatives de connexion échouées avant désactivation du compte
     delai_attente_connexion: 1800 # Délai d'attente après avoir atteint le nombre maximum de tentatives de connexion échouées (en secondes)
     token_gestion_cookies : 
+    forum_file_path: # Chemin vers le dossier des fichiers du forum; ex: "phpbb". Ne pas ajouter de slashs
 
 regex:
     texte: /^[a-zA-ZÀ-ÿ\'-]+$/ # Autorise les lettres (majuscules et minuscules), les accents, les apostrophes et les traits d'union

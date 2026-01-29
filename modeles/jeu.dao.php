@@ -1,27 +1,38 @@
 <?php
-
+/**
+ * @file jeu.dao.php
+ * @brief DAO pour la gestion des jeux
+ */
 class JeuDao
 {
     private ?PDO $pdo;
 
-
-    // --- Constucteur ---
+    /**
+     * @brief Constructeur
+     */
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;
     }
-
-    // --- Getters & Setters ---
+    /**
+     * Get the value of pdo
+     */
     public function getPdo(): ?PDO
     {
         return $this->pdo;
     }
+    /**
+     * Set the value of pdo
+     *
+     * @return  void
+     */
     public function setPdo($pdo): void
     {
         $this->pdo = $pdo;
     }
-
-    // --- Fonctions ---
+    /**
+     * @brief Récupère un jeu par son ID
+     */
     public function find(?int $id): ?Jeu
     {
         $sql = "SELECT J.idJeu, J.nom, J.description, J.contenu, 
@@ -67,7 +78,9 @@ class JeuDao
         return $jeu;
     }
 
-
+    /**
+     * @brief Récupère tous les jeux
+     */
     public function findAll(): array
     {
         $sql = "SELECT J.idJeu, J.nom, J.description, J.contenu, 
@@ -129,7 +142,9 @@ class JeuDao
         return $jeux;
     }
 
-
+    /**
+     * @brief Récupère un jeu sous forme de tableau associatif
+     */
     public function findAssoc(?int $id): ?array
     {
         $sql = "SELECT J.idJeu, J.nom, J.description, J.contenu, 
@@ -162,7 +177,9 @@ class JeuDao
         return $jeu;
     }
 
-
+    /**
+     * @brief Récupère tous les jeux sous forme de tableaux associatifs
+     */
     public function findAllAssoc(): array
     {
         $sql = "SELECT J.idJeu, J.nom, J.description, J.contenu, 
@@ -199,6 +216,9 @@ class JeuDao
     }
 
 
+    /**
+     * @brief Hydrate un tableau associatif en objet Jeu
+     */
     public function hydrate($tableauAssoc): ?Jeu
     {
         $jeu = new Jeu();
@@ -217,7 +237,9 @@ class JeuDao
         return $jeu;
     }
 
-
+    /**
+     * @brief Hydrate un tableau de tableaux associatifs en tableaux d'objets Jeu
+     */
     public function hydrateAll($tableau): ?array
     {
         $jeux = [];
@@ -227,7 +249,9 @@ class JeuDao
         }
         return $jeux;
     }
-
+    /**
+     * @brief Recherche des jeux par nom (pour l'autocomplétion)
+     */
     public function findWithName(string $q): array
     {
         $sql = "SELECT idJeu, nom
@@ -241,6 +265,9 @@ class JeuDao
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @brief Recherche des jeux par nom (pour la page de recherche)
+     */
     public function research(string $q): array
     {
         $sql = "SELECT J.idJeu, J.nom, J.nbJoueursMin, J.nbJoueursMax, P.url
@@ -279,12 +306,14 @@ class JeuDao
         ]);
     }
 
-
+    /**
+     * @brief Récupère une page de jeux pour la pagination
+     * @todo A faire 
+     */
     public function findPage(int $page, int $parPage): array
     {
         $offset = ($page - 1) * $parPage;
 
-        // On reprend ta requête complexe de findAllAssoc mais avec LIMIT
         $sql = "SELECT J.idJeu, J.nom, J.nbJoueursMin, J.nbJoueursMax, photo.url 
             FROM jeu J
             LEFT JOIN photo ON J.idPhoto = photo.idPhoto
@@ -298,7 +327,9 @@ class JeuDao
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    /**
+     * @brief Compte le nombre total de jeux dans la base de données
+     */
     public function countAll(): int
     {
         $sql = "SELECT COUNT(*) FROM jeu";
@@ -315,7 +346,7 @@ class JeuDao
     }
 
     /**
-     * Met à jour un jeu existant
+     * @brief Met à jour les informations d'un Jeu dans la base de données
      */
     public function update(Jeu $jeu): bool
     {
@@ -344,5 +375,72 @@ class JeuDao
             'dureePartie' => $jeu->getdureePartie(),
             'idJeu' => $jeu->getIdJeu()
         ]);
+    }
+
+
+    /**
+     * Recherche de jeux avec filtres dynamiques
+     * 
+     * @param JeuFilter $filter Instance de JeuFilter configurée
+     * @return array Liste des jeux correspondant aux filtres
+     */
+    public function findWithFilters(JeuFilter $filter): array
+    {
+        $sql = "SELECT DISTINCT J.idJeu, J.nom, J.description, J.contenu, 
+               J.nbJoueursMin, J.nbJoueursMax, J.dateSortie, 
+               J.idJeuPrincipal, J.idPhoto, J.dureePartie, P.url
+        FROM jeu J
+        LEFT JOIN photo P ON J.idPhoto = P.idPhoto"
+            . $filter->buildJoins() . " "
+            . $filter->buildWhereClause();
+
+        // Si on a un filtre strict sur les catégories,  grouper et utiliser HAVING
+        $havingClause = $filter->buildHavingClause();
+        if (!empty($havingClause)) {
+            $sql .= " GROUP BY J.idJeu, J.nom, J.description, J.contenu, 
+                         J.nbJoueursMin, J.nbJoueursMax, J.dateSortie, 
+                         J.idJeuPrincipal, J.idPhoto, J.dureePartie, P.url "
+                . $havingClause;
+        }
+
+        $sql .= " ORDER BY J.nom";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($filter->getParams());
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Compte le nombre de jeux correspondant aux filtres
+     * 
+     * @param JeuFilter $filter Instance de JeuFilter configurée
+     * @return int Nombre de jeux trouvés
+     */
+    public function countWithFilters(JeuFilter $filter): int
+    {
+        $havingClause = $filter->buildHavingClause();
+
+        if (!empty($havingClause)) {
+            // Avec HAVING, on doit faire un sous-requête
+            $sql = "SELECT COUNT(*) FROM (
+            SELECT J.idJeu
+            FROM jeu J"
+                . $filter->buildJoins() . " "
+                . $filter->buildWhereClause() . "
+            GROUP BY J.idJeu "
+                . $havingClause . "
+        )";
+        } else {
+            $sql = "SELECT COUNT(DISTINCT J.idJeu) 
+            FROM jeu J"
+                . $filter->buildJoins() . " "
+                . $filter->buildWhereClause();
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($filter->getParams());
+
+        return (int) $stmt->fetchColumn();
     }
 }

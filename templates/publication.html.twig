@@ -1,9 +1,6 @@
 {% extends 'base_template.html.twig' %}
 {% block title %}
-	{{constantes.application.website_name}}
-	-
-	{{ publication.idPublication }}
-	{{ publication.sujet }}
+	{{constantes.application.website_name}} - {{ publication.sujet }}
 {% endblock %}
 
 {% block body %}
@@ -30,9 +27,11 @@
 
 			<div>
 				<form method="POST" action="" class="row g-3 position-relative mt-5" autocomplete="off">
-					<div class="position-relative">
-						<input type="text" class="form-control" name="titre" placeholder="commente" required>
+					<div class="position-relative col-md-10">
+						<textarea type="text" class="form-control" name="commentaire" placeholder="Commenter" required></textarea>
 					</div>
+					<div class="position-relative col">
+						<button type="submit" class="btn btn-primary mb-3">Envoyer</button>
 				</div>
 			</div>
 		</div>
