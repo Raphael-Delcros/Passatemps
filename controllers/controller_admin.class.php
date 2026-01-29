@@ -33,7 +33,8 @@ class ControllerAdmin extends Controller
         $template = $this->getTwig()->load('admin_dashboard.html.twig');
         echo $template->render(
             [
-                'prenom' => $_SESSION['prenom']
+                'prenom' => $_SESSION['prenom'],
+                'menu' => 'compte',
             ]
         );
     }
@@ -49,7 +50,8 @@ class ControllerAdmin extends Controller
 
         $template = $this->getTwig()->load('backOffice.html.twig');
         echo $template->render([
-            'categories' => $categories
+            'categories' => $categories,
+            'menu' => 'compte',
         ]);
     }
 
@@ -62,7 +64,8 @@ class ControllerAdmin extends Controller
         $jeux = $dao->findAllAssoc();
 
         echo $this->getTwig()->render('admin_liste_jeux.html.twig', [
-            'jeux' => $jeux
+            'jeux' => $jeux,
+            'menu' => 'compte',
         ]);
     }
 
@@ -94,7 +97,8 @@ class ControllerAdmin extends Controller
 
         echo $this->getTwig()->render('admin_form_jeu.html.twig', [
             'jeu' => $jeuData,
-            'action' => 'modifier'
+            'action' => 'modifier',
+            'menu' => 'compte',
         ]);
     }
 
@@ -138,7 +142,8 @@ class ControllerAdmin extends Controller
         $annonces = $dao->findAllAssoc(); // Utilise ta méthode existante
 
         echo $this->getTwig()->render('admin_liste_annonces.html.twig', [
-            'annonces' => $annonces
+            'annonces' => $annonces,
+            'menu' => 'compte',
         ]);
     }
 
@@ -168,7 +173,8 @@ class ControllerAdmin extends Controller
 
         echo $this->getTwig()->render('admin_form_annonce.html.twig', [
             'annonce' => $annonce,
-            'jeux' => $listeJeux
+            'jeux' => $listeJeux,
+            'menu' => 'compte',
         ]);
     }
 
@@ -210,7 +216,8 @@ class ControllerAdmin extends Controller
         $comptes = $dao->findAllAssoc();
 
         echo $this->getTwig()->render('admin_liste_comptes.html.twig', [
-            'comptes' => $comptes
+            'comptes' => $comptes,
+            'menu' => 'compte',
         ]);
     }
 
@@ -223,7 +230,8 @@ class ControllerAdmin extends Controller
         $compte = $dao->findAssoc($id);
 
         echo $this->getTwig()->render('admin_form_compte.html.twig', [
-            'compte' => $compte
+            'compte' => $compte,
+            'menu' => 'compte',
         ]);
     }
 

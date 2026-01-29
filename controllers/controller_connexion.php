@@ -1,8 +1,10 @@
 <?php
+
 /**
  * @file controller_connexion.php
  * @brief Contrôleur pour la gestion de la connexion et de l'authentification des utilisateurs
  */
+
 use LDAP\Result;
 
 class ControllerConnexion extends controller
@@ -29,10 +31,13 @@ class ControllerConnexion extends controller
             $template = $this->getTwig()->load('compte.html.twig');
             echo $template->render([
                 'compte' => $compte,
+                'menu' => 'compte',
             ]);
         } else {
             $template = $this->getTwig()->load('connexion.html.twig');
-            echo $template->render();
+            echo $template->render([
+                'menu' => 'compte',
+            ]);
         }
     }
 
@@ -61,25 +66,25 @@ class ControllerConnexion extends controller
                 $utilisateur = $dao->hydrate($arrayUtilisateur);
                 $passwordHash = $utilisateur->getMotDePasseHache();
 
-                if(password_verify($password,$passwordHash))
-                {
+                if (password_verify($password, $passwordHash)) {
                     $_SESSION['email'] = $utilisateur->getEmail();
                     $_SESSION['nom'] = $utilisateur->getNom();
                     $_SESSION['prenom'] = $utilisateur->getPrenom();
                     $_SESSION['idCompte'] = $utilisateur->getIdCompte();
-                    $_SESSION['role'] = $utilisateur->getRole(); 
+                    $_SESSION['role'] = $utilisateur->getRole();
 
                     header('Location: index.php?controleur=compte&methode=afficher&id=' . $utilisateur->getIdCompte());
                 } else {
                     $error = true;
                 }
             } else {
-               $error = true;
+                $error = true;
             }
-            if($error = true){
+            if ($error = true) {
                 $template = $this->getTwig()->load('connexion.html.twig');
                 echo $template->render([
                     'reussite' => false,
+                    'menu' => 'compte',
                 ]);
             }
         }

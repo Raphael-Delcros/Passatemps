@@ -109,22 +109,24 @@ class ControllerCompte extends Controller
                     'other' => true,
                     'compte' => $compte,
                     'annonces' => $annonces,
+                    'menu' => 'compte',
+                ]);
+            } else {
+                $id = $_SESSION['idCompte'];
+                $dao = new CompteDao($this->getPdo());
+                $compte = $dao->find($id);
+
+                $dao = new AnnonceDao($this->getPdo());
+                $annonces = $dao->findByAccount($id);
+
+                $template = $this->getTwig()->load('compte.html.twig');
+                echo $template->render([
+                    'other' => false,
+                    'compte' => $compte,
+                    'annonces' => $annonces,
+                    'menu' => 'compte',
                 ]);
             }
-            else {
-            $id = $_SESSION['idCompte'];
-            $dao = new CompteDao($this->getPdo());
-            $compte = $dao->find($id);
-
-            $dao = new AnnonceDao($this->getPdo());
-            $annonces = $dao->findByAccount($id);
-
-            $template = $this->getTwig()->load('compte.html.twig');
-            echo $template->render([
-                'other' => false,
-                'compte' => $compte,
-                'annonces' => $annonces,
-            ]);}
         } else {
             header('Location: index.php?controleur=connexion&methode=connexion');
         }
@@ -137,7 +139,7 @@ class ControllerCompte extends Controller
     public function inscription()
     {
         $template = $this->getTwig()->load('inscription.html.twig');
-        echo $template->render();
+        echo $template->render(['menu' => 'compte']);
     }
 
     /**
@@ -204,6 +206,7 @@ class ControllerCompte extends Controller
         $template = $this->getTwig()->load('inscription.html.twig');
         echo $template->render([
             'erreurs' => $erreurs,
+            'menu' => 'compte',
         ]);
     }
 }

@@ -33,11 +33,12 @@ class ControllerMessagerie extends Controller
             echo $template->render([
                 'messages' => $messages,
                 'utilisateurs' => $utilisateurs,
-                'id' => $id
+                'id' => $id,
+                'menu' => 'messagerie'
             ]);
         } else {
             $template = $this->getTwig()->load('connexion.html.twig');
-            echo $template->render();
+            echo $template->render(['menu' => 'compte']);
         }
     }
     /**
@@ -50,7 +51,7 @@ class ControllerMessagerie extends Controller
     {
         if (!isset($_SESSION['idCompte']) or !isset($_GET['id'])) {
             $template = $this->getTwig()->load('connexion.html.twig');
-            echo $template->render();
+            echo $template->render(['menu' => 'compte']);
             return;
         } else {
             if ($erreur == null) {
@@ -73,7 +74,8 @@ class ControllerMessagerie extends Controller
                 'idCompte' => $id,
                 'monNom' => $monNom,
                 'monPrenom' => $monPrenom,
-                'erreur' => $erreur
+                'erreur' => $erreur,
+                'menu' => 'messagerie'
             ]);
         }
     }
