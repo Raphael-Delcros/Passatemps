@@ -1,0 +1,33 @@
+{% extends 'base_template.html.twig' %}
+{% block title %}{{constantes.application.website_name}} - Récapitulatif {% endblock %}
+
+{% block body %}
+
+<div class="container mt-5 text-center">
+<p>Adresse de livraison→ paiement → <b>récapituatif</b></p>
+
+    <h1 class="text mb-4">
+        Merci {{ utilisateur.prenom }} {{ utilisateur.nom }} !
+    </h1>
+
+    <p class="fs-5">
+        Votre achat a bien été pris en compte
+    </p>
+
+    <div class="card mx-auto mt-4" style="max-width: 400px;">
+        <div class="card-body">
+            <h5 class="card-title">Récapitulatif</h5>
+            <p class="card-text">
+                <strong>Annonce :</strong> {{ annonce.titre }} <br>
+                <strong>Prix :</strong> {{ annonce.prix }} €
+            </p>
+        </div>
+    </div>
+
+    <a href="index.php" class="btn btn-primary mt-4">
+        Retour à l’accueil
+    </a>
+
+</div>
+
+{% endblock %}

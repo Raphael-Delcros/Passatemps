@@ -1,0 +1,115 @@
+{% extends 'base_template.html.twig' %}
+{% block title %}{{constantes.application.website_name}} - Paiement {% endblock %}
+
+{% block body %}
+
+<form method="POST" action="index.php?controleur=livraison&methode=afficherResume">
+    <input type="hidden" name="idAnnonce" value="{{ annonce.idAnnonce }}">
+    <input type="hidden" name="ville" value="{{ ville }}">
+    <input type="hidden" name="pays" value="{{ pays }}">
+    <input type="hidden" name="adresse" value="{{ adresse }}">
+    <input type="hidden" name="codePostal" value="{{ codePostal }}">
+    <div class="row">
+        <h2 class="form-title">Détails du paiement</h2>
+        <p>Adresse de livraison→ <b>paiement</b> → récapituatif</p>
+
+        <!-- Paiement -->
+        <div class="col-md-6  mt-2 bg-light p-3 border border-2 rounded shadow-sm">
+
+            <div class="mb-4">
+                <label class="form-label required">Numéro de la carte</label>
+                <input type="text" name="numCarte" class="form-control shadow-sm" placeholder="1234 1234 1234 1234" required>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label class="form-label required">Date d'expiration</label>
+                    <input type="text" name="dateExpiration" class="form-control shadow-sm" placeholder="MM/YY" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label required">Code de Sécurité</label>
+                    <input type="text" name="codeSecurite" class="form-control shadow-sm" placeholder="CVC" required>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label required">Titulaire de la carte</label>
+                <input type="text" name="nomCarte" class="form-control shadow-sm" placeholder="Votre nom" required>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <a href="index.php?controleur=paiement&methode=adresseLivraison&id={{ annonce.idAnnonce }}"
+                       class="btn btn-secondary w-100 mt-3 shadow-sm">Annuler</a>
+                </div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-primary w-100 mt-3 shadow-sm">
+                    Payer
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Récapitulatif -->
+        <div class="col-md-6">
+            <div class="col mt-2 bg-light p-3 border border-1 rounded shadow-sm">
+                <h4 class="mb-3 fw-bold">Récapitulatif</h4>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <span><b>Titre de l'annonce</b></span>
+                    {{annonce.titre}}
+                </div>
+                <br>
+
+                <div class="d-flex justify-content-between">
+                    <span><b>Jeu</b></span>
+                    {{jeu.nom}}
+                </div>
+                <br>
+
+                <div class="d-flex justify-content-between">
+                    <span><b>Prix de l'annonce</b></span>
+                    {{ annonce.prix }} €
+                </div>
+                <br>
+
+                <div class="d-flex justify-content-between">
+                    <span><b>Ville</b></span>
+                    {{ville}}
+                </div>
+                <br>
+
+                <div class="d-flex justify-content-between">
+                    <span><b>Code Postal</b></span>
+                    {{codePostal}}
+                </div>
+                <br>
+
+                <div class="d-flex justify-content-between">
+                    <span><b>Adresse</b></span>
+                    {{adresse}}
+                </div>
+                <br>
+                {% if complementAdresse is defined and complementAdresse != '' %}
+                <div class="d-flex justify-content-between">
+                    <span><b>Complément d'adresse</b></span>
+                    {{complementAdresse}}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="row mt-2">
+		<div class="col mt-2">
+			{% if erreurs is defined and erreurs|length > 0 %}
+				<div class="alert alert-danger mt-3">
+					<ul class="mb-0">
+						{% for erreur in erreurs %}
+							<li>{{ erreur }}</li>
+						{% endfor %}
+					</ul>
+				</div>
+			{% endif %}
+{% endblock %}

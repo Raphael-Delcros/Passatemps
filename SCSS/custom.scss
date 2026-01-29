@@ -11,7 +11,7 @@ $secondary: #0065a3;
 $tertiary: #93c3fa;
 // Couleurs par défaut de bootstrap
 $info: #0dcaf0;
-$warning: #ffc107;
+$warning: #ecb81d;
 $success: #198754;
 $danger: #d63447;
 
@@ -29,11 +29,15 @@ $theme-colors: (
   "danger": $danger,
 );
 @import "../node_modules/bootstrap/scss/maps";
+
 @import "../node_modules/bootstrap/scss/mixins";
 @import "../node_modules/bootstrap/scss/root";
-
 @import "../node_modules/bootstrap/scss/bootstrap";
-
+// Icones
+$bootstrap-icons-font-src:
+  url("../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2") format("woff2"),
+  url("../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff") format("woff");
+@import "../node_modules/bootstrap-icons/font/bootstrap-icons.scss";
 // Custom
 .primaire {
   color: $primary;
@@ -47,7 +51,7 @@ $theme-colors: (
 body {
   background-color: lighten($primary, 40%);
 }
-.form-check-input{
+.form-check-input {
   border: 1px solid $primary;
 }
 
@@ -55,4 +59,20 @@ body {
 .required::after {
   content: " *";
   color: red;
+}
+
+.arrow-icon {
+  display: inline-block; // Permet de ne pas considerer l'icone comme du texte
+  transition: transform 0.3s ease;
+  transform: rotate(0deg); // Rotation initiale 
+}
+
+[aria-expanded="true"] .arrow-icon {
+  transform: rotate(90deg);
+}
+
+.icone-nav {
+  display: inline-block; // Permet de ne pas considerer l'icone comme du texte
+  transform: scale(1.8); // Agrandir l'icone
+  transform-origin: center;
 }

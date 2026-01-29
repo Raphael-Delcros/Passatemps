@@ -117,13 +117,13 @@
 					</ul>
 					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link {% if menu=='forum' %} active {% endif %}" href="index.php?controleur=forum&methode=lister">Forum</a>
+							<a class="nav-link {% if menu=='forum' %} active {% endif %}" href="phpBB3">Forum</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link {% if menu=='messagerie' %} active {% endif %}" href="index.php?controleur=messagerie&methode=lister">Messagerie</a>
+							<a class="nav-link ms-1 {% if menu=='messagerie' %} active {% endif %}" href="index.php?controleur=messagerie&methode=lister"><i class="bi bi-envelope icone-nav"></i></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link {% if menu=='compte' %} active {% endif %}" href="index.php?controleur=connexion&methode=connexion">Mon compte</a>
+							<a class="nav-link ms-2 {% if menu=='compte' %} active {% endif %}" href="index.php?controleur=connexion&methode=connexion">{% if session.idCompte %}<i class="bi bi-person-circle icone-nav"></i>{% else %}Se connecter{% endif %}</a>
 						</li>
 					</ul>
 				</div>
