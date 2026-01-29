@@ -27,6 +27,32 @@ class ControllerPaiement extends controller
         
         
     }
+    
+    /**
+     * @brief Affiche la page d'achat d'une annonce
+     *
+     * @return void
+     */
+    public function achat()
+    {
+        if (!isset($_SESSION['idCompte'])) {
+            $template = $this->getTwig()->load('connexion.html.twig');
+            echo $template->render();
+            return;
+        } else {
+            $id = isset($_GET['id']) ? intval($_GET['id']) : null;
+            $daoAnnonce = new AnnonceDao($this->getPdo());
+            $annonce = $daoAnnonce->find($id);
+            $daoJeu = new JeuDao($this->getPdo());
+            $jeu = $daoJeu->find($annonce->getIdJeu());
+
+            $template = $this->getTwig()->load('adresseLivraison.html.twig');
+            echo $template->render([
+                'annonce' => $annonce,
+                'jeu' => $jeu
+            ]);
+        }
+    }
 
     /**
      * Fonction afficher de la classe ControllerPaiement
@@ -35,7 +61,7 @@ class ControllerPaiement extends controller
      *
      * @return void
      */
-    public function afficher(){
+    public function payer(){
 
         $data = $_POST;
 
@@ -82,7 +108,7 @@ class ControllerPaiement extends controller
             $messagesErreurs = $validator->getMessagesErreurs();
             
             if(!$donnesValides){
-                $template = $this->getTwig()->load('achat.html.twig');
+                $template = $this->getTwig()->load('adresseLivraison.html.twig');
                 echo $template->render([
                     'erreurs' => $messagesErreurs,
                     'donnees' => $data
