@@ -1,20 +1,8 @@
-<h1>Hello word</h1>
+{% extends 'base_template.html.twig' %}
 
-<h2>Variable simple</h2>
-<p>{{uneChaine}}</p>
-
-<h2>Tableau</h2>
-<p>
-	{{dump(unTableau)}}
-	{{unTableau.1}}
-
-
-</p>
-
-<h2>Tableau associatif</h2>
-<p>{{unTabAsso.nom}}</p>
-
-<h2>La classe</h2>
-<p> {{unPerso}} </p>
-
-<h2>La classe</h2>
+{% block body %}
+    <h1></h1>
+    <p><strong>identifiant du noté :</strong> {{ note.idCompteNote }}</p>
+    <p><strong>identifiant de ceux qui ont noté avec la note attribuée :</strong> {{ note.idCompteQuiNote }} {{note.note}}</p>
+    <p><strong>moyenne des notes :</strong> {{ note.average }}</p>
+{% endblock %}
