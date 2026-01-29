@@ -430,7 +430,7 @@ class JeuDao
                 . $filter->buildWhereClause() . "
             GROUP BY J.idJeu "
                 . $havingClause . "
-        ) AS filtered_jeux";
+        )";
         } else {
             $sql = "SELECT COUNT(DISTINCT J.idJeu) 
             FROM jeu J"
