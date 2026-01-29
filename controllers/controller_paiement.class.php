@@ -33,7 +33,9 @@ class ControllerPaiement extends controller
     {
         if (!isset($_SESSION['idCompte'])) {
             $template = $this->getTwig()->load('connexion.html.twig');
-            echo $template->render();
+            echo $template->render([
+                'menu' => 'compte'
+            ]);
             return;
         } else {
             $ville = $_POST['ville'] ?? null;
@@ -67,7 +69,9 @@ class ControllerPaiement extends controller
     {
         if (!isset($_SESSION['idCompte'])) {
             $template = $this->getTwig()->load('connexion.html.twig');
-            echo $template->render();
+            echo $template->render([
+                'menu' => 'compte'
+            ]);
             return;
         } else {
             $id = isset($_GET['id']) ? intval($_GET['id']) : null;
@@ -80,6 +84,7 @@ class ControllerPaiement extends controller
             echo $template->render([
                 'annonce' => $annonce,
                 'jeu' => $jeu,
+                'menu' => 'annonce'
             ]);
         }
     }
@@ -93,7 +98,9 @@ class ControllerPaiement extends controller
     {
         if (!isset($_SESSION['idCompte'])) {
             $template = $this->getTwig()->load('connexion.html.twig');
-            echo $template->render();
+            echo $template->render([
+                'menu' => 'compte'
+            ]);
             return;
         }
 
@@ -108,7 +115,8 @@ class ControllerPaiement extends controller
         $template = $this->getTwig()->load('recapitulatif.html.twig');
         echo $template->render([
             'annonce' => $annonce,
-            'utilisateur' => $utilisateur
+            'utilisateur' => $utilisateur,
+            'menu' => 'annonce'
         ]);
     }
 }

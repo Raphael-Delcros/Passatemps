@@ -34,7 +34,9 @@ class ControllerLivraison extends Controller
     {
         if (!isset($_SESSION['idCompte'])) {
             $template = $this->getTwig()->load('connexion.html.twig');
-            echo $template->render();
+            echo $template->render([
+                'menu' => 'compte'
+            ]);
             return;
         } else {
             $dao = new LivraisonDao($this->getPdo());
@@ -43,6 +45,7 @@ class ControllerLivraison extends Controller
             $template = $this->getTwig()->load('commande.html.twig');
             echo $template->render([
                 'commande' => $commande[0],
+                'menu' => 'commandes'
             ]);
         }
     }
@@ -56,7 +59,9 @@ class ControllerLivraison extends Controller
     {
         if (!isset($_SESSION['idCompte'])) {
             $template = $this->getTwig()->load('connexion.html.twig');
-            echo $template->render();
+            echo $template->render([
+                'menu' => 'compte'
+            ]);
             return;
         } else {
             $dao = new LivraisonDao($this->getPdo());
@@ -64,11 +69,13 @@ class ControllerLivraison extends Controller
             $template = $this->getTwig()->load('commandes.html.twig');
             echo $template->render([
                 'commandes' => $commandes,
+                'menu' => 'commandes'
+
             ]);
         }
     }
-    
-    
+
+
 
     /**
      * @brief Update les commandes lorsque qu'une annonce est achetée
@@ -102,8 +109,8 @@ class ControllerLivraison extends Controller
         $template = $this->getTwig()->load('recapitulatif.html.twig');
         echo $template->render([
             'annonce' => $annonce,
-            'livraison' => $livraison
+            'livraison' => $livraison,
+            'menu' => 'commandes'
         ]);
-
     }
 }

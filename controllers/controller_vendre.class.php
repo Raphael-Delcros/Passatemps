@@ -61,10 +61,14 @@ class ControllerVendre extends controller
 
         if (isset($_SESSION['idCompte'])) {
             $template = $this->getTwig()->load('vendre.html.twig');
-            echo $template->render();
+            echo $template->render([
+                'menu' => 'vendre'
+            ]);
         } else {
             $template = $this->getTwig()->load('connexion.html.twig');
-            echo $template->render();
+            echo $template->render([
+                'menu' => 'compte'
+            ]);
         }
     }
 
@@ -80,7 +84,7 @@ class ControllerVendre extends controller
 
         if (empty($data)) {
             $template = $this->getTwig()->load('confirmation.html.twig');
-            echo $template->render(['success' => false]);
+            echo $template->render(['success' => false, 'menu' => 'vendre']);
             return;
         }
 
@@ -126,7 +130,7 @@ class ControllerVendre extends controller
         unset($_SESSION['annonce_temp']);
 
         $template = $this->getTwig()->load('confirmation.html.twig');
-        echo $template->render(['success' => $result]);
+        echo $template->render(['success' => $result, 'menu' => 'vendre']);
     }
 
 
@@ -179,7 +183,8 @@ class ControllerVendre extends controller
             $template = $this->getTwig()->load('vendre.html.twig');
             echo $template->render([
                 'erreurs' => $messagesErreurs,
-                'donnees' => $data
+                'donnees' => $data,
+                'menu' => 'vendre'
             ]);
             return;
         }
@@ -189,7 +194,8 @@ class ControllerVendre extends controller
 
         $template = $this->getTwig()->load('recapVente.html.twig');
         echo $template->render([
-            'annonce' => $data
+            'annonce' => $data,
+            'menu' => 'vendre'
         ]);
     }
 }
