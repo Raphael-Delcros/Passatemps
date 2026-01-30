@@ -3,7 +3,7 @@
 
 {% block body %}
 
-<form method="POST" action="index.php?controleur=livraison&methode=afficherResume">
+<form method="POST" action="index.php?controleur=paiement&methode=afficherResume">
     <input type="hidden" name="idAnnonce" value="{{ annonce.idAnnonce }}">
     <input type="hidden" name="ville" value="{{ ville }}">
     <input type="hidden" name="pays" value="{{ pays }}">
@@ -11,6 +11,7 @@
     <input type="hidden" name="codePostal" value="{{ codePostal }}">
     <div class="row">
         <h2 class="form-title">Détails du paiement</h2>
+        <p>Adresse de livraison→ <b>paiement</b> → récapituatif</p>
 
         <!-- Paiement -->
         <div class="col-md-6">
@@ -38,13 +39,13 @@
 
             <div class="row">
                 <div class="col-md-6">
+                    <a href="index.php?controleur=livraison&methode=achat&id={{ annonce.idAnnonce }}"
+                       class="btn btn-secondary w-100 mt-3">Annuler</a>
+                </div>
+                <div class="col-md-6">
                     <button type="submit" class="btn btn-primary w-100 mt-3">
                     Payer
                     </button>
-                </div>
-                <div class="col-md-6">
-                    <a href="index.php?controleur=livraison&methode=achat&id={{ annonce.idAnnonce }}"
-                       class="btn btn-secondary w-100 mt-3">Annuler</a>
                 </div>
             </div>
         </div>
