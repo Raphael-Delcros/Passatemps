@@ -1,83 +1,100 @@
 {% extends 'base_template.html.twig' %}
 {% block title %}
-    {{constantes.application.website_name}}
-    -
-    {{ compte.prenom }}
-    {{ compte.nom }}
+	{{constantes.application.website_name}}
+	-
+	{{ compte.prenom }}
+	{{ compte.nom }}
 {% endblock %}
 
 
 {% block body %}
-    <div class="bg-white p-2 border border-2 rounded">
+	<div class="container-fluid py-4">
+		<div
+			class="bg-white p-4 shadow-sm border rounded-4">
+
+			<div class="row align-items-center">
+				<div class="col-auto">
+					<div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 70px; height: 70px; font-weight: bold; font-size: 1.5rem;">
+						{{ compte.prenom|first|upper }}{{ compte.nom|first|upper }}
+					</div>
+				</div>
+				<div class="col">
+					<h1 class="h2 mb-0 fw-bold">{{ compte.prenom }}
+						{{ compte.nom }}</h1>
+					<p class="text-muted mb-0">
+						<i class="bi bi-envelope me-2"></i>
+						{{ compte.email }}</p>
+				</div>
+				{% if other == false %}
+					<div class="col-auto">
+						<a href="index.php?controleur=compte&methode=modifier" class="btn btn-outline-secondary btn-sm rounded-pill">
+							<i class="bi bi-gear-fill me-1"></i>
+							Modifier
+						</a>
+					</div>
+				{% endif %}
+			</div>
+
+			<hr
+			class="my-4 opacity-25">
+
+			<div class="row g-3">
+				<div class="col-auto">
+					<span class="badge bg-light text-dark border p-2 px-3">
+						<i class="bi bi-calendar3 me-2 text-primary"></i>Membre depuis le
+						{{ compte.dateInscription }}
+					</span>
+				</div>
+				{% if compte.note %}
+					<div class="col-auto">
+						<span class="badge bg-light text-dark border p-2 px-3">
+							<i class="bi bi-star-fill me-2 text-warning"></i>
+							{{ compte.note }}/5
+						</span>
+					</div>
+				{% endif %}
+			</div>
+
+			{% if other == false %}
+				<div class="mt-4 d-flex gap-2">
+					{% if compte.role == 'administrateur' %}
+						<a href="index.php?controleur=admin&methode=dashboard" class="btn btn-danger">
+							<i class="bi bi-shield-lock me-2"></i>Back-Office
+						</a>
+					{% endif %}
+
+					<form method="POST" action="index.php?controleur=connexion&methode=deconnexion">
+						<button type="submit" class="btn btn-outline-danger">
+							<i class="bi bi-box-arrow-right me-2"></i>Se déconnecter
+						</button>
+					</form>
+				</div>
+			{% endif %}
+			{% if annonces is not empty %}
+				<div class="container-fluid overflow-scroll">
+					<h1 class="mt-5">Annonces</h1>
+					<div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2">
 
 
-        {# Avatar généré avec les initiales basées sur nom et prenom #}
-        <div class="row m-2 align-items-center">
-            <div class="  col-1 rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; font-weight: bold;">
-                {{ compte.prenom|first|upper }}{{ compte.nom|first|upper }}
-            </div>
-            <div class="col">
-                <h1>{{ compte.prenom }}
-                    {{ compte.nom }}</h1>
-            </div>
-        </div>
-
-
-        <div class="mt-5">
-            <p>{{ compte.email }}</p>
-            <p>
-                inscrit depuis le
-                {{ compte.dateInscription }}</p>
-            {% if compte.note %}
-                <p>
-                    {{ compte.note }}</p>
-            {% endif %}
-        </div>
-
-
-        {% if other == false %}
-            {% if compte.role == 'administrateur' %}
-                <a href="index.php?controleur=admin&methode=dashboard" class="btn btn-danger mb-3">
-                    Accéder au Back-Office
-                </a>
-            {% endif %}
-
-
-            <form method="POST" action="index.php?controleur=connexion&methode=deconnexion" class="row g-3 position-relative" autocomplete="off">
-                <div>
-                    <button type="submit" class="btn btn-primary me-md-2">Se déconnecter</button>
-                </div>
-            </form>
-    {% endif %}
-    {% if annonces is not empty %}
-        <div class="container-fluid overflow-scroll">
-            <h1 class="mt-5">Annonces</h1>
-            <div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2">
-
-
-                {% for ann in annonces %}
-                    <div class="col-5">
-                        <a href="index.php?controleur=annonce&methode=afficher&id={{ ann.idAnnonce }}" class="card card-block card-1">
-                            <div class="m-2">
-                                <h3>{{ ann.titre }}</h3>
-                                <p>{{ ann.description }}</p>
-                                <p>
-                                    <strong>Prix :</strong>
-                                    {{ ann.prix }}
-                                    €</p>
-                                <p>
-                                    <strong>Date de publication :</strong>
-                                    {{ ann.datePublication }}</p>
-                                <img src="{{ ann.url }}" alt="Image de l'annonce" class="img-fluid" style="max-width: 200px; height: auto;"/>
-                            </div>
-                        </a>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
-</div>
-{% endblock %}
-
-
-
+						{% for ann in annonces %}
+							<div class="col-5">
+								<a href="index.php?controleur=annonce&methode=afficher&id={{ ann.idAnnonce }}" class="card card-block card-1">
+									<div class="m-2">
+										<h3>{{ ann.titre }}</h3>
+										<p>{{ ann.description }}</p>
+										<p>
+											<strong>Prix :</strong>
+											{{ ann.prix }}
+											€</p>
+										<p>
+											<img src="{{ ann.url }}" alt="Image de l'annonce" class="img-fluid" style="max-width: 200px; height: auto;"/>
+										</p>
+									</div>
+								</a>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			{% endif %}
+		</div>
+	{% endblock %}
