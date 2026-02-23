@@ -21,8 +21,14 @@
 !config/constantesExemple.yaml
 !config/config.php
 !config/twig.php
+# Autres dossiers
+!controllers/
+!modeles/
+!SCSS/
+!templates/
 
-# Librairies externes
+# Fichiers
+!index.php
 !composer.json
 !composer.lock
 !package.json
