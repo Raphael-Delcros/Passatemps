@@ -84,5 +84,3 @@ class ControllerAnnonce extends controller
         ]);
     }
 }
-
-}

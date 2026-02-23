@@ -106,6 +106,9 @@
 						<form class="d-flex position-relative" role="search" id="form-recherche-jeux" autocomplete="off">
     						<input class="form-control" type="search" placeholder="Rechercher un jeu" aria-label="Search" id="recherche-jeux"/>
     						<button class="btn btn-outline-success" type="submit" hidden>Search</button>
+							<button class="btn btn-outline-primary" type="button" id="btn-recherche">
+            					<i class="bi bi-search"></i>
+        					</button>
 
    							 <ul id="resultats-autocomplete"
         						class="list-group position-absolute w-100"
@@ -213,6 +216,11 @@
         e.preventDefault(); // empêche le submit
         lancerRecherche();
     }
+	});
+
+	// SI CLIQUE SUR LA LOUPE
+	document.getElementById('btn-recherche').addEventListener('click', function() {
+    	lancerRecherche();
 	});
 
 	function lancerRecherche() {
