@@ -14,7 +14,7 @@
 			<div class="card-header">
 				<button class="btn btn-link w-100 text-start text-decoration-none d-flex justify-content-between align-items-center p-3" type="button" data-bs-toggle="collapse" data-bs-target="#filtresAvances" aria-expanded="false" aria-controls="filtresAvances">
 					<b><i class="bi bi-funnel-fill"></i>Filtres avancés</b>
-					<i class="bi bi-chevron-right arrow-icon"></i>
+					<i class="bi  bi-chevron-right arrow-icon"></i>
 				</button>
 			</div>
 			<div id="filtresAvances" class="collapse">
@@ -68,16 +68,6 @@
 										<input type="number" name="dureeMax" class="form-control" placeholder="Max" value="{{ filtresActifs.dureeMax }}" min="1" max="1440">
 									</div>
 								</div>
-								{# <small class="form-text text-muted">Ou spécifiez une plage :</small>
-																								<div class="row mt-2">
-																									<div class="col">
-																										<input type="number" name="nbJoueursMin" class="form-control" placeholder="Min" value="{{ filtresActifs.nbJoueursMin }}" min="1" max="100">
-																									</div>
-																									<div class="col">
-																										<input type="number" name="nbJoueursMax" class="form-control" placeholder="Max" value="{{ filtresActifs.nbJoueursMax }}" min="1" max="100">
-																									</div>
-																								</div> #}
-
 								<!-- Recherche par nom -->
 								<div class="mt-2">
 									<label class="form-label">Nom du jeu</label>
@@ -98,6 +88,21 @@
 									</div>
 								</div>
 							</div>
+							
+							<!-- Date de sortie -->
+							<div class="col-md-6">
+								<label class="form-label">Date de sortie</label>
+								<div class="row">
+									<div class="col-6">
+										<input type="date" name="dateAvant" class="form-control" value="{{ filtresActifs.dateAvant }}">
+										<small class="form-text text-muted">Avant</small>
+									</div>
+									<div class="col-6">
+										<input type="date" name="dateApres" class="form-control" value="{{ filtresActifs.dateApres }}">
+										<small class="form-text text-muted">Après</small>
+									</div>
+								</div>
+							</div>
 
 
 							<!-- A des extensions -->
@@ -114,29 +119,15 @@
 								</select>
 							</div>
 
-							<!-- Date de sortie -->
-							<div class="col-md-6">
-								<label class="form-label">Date de sortie</label>
-								<div class="row">
-									<div class="col-6">
-										<input type="date" name="dateApres" class="form-control" value="{{ filtresActifs.dateApres }}">
-										<small class="form-text text-muted">Après</small>
-									</div>
-									<div class="col-6">
-										<input type="date" name="dateAvant" class="form-control" value="{{ filtresActifs.dateAvant }}">
-										<small class="form-text text-muted">Avant</small>
-									</div>
-								</div>
-							</div>
 						</div>
 
-						<div class="mt-3 d-flex gap-2">
+						<div class="mt-3 d-flex gap-2 justify-content-between">
+							<button href="index.php?controleur=jeu&methode=lister" class="btn btn-outline-secondary">
+								Réinitialiser
+							</button>
 							<button type="submit" class="btn btn-primary">
 								Rechercher
 							</button>
-							<a href="index.php?controleur=jeu&methode=lister" class="btn btn-secondary">
-								Réinitialiser
-							</a>
 						</div>
 					</form>
 				</div>
