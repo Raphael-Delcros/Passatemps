@@ -1,29 +1,28 @@
-# On ignore tout
+# On tracke RIEN.
 /*
 
-# Sauf ces dossiers
-!modeles/
-!controlers/
-!templates/
-!SCSS/
-!config/*
-
-# Sauf ces fichiers
-!.gitignore
-!index.php
-!Doxyfile
-!index.php
-!include.php
-!legal.php
-!README.md
-
+# Sauf
+# Dossiers
 # Config
-!config/constantesExemple.yaml
+config/*
 !config/config.php
+!config/constantesExemple.yaml
 !config/twig.php
+# Autres dossiers
+!controllers/
+!modeles/
+!SCSS/
+!templates/
 
-# Librairies externes
+# Fichiers
+!index.php
 !composer.json
 !composer.lock
 !package.json
+!include.php
+!index.php
+!legal.php
+!README.md
 !package-lock.json
+!packege.json
+!.gitignore

@@ -20,6 +20,8 @@ class ControllerLivraison extends Controller
      * @param Twig\Environment $twig
      * @param Twig\Loader\FilesystemLoader $loader
      */
+    public array $reglesValidation;
+
     public function __construct(Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($twig, $loader);
@@ -67,8 +69,6 @@ class ControllerLivraison extends Controller
             ]);
         }
     }
-    
-    
 
     /**
      * @brief Update les commandes lorsque qu'une annonce est achetée
