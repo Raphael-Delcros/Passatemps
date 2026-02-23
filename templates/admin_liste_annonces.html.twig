@@ -51,9 +51,9 @@
 									</span>
 								</td>
 								<td class="text-nowrap text-end">
-									<a href="index.php?controleur=admin&methode=formulaireModifAnnonce&id={{ annonce.idAnnonce }}" class="btn btn-sm btn-warning">Modifier</a>
+									<a href="index.php?controleur=admin&methode=formulaireModifAnnonce&id={{ annonce.idAnnonce }}" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square icone-btn"></i></a>
 
-									<a href="index.php?controleur=admin&methode=supprimerAnnonce&id={{ annonce.idAnnonce }}" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer l\'annonce : {{ annonce.titre}} ?')">Supprimer</a>
+									<a href="index.php?controleur=admin&methode=supprimerAnnonce&id={{ annonce.idAnnonce }}" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer l\'annonce : {{ annonce.titre}} ?')"><i class="bi bi-trash icone-btn"></i></a>
 								</td>
 							</tr>
 						{% else %}

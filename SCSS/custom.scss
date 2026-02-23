@@ -71,3 +71,9 @@ body {
 [aria-expanded="true"] .arrow-icon {
     transform: rotate(90deg); /* Adjust degrees as needed */
 }
+
+.icone-btn {
+  display: inline-block;
+  transform: scale(1.5);
+  transform-origin: center;
+}

@@ -16,22 +16,22 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label class="form-label">Prénom</label>
-                        <input type="text" name="prenom" class="form-control" value="{{ compte.prenom }}" required>
+                        <input type="text" name="prenom" class="form-control shadow-sm" value="{{ compte.prenom }}" required>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Nom</label>
-                        <input type="text" name="nom" class="form-control" value="{{ compte.nom }}" required>
+                        <input type="text" name="nom" class="form-control shadow-sm" value="{{ compte.nom }}" required>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" value="{{ compte.email }}" required>
+                    <input type="email" name="email" class="form-control shadow-sm" value="{{ compte.email }}" required>
                 </div>
 
                 <div class="mb-4">
                     <label class="form-label">Rôle</label>
-                    <select name="role" class="form-select">
+                    <select name="role" class="form-select shadow-sm">
                         <option value="utilisateur" {{ compte.role == 'utilisateur' ? 'selected' : '' }}>Utilisateur</option>
                         <option value="administrateur" {{ compte.role == 'administrateur' ? 'selected' : '' }}>Administrateur</option>
                         <option value="administrateur" {{ compte.role == 'administrateur' ? 'selected' : '' }}>Modérateur</option>
