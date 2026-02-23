@@ -85,4 +85,15 @@ class NoteDAO{
         return $stmt->fetch() ?: null;
 
     }
+
+    public function findNoteurs(?int $idCompteNote): array{
+        
+        $sql = "SELECT n.idCompteQuiNote FROM " . Config::get()['database']['prefixe_table'] . "note n WHERE n.idCompteNote= :idCompteNote ORDER BY n.idCompteQuiNote"; 
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['idCompteNote' => $idCompteNote]);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        var_dump($stmt->fetch());
+        return $stmt->fetch() ?: null;
+
+    }
 }

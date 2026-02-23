@@ -19,7 +19,7 @@ class controllerNote extends Controller {
      * @return void
      */
     public function lister() {
-        $dao = new BannissementDao($this->getPdo());
+        $dao = new NoteDao($this->getPdo());
         $note = $dao->findAllAssoc();
 
         $template = $this->getTwig()->load('note.html.twig');
@@ -43,4 +43,23 @@ class controllerNote extends Controller {
             'note' => $note,
         ]);
     }
+
+    /**
+     * Affiche tous les identifiant des comptes qui ont 
+     * noté le compte avec l'identifiant rentré en paramètre 
+     * ainsi que la note d'un compte grace à son identifiant
+     * 
+     * @return void
+     */
+    public function afficherLesNotes() {
+        $idCompteNote = isset($_GET['id']) ? intval($_GET['id']) : null;
+        $dao = new NoteDao($this->getPdo());
+        $note = $dao->findNoteurs($idCompteNote);
+
+        $template = $this->getTwig()->load('note.html.twig');
+        echo $template->render([
+            'notes' => $note,
+        ]);
+    }
+
 }
