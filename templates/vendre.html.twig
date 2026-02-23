@@ -6,6 +6,8 @@
 {% endblock %}
 
 {% block body %}
+	<div class="container my-5">
+<div class="card shadow-lg border-0 p-3">
 	<form method="POST" action="index.php?controleur=vendre&methode=recap" class="row g-3 position-relative" autocomplete="off" novalidate enctype="multipart/form-data">
 		<h1>Vendre</h1>
 		<input type="hidden" name="controleur" value="vendre">
@@ -104,7 +106,7 @@
 		<div class="row mt-2">
 			<div class="col mt-2">
 				<label for="photos" class="form-label required">Photos de l'annonce</label>
-				<input type="file" class="form-label" name="photos" accept=".png,.jpeg,.jpg" title="Photos du jeu" required>
+				<input type="file" class="form-label" name="photos" accept=".png,.jpeg,.jpg" title="Photos de l'annonce" required>
 			</div>
 			{# Confirmation #}
 			<div class="col align-items-end">
@@ -123,6 +125,8 @@
 					<li>{{ erreur }}</li>
 				{% endfor %}
 			</ul>
+		</div>
+		</div>
 		</div>
 	{% endif %}
 {% endblock %}
