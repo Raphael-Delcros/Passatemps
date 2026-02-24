@@ -63,7 +63,7 @@
 		<div class="row">
 			{% for annonce in annonces %}
 				<div class="col-md-4 mb-4">
-					<div class="card h-100 shadow-sm border-primary">
+					<div class="card h-100 shadow-sm ">
 						{% if annonce.urlPhoto %}
 							<img src="{{ annonce.urlPhoto }}" class="card-img-top" alt="{{ annonce.titre }}">
 						{% endif %}
@@ -88,7 +88,7 @@
 								}}
 							</p>
 							
-							<a href="index.php?controleur=annonce&methode=voir&id={{ annonce.idAnnonce }}" class="btn btn-outline-primary w-100">Voir l'annonce</a>
+							<a href="index.php?controleur=Annonce&methode=afficher&id={{ a.idAnnonce }}" class="btn btn-outline-primary w-100">Voir l'annonce</a>
 						</div>
 					</div>
 				</div>
