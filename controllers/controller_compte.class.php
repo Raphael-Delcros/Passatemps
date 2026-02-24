@@ -110,21 +110,21 @@ class ControllerCompte extends Controller
                     'compte' => $compte,
                     'annonces' => $annonces,
                 ]);
+            } else {
+                $id = $_SESSION['idCompte'];
+                $dao = new CompteDao($this->getPdo());
+                $compte = $dao->find($id);
+
+                $dao = new AnnonceDao($this->getPdo());
+                $annonces = $dao->findByAccount($id);
+
+                $template = $this->getTwig()->load('compte.html.twig');
+                echo $template->render([
+                    'other' => false,
+                    'compte' => $compte,
+                    'annonces' => $annonces,
+                ]);
             }
-            else {
-            $id = $_SESSION['idCompte'];
-            $dao = new CompteDao($this->getPdo());
-            $compte = $dao->find($id);
-
-            $dao = new AnnonceDao($this->getPdo());
-            $annonces = $dao->findByAccount($id);
-
-            $template = $this->getTwig()->load('compte.html.twig');
-            echo $template->render([
-                'other' => false,
-                'compte' => $compte,
-                'annonces' => $annonces,
-            ]);}
         } else {
             header('Location: index.php?controleur=connexion&methode=connexion');
         }
@@ -206,4 +206,5 @@ class ControllerCompte extends Controller
             'erreurs' => $erreurs,
         ]);
     }
+
 }
