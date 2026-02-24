@@ -59,31 +59,38 @@
 
 			<h4>Annonces disponibles</h4>
 
-			{% if annonces is empty %}
-				<p class="text-muted">Aucune annonce pour ce jeu actuellement.</p>
-			{% else %}
-				<div class="row">
-					{% for annonce in annonces %}
-						<div class="col-md-4 mb-4">
-							<div class="card h-100 shadow-sm">
-								{% if annonce.urlPhoto %}
-									<img src="{{ annonce.urlPhoto }}" class="card-img-top" alt="{{ annonce.titre }}">
-								{% endif %}
+	{% if annonces is empty %}
+		<p class="text-muted">Aucune annonce pour ce jeu actuellement.</p>
+	{% else %}
+		<div class="row">
+			{% for annonce in annonces %}
+				<div class="col-md-4 mb-4">
+					<div class="card h-100 shadow-sm ">
+						{% if annonce.urlPhoto %}
+							<img src="{{ annonce.urlPhoto }}" class="card-img-top" alt="{{ annonce.titre }}">
+						{% endif %}
 
-								<div class="card-body">
-									<h5 class="card-title">{{ annonce.titre }}</h5>
-									<p class="card-text">
-										{{ annonce.description|length > 80
-                                ? annonce.description|slice(0, 80) ~ '...'
-                                : annonce.description
-                            }}
-									</p>
-
-									<p class="fw-bold">{{ annonce.prix }}
-										€</p>
-									<span class="badge bg-secondary">{{ annonce.etatJeu }}</span>
+						<div class="card-body">
+							<h5 class="card-title text-primary">{{ annonce.titre }}</h5>
+							
+							<div class="d-flex flex-column gap-2 my-3">
+								<div class="d-flex justify-content-between align-items-center">
+									<span class="badge bg-success fs-5">{{ annonce.prix }} €</span>
+									<span class="badge bg-info text-dark">État : {{ annonce.etatJeu }}</span>
+								</div>
+								<div class="text-muted italic">
+									<i class="bi bi-person"></i> Vendeur : <strong>{{ annonce.nomVendeur|default('Utilisateur') }}</strong>
 								</div>
 							</div>
+
+							<p class="card-text small">
+								{{ annonce.description|length > 80
+									? annonce.description|slice(0, 80) ~ '...'
+									: annonce.description
+								}}
+							</p>
+							
+							<a class="btn btn-primary" href="index.php?controleur=Annonce&methode=afficher&id={{ annonce.idAnnonce }}">Voir l'annonce</a>
 						</div>
 					{% endfor %}
 				</div>

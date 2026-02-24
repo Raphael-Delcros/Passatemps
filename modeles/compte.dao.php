@@ -177,4 +177,10 @@ class CompteDao
             'id' => $compte->getIdCompte()
         ]);
     }
+
+    public function countAll(): int
+    {
+        $sql = "SELECT COUNT(*) FROM compte";
+        return (int) $this->pdo->query($sql)->fetchColumn();
+    }
 }

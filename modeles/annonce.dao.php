@@ -289,7 +289,21 @@ class AnnonceDao
     }
 
     /**
-     * @brief Compte le nombre total de jeux dans la base de données
+     * Compte le nombre total d'annonces dans la base de données
+     *
+     * @return int Le nombre total d'annonces
+     */
+    public function countAll(): int
+    {
+        $sql = "SELECT COUNT(*) FROM annonce";
+        return (int) $this->pdo->query($sql)->fetchColumn();
+    }
+  
+  
+     /**
+     * Compte le nombre d4qnnonce lié au jeux
+     *
+     * @return int Le nombre total d'annonce
      */
     public function countAnnonceByJeu(int $id)
     {
