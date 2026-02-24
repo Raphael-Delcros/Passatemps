@@ -1,0 +1,14 @@
+{% extends 'base_template.html.twig' %}
+
+{% block title %}{{constantes.application.website_name}} - Compte de {{compte.nom}}{{compte.prenom}}{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center fw-bold">
+			Détails de la note du compte de {{compte.nom}}{{compte.prenom}} - 
+            <a href="index.php?controleur=Note&methode=afficher&id={{ note.idCompteNote }}">{{ compte.id }}</a>
+	</h1>
+    <p><strong>identifiant du noté :</strong> {{ note.idCompteNote }}</p>
+    <p><strong>identifiant de ceux qui ont noté avec la note attribuée :</strong> {{ note.idCompteQuiNote }} {{note.note}}</p>
+    <p><strong>moyenne des notes :</strong> {{ note.average }}</p>
+{% endblock %}

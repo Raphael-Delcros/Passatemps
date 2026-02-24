@@ -34,7 +34,8 @@ class ControllerAnnonce extends controller
 
         $template = $this->getTwig()->load('annonces.html.twig');
         echo $template->render([
-            'annonces' => $annonces
+            'annonces' => $annonces,
+            'menu' => 'annonces'
         ]);
     }
 
@@ -62,7 +63,8 @@ class ControllerAnnonce extends controller
             'annonce' => $annonce,
             'nom' => $nom,
             'prenom' => $prenom,
-            'idVendeur' => $idVendeur
+            'idVendeur' => $idVendeur,
+            'menu' => 'annonces'
         ]);
     }
 
@@ -83,5 +85,4 @@ class ControllerAnnonce extends controller
             'q' => $q
         ]);
     }
-
 }
