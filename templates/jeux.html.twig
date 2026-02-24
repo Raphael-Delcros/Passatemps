@@ -13,7 +13,8 @@
 		<div class="card mb-4">
 			<div class="card-header">
 				<button class="btn btn-link w-100 text-start text-decoration-none d-flex justify-content-between align-items-center p-3" type="button" data-bs-toggle="collapse" data-bs-target="#filtresAvances" aria-expanded="false" aria-controls="filtresAvances">
-					<b><i class="bi bi-funnel-fill"></i>Filtres avancés</b>
+					<b>
+						<i class="bi bi-funnel-fill"></i>Filtres avancés</b>
 					<i class="bi  bi-chevron-right arrow-icon"></i>
 				</button>
 			</div>
@@ -88,7 +89,7 @@
 									</div>
 								</div>
 							</div>
-							
+
 							<!-- Date de sortie -->
 							<div class="col-md-6">
 								<label class="form-label">Date de sortie</label>
@@ -172,10 +173,17 @@
 									{% if jeu.idJeuPrincipal %}
 										<span class="badge bg-info">Extension</span>
 									{% endif %}
+									{% if jeu.nbAnnonces > 1 %}
+										<p class="card-text text-muted small mb-1">{{ jeu.nbAnnonces }}
+											annonces</p>
+									{% else %}
+										<p class="card-text text-muted small mb-1">{{ jeu.nbAnnonces }}
+											annonce</p>
+									{% endif %}
 								</div>
 
 								<a href="index.php?controleur=Jeu&methode=afficher&id={{ jeu.idJeu }}" class="btn btn-primary w-100">
-									Voir plus
+									Voir les annonces
 								</a>
 							</div>
 						</div>

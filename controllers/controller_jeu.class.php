@@ -81,7 +81,7 @@ class ControllerJeu extends Controller
     public function lister()
     {
         $dao = new JeuDao($this->getPdo());
-
+        $annonceDao = new AnnonceDao($this->getPdo());
         $jeux = $dao->findAllAssoc();
 
         // Génération automatique des vignettes dans images/vignette/
@@ -92,12 +92,14 @@ class ControllerJeu extends Controller
             @mkdir($vignetteDir, 0755, true);
         }
 
-        foreach ($jeux as $index => $jeu) {
+        foreach ($jeux as $index => &$jeu) {
             if (!isset($jeu['url']) || empty($jeu['url'])) {
                 continue;
             }
 
             $filename = basename($jeu['url']);
+            $jeu['nbAnnonces'] = $annonceDao->countAnnonceByJeu($jeu['idJeu']);
+            
             $srcPath = Config::get()['application']['game_image_path'] . $filename;
             $destPath = Config::get()['application']['thumbnail_image_path'] . $filename;
 
