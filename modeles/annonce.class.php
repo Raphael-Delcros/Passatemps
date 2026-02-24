@@ -21,6 +21,8 @@ class Annonce
     private ?int $idJeu;
     private ?int $idCompteVendeur;
     private ?string $urlPhoto;
+    private ?string $nomVendeur = null;
+    private ?string $prenomVendeur = null;
 
     /**
      * Constructeur de la classe Annonce
@@ -246,5 +248,34 @@ class Annonce
     public function setUrlPhoto(?string $urlPhoto): void
     {
         $this->urlPhoto = $urlPhoto;
+    }
+    /**
+     * Récupère la valeur de nomVendeur
+     */
+    public function getNomVendeur(): ?string {
+        return $this->nomVendeur;
+    }
+    /**
+     * Change la valeur de nomVendeur
+     *
+     * @param string|null $nom
+     */
+    public function setNomVendeur(?string $nom): void {
+        $this->nomVendeur = $nom;
+    }
+
+    /**
+     * Récupère la valeur de prenomVendeur
+     */
+    public function getPrenomVendeur(): ?string {
+        return $this->prenomVendeur;
+    }
+    /**
+     * Change la valeur de prenomVendeur
+     *
+     * @param string|null $prenom
+     */
+    public function setPrenomVendeur(?string $prenom): void {
+        $this->prenomVendeur = $prenom;
     }
 }
