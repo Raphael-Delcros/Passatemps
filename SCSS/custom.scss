@@ -64,11 +64,11 @@ body {
 .arrow-icon {
   display: inline-block; // Permet de ne pas considerer l'icone comme du texte
   transition: transform 0.3s ease;
-  transform: rotate(0deg); // Rotation initiale 
+  transform: rotate(0deg); // Rotation initiale
 }
 
 [aria-expanded="true"] .arrow-icon {
-    transform: rotate(90deg); /* Adjust degrees as needed */
+  transform: rotate(90deg); /* Adjust degrees as needed */
 }
 
 .icone-btn {
@@ -85,13 +85,20 @@ body {
 
 /* Style pour souligner la page active avec une ligne de couleur */
 .nav-link.active {
-    font-weight: bold;
-    color: $primary !important; 
-    border-bottom: 2px solid $primary;
+  font-weight: bold;
+  color: $primary !important;
+  box-shadow: inset 0 -2px 0 0 $primary; /* Crée une ligne interne en bas sans décaler le texte */
 }
 
-/* Effet au survol pour la cohérence */
+.nav-link {
+  display: inline-block; /* Important pour que transform fonctionne */
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
+}
+
 .nav-link:hover {
-    color: $primary;
-    border-bottom: 2px solid #dee2e6;
+  color: $primary;
+  box-shadow: inset 0 -2px 0 0 $primary;
+  transform: translateY(-2px); /* Le lien monte et reste là tant que la souris est dessus */
 }
