@@ -27,6 +27,7 @@ require_once 'controllers/controller_paiement.class.php';
 require_once 'controllers/controller_annonce.class.php';
 require_once 'controllers/controller_bannissement.class.php';
 require_once 'controllers/controller_messagerie.class.php';
+require_once 'controllers/controller_paiement.class.php';
 require_once 'controllers/controller_vendre.class.php';
 require_once 'controllers/controller_livraison.class.php';
 require_once 'controllers/controller_connexion.php';

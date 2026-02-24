@@ -11,7 +11,7 @@ $secondary: #0065a3;
 $tertiary: #93c3fa;
 // Couleurs par défaut de bootstrap
 $info: #0dcaf0;
-$warning: #ffc107;
+$warning: #ecb81d;
 $success: #198754;
 $danger: #d63447;
 
@@ -34,8 +34,9 @@ $theme-colors: (
 @import "../node_modules/bootstrap/scss/root";
 @import "../node_modules/bootstrap/scss/bootstrap";
 // Icones
-$bootstrap-icons-font-src: url("../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2") format("woff2"), 
-                           url("../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff") format("woff");;
+$bootstrap-icons-font-src:
+  url("../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2") format("woff2"),
+  url("../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff") format("woff");
 @import "../node_modules/bootstrap-icons/font/bootstrap-icons.scss";
 // Custom
 .primaire {
@@ -50,7 +51,7 @@ $bootstrap-icons-font-src: url("../node_modules/bootstrap-icons/font/fonts/boots
 body {
   background-color: lighten($primary, 40%);
 }
-.form-check-input{
+.form-check-input {
   border: 1px solid $primary;
 }
 
@@ -60,14 +61,40 @@ body {
   color: red;
 }
 
-
 .arrow-icon {
-    display: inline-block; /* Crucial for transforms to work */
-    transition: transform 0.3s ease;
-    transform: rotate(0deg); /* Initial state */
+  display: inline-block; // Permet de ne pas considerer l'icone comme du texte
+  transition: transform 0.3s ease;
+  transform: rotate(0deg); // Rotation initiale 
 }
 
-/* When the parent/trigger is open */
 [aria-expanded="true"] .arrow-icon {
-    transform: rotate(90deg); /* Adjust degrees as needed */
+  transform: rotate(90deg);
+}
+
+.icone-nav {
+  display: inline-block; // Permet de ne pas considerer l'icone comme du texte
+  transform: scale(1.8); // Agrandir l'icone
+  transform-origin: center;
+}
+
+#form-recherche-jeux {
+  width: 100%;
+  max-width: 1500px;
+}
+
+.zone-recherche {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+  width: 1000px;
+}
+
+.btn-loupe {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  width : 50px;
 }

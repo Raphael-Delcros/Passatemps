@@ -16,6 +16,7 @@ $twig = new Twig\Environment($loader, [
     //...
 ]);
 $twig->addGlobal('constantes', Config::get());
+$twig->addGlobal('session', $_SESSION);
 
 //Définition de la timezone pour que les filtres date tiennent compte du fuseau horaire français.
 $twig->getExtension(\Twig\Extension\CoreExtension::class)->setTimezone('Europe/Paris');
