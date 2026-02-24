@@ -74,11 +74,6 @@ class ControllerPaiement extends controller
                 'type' => 'string',
                 'format' => $config['regex']['texte']
             ],
-            'pays' => [
-                'obligatoire' => true,
-                'type' => 'string',
-                'format' => $config['regex']['texte']
-            ],
             'codePostal' => [
                 'obligatoire' => true,
                 'type' => 'integer',
@@ -197,7 +192,6 @@ class ControllerPaiement extends controller
         $array = [
             'idLivraison'        => null,
             'ville'              => $_POST['ville'] ?? null,
-            'pays'               => $_POST['pays'] ?? null,
             'adresse'            => $_POST['adresse'] ?? null,
             'codePostal'         => $_POST['codePostal'] ?? null,
             'dateCommande'       => date('Y-m-d'),

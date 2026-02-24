@@ -85,7 +85,6 @@ class ControllerLivraison extends Controller
         $array = [
             'idLivraison'        => null,
             'ville'              => $_POST['ville'] ?? null,
-            'pays'               => $_POST['pays'] ?? null,
             'adresse'            => $_POST['adresse'] ?? null,
             'codePostal'         => $_POST['codePostal'] ?? null,
             'dateCommande'       => date('Y-m-d'),

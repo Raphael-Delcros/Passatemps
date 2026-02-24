@@ -139,14 +139,13 @@ class LivraisonDao
     public function insertIntoDatabase(Livraison $livraison)
     {
         $sql = "INSERT INTO " . Config::get()['database']['prefixe_table'] . "livraison 
-        (idLivraison, ville, pays, adresse, codePostal, dateCommande, dateLivraison, dateReception, idAnnonce, idCompteAcheteur, numeroDeSuivi, status) 
-        VALUES (:idLivraison, :ville, :pays, :adresse, :codePostal, :dateCommande, :dateLivraison, :dateReception, :idAnnonce, :idCompteAcheteur, :numeroDeSuivi, :status)";
+        (idLivraison, ville, adresse, codePostal, dateCommande, dateLivraison, dateReception, idAnnonce, idCompteAcheteur, numeroDeSuivi, status) 
+        VALUES (:idLivraison, :ville, :adresse, :codePostal, :dateCommande, :dateLivraison, :dateReception, :idAnnonce, :idCompteAcheteur, :numeroDeSuivi, :status)";
 
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             'idLivraison'              => $livraison->getIdLivraison(), 
             'ville'           => $livraison->getVille(),
-            'pays'     => $livraison->getPays(),
             'adresse'            => $livraison->getAdresse(),
             'codePostal'         => $livraison->getCodePostal(),
             'dateCommande'         => $livraison->getDateCommande(),
