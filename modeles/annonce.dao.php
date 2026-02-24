@@ -106,9 +106,10 @@ class AnnonceDao
      */
     public function findAllAssoc(): array
     {
-        $sql = "SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub, a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur, p.url
+        $sql = "SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub, a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur, p.url, c.nom, c.prenom
         FROM annonce a
         LEFT JOIN photo p ON p.idAnnonce = a.idAnnonce
+        LEFT JOIN compte c ON c.idCompte = a.idCompteVendeur
         ORDER BY a.idAnnonce";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -134,6 +135,8 @@ class AnnonceDao
         $annonce->setIdJeu($tableauAssoc['idJeu'] ?? null);
         $annonce->setIdCompteVendeur($tableauAssoc['idCompteVendeur'] ?? null);
         $annonce->setUrlPhoto($tableauAssoc['url'] ?? null);
+        $annonce->setNomVendeur($tableauAssoc['nom'] ?? null);
+        $annonce->setPrenomVendeur($tableauAssoc['prenom'] ?? null);
         return $annonce;
     }
     /**
@@ -201,9 +204,10 @@ class AnnonceDao
     {
         $sql = "
         SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub,
-               a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur, p.url
+               a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur, p.url, C.nom, C.prenom
         FROM annonce a
         LEFT JOIN photo p ON p.idAnnonce = a.idAnnonce
+        LEFT JOIN compte C ON C.idCompte = a.idCompteVendeur
         WHERE a.idJeu = :idJeu
           
         ORDER BY a.datePub DESC
@@ -277,7 +281,7 @@ class AnnonceDao
      * 
      */
 
-     public function findAccount(int $q)
+    public function findAccount(int $q)
     {
         $sql = "SELECT C.Nom, C.prenom FROM annonce A
             JOIN Compte C ON A.idCompte = C.idCompte 
@@ -287,4 +291,30 @@ class AnnonceDao
         $stmt->execute(['q' => '%' . strtolower($q) . '%']);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Compte le nombre total d'annonces dans la base de données
+     *
+     * @return int Le nombre total d'annonces
+     */
+    public function countAll(): int
+    {
+        $sql = "SELECT COUNT(*) FROM annonce";
+        return (int) $this->pdo->query($sql)->fetchColumn();
+    }
+  
+  
+     /**
+     * Compte le nombre d4qnnonce lié au jeux
+     *
+     * @return int Le nombre total d'annonce
+     */
+    public function countAnnonceByJeu(int $id)
+    {
+        $sql = "SELECT COUNT(*) FROM annonce WHERE idJeu = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        return (int) $stmt->fetchColumn();
+    }
+    
 }

@@ -9,9 +9,10 @@
 	<div class="container mt-5">
 		<div class="d-flex justify-content-between align-items-center mb-4">
 			<h1 class="mb-4">Gestion des Comptes</h1>
+		</div>
+		<div class="mb-2">
 			<a href="index.php?controleur=admin&methode=dashboard" class="btn btn-outline-secondary">Retour Dashboard</a>
 		</div>
-
 		<div class="card shadow-sm">
 			<div class="table-responsive">
 				<table class="table table-hover align-middle mb-0">
@@ -39,8 +40,12 @@
 								</td>
 								<td>{{ c.dateInscription|date("d/m/Y") }}</td>
 								<td class="text-nowrap text-end">
-									<a href="index.php?controleur=admin&methode=formulaireModifCompte&id={{ c.idCompte }}" class="btn btn-sm"><i class="bi bi-pencil-square"></i></a>
-									<a href="index.php?controleur=admin&methode=supprimerCompte&id={{ c.idCompte }}" class="btn btn-sm btn-danger ms-2" onclick="return confirm('Supprimer le compte de {{ c.prenom }} ?')"><i class="bi bi-trash"></i></a>
+									<a href="index.php?controleur=admin&methode=formulaireModifCompte&id={{ c.idCompte }}" class="btn btn-sm btn-primary">
+										<i class="bi bi-pencil-square icone-btn"></i>
+									</a>
+									<a href="index.php?controleur=admin&methode=supprimerCompte&id={{ c.idCompte }}" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer le compte de {{ c.prenom }} ?')">
+										<i class="bi bi-trash icone-btn"></i>
+									</a>
 								</td>
 							</tr>
 						{% endfor %}

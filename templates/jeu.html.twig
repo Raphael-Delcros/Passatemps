@@ -10,52 +10,54 @@
 {% block body %}
 	<div class="container my-5">
 		<div class="card shadow-lg border-0">
-			<div class="row g-0">
-				<div class="col-md-4 p-4">
-					<img src="{{ constantes.application.game_image_path }}{{ jeu.urlPhoto }}" class="img-fluid rounded-start" alt="{{ jeu.nom }}">
-				</div>
-				<div class="col-md-8">
-					<div class="card-body">
-						<h3 class="card-title">{{ jeu.nom }}</h3>
-						<p class="card-text">{{ jeu.description }}</p>
+			<div>
+				<a href="index.php?controleur=jeu&methode=lister" class="btn btn-outline-secondary m-3"><i class="bi bi-arrow-left"></i> Retour en arrière<a></div>
+					<div class="row g-0">
 
-						<ul class="list-unstyled mt-3">
-							<li>
-								<strong>Nombre de joueurs :</strong>
-								{{ jeu.nbJoueursMin }}
-								-
-								{{ jeu.nbJoueursMax }}</li>
-							<li>
-								<strong>Durée :</strong>
-								{{ jeu.dureePartie }}
-								min</li>
-							<li>
-								<strong>Date de sortie :</strong>
-								{{ jeu.dateSortie }}</li>
-							{% if jeu.categories %}
-								<li class="list-unstyled mt-2">
-									<strong>Catégories :</strong>
-									<div class="d-flex flex-wrap gap-2 mt-1">
-										{% for categorie in jeu.categories %}
-											<span class="badge rounded-pill bg-primary text-light">
-												{{ categorie }}
-											</span>
-										{% endfor %}
-									</div>
-								</li>
-							{% endif %}
-						</ul>
+						<div class="col-md-4 p-4">
+							<img src="{{ constantes.application.game_image_path }}{{ jeu.urlPhoto }}" class="img-fluid rounded-start" alt="{{ jeu.nom }}">
+						</div>
+						<div class="col-md-8">
+							<div class="card-body">
+								<h3 class="card-title">{{ jeu.nom }}</h3>
+								<p class="card-text">{{ jeu.description }}</p>
 
-						<a href="index.php?controleur=jeu&methode=lister" class="btn btn-secondary mt-3">← Retour à la liste</a>
+								<ul class="list-unstyled mt-3">
+									<li>
+										<strong>Nombre de joueurs :</strong>
+										{{ jeu.nbJoueursMin }}
+										-
+										{{ jeu.nbJoueursMax }}</li>
+									<li>
+										<strong>Durée :</strong>
+										{{ jeu.dureePartie }}
+										min</li>
+									<li>
+										<strong>Date de sortie :</strong>
+										{{ jeu.dateSortie }}</li>
+									{% if jeu.categories %}
+										<li class="list-unstyled mt-2">
+											<strong>Catégories :</strong>
+											<div class="d-flex flex-wrap gap-2 mt-1">
+												{% for categorie in jeu.categories %}
+													<span class="badge rounded-pill bg-primary text-light">
+														{{ categorie }}
+													</span>
+												{% endfor %}
+											</div>
+										</li>
+									{% endif %}
+								</ul>
+
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 
-	<hr class="my-5">
+			<hr class="my-5">
 
-	<h4>Annonces disponibles</h4>
+			<h4>Annonces disponibles</h4>
 
 	{% if annonces is empty %}
 		<p class="text-muted">Aucune annonce pour ce jeu actuellement.</p>
@@ -63,28 +65,35 @@
 		<div class="row">
 			{% for annonce in annonces %}
 				<div class="col-md-4 mb-4">
-					<div class="card h-100 shadow-sm">
+					<div class="card h-100 shadow-sm ">
 						{% if annonce.urlPhoto %}
 							<img src="{{ annonce.urlPhoto }}" class="card-img-top" alt="{{ annonce.titre }}">
 						{% endif %}
 
 						<div class="card-body">
-							<h5 class="card-title">{{ annonce.titre }}</h5>
-							<p class="card-text">
+							<h5 class="card-title text-primary">{{ annonce.titre }}</h5>
+							
+							<div class="d-flex flex-column gap-2 my-3">
+								<div class="d-flex justify-content-between align-items-center">
+									<span class="badge bg-success fs-5">{{ annonce.prix }} €</span>
+									<span class="badge bg-info text-dark">État : {{ annonce.etatJeu }}</span>
+								</div>
+								<div class="text-muted italic">
+									<i class="bi bi-person"></i> Vendeur : <strong>{{ annonce.nomVendeur }} {{ annonce.prenomVendeur }}</strong>
+								</div>
+							</div>
+
+							<p class="card-text small">
 								{{ annonce.description|length > 80
-                                ? annonce.description|slice(0, 80) ~ '...'
-                                : annonce.description
-                            }}
+									? annonce.description|slice(0, 80) ~ '...'
+									: annonce.description
+								}}
 							</p>
-
-							<p class="fw-bold">{{ annonce.prix }}
-								€</p>
-							<span class="badge bg-secondary">{{ annonce.etatJeu }}</span>
+							
+							<a class="btn btn-primary" href="index.php?controleur=Annonce&methode=afficher&id={{ annonce.idAnnonce }}">Voir l'annonce</a>
 						</div>
-					</div>
+					{% endfor %}
 				</div>
-			{% endfor %}
-		</div>
-	{% endif %}
+			{% endif %}
 
-{% endblock %}
+		{% endblock %}

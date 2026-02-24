@@ -30,7 +30,7 @@ class ControllerAnnonce extends controller
     public function lister()
     {
         $dao = new AnnonceDao($this->getPdo());
-        $annonces = $dao->findAllAssoc();
+        $annonces = $dao->findAll();
 
         $template = $this->getTwig()->load('annonces.html.twig');
         echo $template->render([
