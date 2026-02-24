@@ -298,4 +298,18 @@ class AnnonceDao
         $sql = "SELECT COUNT(*) FROM annonce";
         return (int) $this->pdo->query($sql)->fetchColumn();
     }
+  
+  
+     /**
+     * Compte le nombre d4qnnonce lié au jeux
+     *
+     * @return int Le nombre total d'annonce
+     */
+    public function countAnnonceByJeu(int $id)
+    {
+        $sql = "SELECT COUNT(*) FROM annonce WHERE idJeu = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        return (int) $stmt->fetchColumn();
+    }
 }
