@@ -81,7 +81,7 @@
 			{% block title %}{{constantes.application.website_name}} - Accueil{% endblock %}
 		</title>
 	</head>
-	<body>
+	<body class="d-flex flex-column min-vh-100">
 		<header class="sticky-top">
 			<nav class="navbar navbar-expand-lg  bg-body-tertiary shadow-sm">
 				<div class="container-fluid ">
@@ -117,7 +117,7 @@
 					</ul>
 					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link {% if menu=='forum' %} active {% endif %}" href="phpBB3">Forum</a>
+							<a class="nav-link {% if menu=='forum' %} active {% endif %}" href="phpbb">Forum</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link ms-1 {% if menu=='messagerie' %} active {% endif %}" href="index.php?controleur=messagerie&methode=lister"><i class="bi bi-envelope icone-nav"></i></a>
@@ -134,7 +134,7 @@
 <main class="container mt-4 mb-5">
  {% block body %}{% endblock %}
  </main>
-<footer>
+<footer class="mt-auto">
 	<div class="footer-content row bg-light text-center p-3 m-0">
 
 		<div class="col">
