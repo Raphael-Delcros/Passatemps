@@ -6,26 +6,61 @@
 {% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <div class="row row-cols-md-2 align-items-center">
-        <div class="col">
-            <div class="card h-100 p-3" style="width: 300px">
-                <img src="{{ annonce.urlPhoto }}" class="card-img-top" h="300" alt="Photo {{ annonce.idAnnonce }}">
-            </div>
-        </div>
+	<div class="container mt-5">
+		<div class="row row-cols-md-2 align-items-center">
+			<div class="col">
+				<div class="card h-100 p-3" style="width: 300px">
+					<img src="{{ annonce.urlPhoto }}" class="card-img-top" h="300" alt="Photo {{ annonce.idAnnonce }}">
+				</div>
+			</div>
 
-        <div class="col">
-            <div class="row">
-                <div class="card h-100 p-3">
-                    <h2 class="card-title">{{ annonce.titre }}</h2>
-                    <p><strong>Prix :</strong> {{ annonce.prix }} €</p>
-                    <p><strong>Etat du jeu :</strong> {{ annonce.etatJeu }}</p>
-                    <p><strong>Description :</strong> {{annonce.description}}</p>
-                    <p><strong>Date de la publication :</strong> {{ annonce.datePub }}</p>
-                    <a class="btn btn-primary" href="index.php?controleur=paiement&methode=achat&id={{ annonce.idAnnonce }}">Acheter</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+			<div class="col">
+				<div
+					class="card h-100 p-3">
+					{# Avatar généré avec les initiales basées sur nom et prenom #}
+					<a href="index.php?controleur=compte&methode=afficher&id={{ idVendeur }}" class="d-flex align-items-center mb-4 text-decoration-none text-dark hover-vendeur">
+						<div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 60px; height: 60px; font-weight: bold; font-size: 1.2rem;">
+							{{ prenom|first|upper }}{{ nom|first|upper }}
+						</div>
+						<div class="ms-3">
+							<span class="text-muted small d-block">Vendu par</span>
+							<h4 class="mb-0">{{ prenom }}
+								{{ nom }}</h4>
+						</div>
+					</a>
+
+					<h1 class="fw-bold text-dark">{{ annonce.titre }}</h1>
+
+					
+
+					<div class="d-flex flex-column gap-2 my-3">
+						<div class="d-flex justify-content-between align-items-center">
+							<span class="badge bg-success fs-5">{{ annonce.prix }}
+								€</span>
+							<span class="badge bg-info text-dark">État :
+								{{ annonce.etatJeu }}</span>
+						</div>
+
+                        <p class="fs-5">{{annonce.description}}</p>
+
+						<p class="text-muted small mb-0">
+							<i class="bi bi-calendar3 me-2"></i>Publié le
+							{{ annonce.datePub }}
+						</p>
+
+                        <div class="mt-4">
+                            <a href="index.php?controleur=paiement&methode=achat&id={{ annonce.idAnnonce }}" class="btn btn-primary btn-lg w-100 shadow-sm" style="border-radius: 10px;">
+                                Acheter
+                            </a>
+                        </div>
+						<div class="mt-4">
+							<a href="index.php?controleur=messagerie&methode=afficher&id={{ idVendeur }}" class="btn btn-outline-primary w-100 shadow-sm" style="border-radius: 10px;">
+								Contacter le vendeur
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
