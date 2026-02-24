@@ -176,9 +176,11 @@
 									{% if jeu.nbAnnonces > 1 %}
 										<p class="card-text text-muted small mb-1">{{ jeu.nbAnnonces }}
 											annonces</p>
-									{% else %}
+									{% elseif jeu.nbAnnonces == 1 %}
 										<p class="card-text text-muted small mb-1">{{ jeu.nbAnnonces }}
 											annonce</p>
+									{% else %}
+										<p class="card-text text-muted small mb-1">Aucune annonce</p>
 									{% endif %}
 								</div>
 
