@@ -82,3 +82,16 @@ body {
   transform: scale(1.8); // Agrandir l'icone
   transform-origin: center;
 }
+
+/* Style pour souligner la page active avec une ligne de couleur */
+.nav-link.active {
+    font-weight: bold;
+    color: $primary !important; 
+    border-bottom: 2px solid $primary;
+}
+
+/* Effet au survol pour la cohérence */
+.nav-link:hover {
+    color: $primary;
+    border-bottom: 2px solid #dee2e6;
+}
