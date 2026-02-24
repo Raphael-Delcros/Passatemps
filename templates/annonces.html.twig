@@ -15,8 +15,8 @@
     {% for annonce in annonces %}
 				<div class="col-md-4 mb-4">
 					<div class="card h-100 shadow-sm ">
-						{% if annonce.url %}
-							<img src="{{ annonce.url }}" class="card-img-top" alt="{{ annonce.titre }}">
+						{% if annonce.urlPhoto %}
+							<img src="{{ annonce.urlPhoto }}" class="card-img-top" alt="{{ annonce.titre }}">
 						{% endif %}
 
 						<div class="card-body">
@@ -28,7 +28,7 @@
 									<span class="badge bg-info text-dark">État : {{ annonce.etatJeu }}</span>
 								</div>
 								<div class="text-muted italic">
-									<i class="bi bi-person"></i> Vendeur : <strong>{{ annonce.nomVendeur|default('Utilisateur') }}</strong>
+									<i class="bi bi-person"></i> Vendeur : <strong>{{ annonce.prenomVendeur }} {{ annonce.nomVendeur }}</strong>
 								</div>
 							</div>
 
