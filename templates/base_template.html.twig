@@ -102,9 +102,8 @@
                         <li class="nav-item">
                             <a class="nav-link {% if menu=='commandes' %} active {% endif %}" href="index.php?controleur=livraison&methode=lister">Commandes</a>
                         </li>
-						
-
-						<form class="d-flex position-relative ms-auto" role="search" id="form-recherche-jeux" autocomplete="off">
+						</a>
+						<form class="d-flex position-relative" role="search" id="form-recherche-jeux" autocomplete="off">
     						<input class="form-control zone-recherche" type="search" placeholder="Rechercher un jeu" aria-label="Search" id="recherche-jeux"/>
     						<button class="btn btn-outline-success" type="submit" hidden>Search</button>
 							<button class="btn btn-outline-primary btn-loupe" type="button" id="btn-recherche">
@@ -117,19 +116,19 @@
     						</ul>
 						</form>
 
-						</ul>
-				
-						<ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-3">
-							<li class="nav-item">
-								<a class="nav-link {% if menu=='forum' %} active {% endif %}" href="phpbb">Forum</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link ms-1 {% if menu=='messagerie' %} active {% endif %}" href="index.php?controleur=messagerie&methode=lister"><i class="bi bi-envelope icone-nav"></i></a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link ms-2 {% if menu=='compte' %} active {% endif %}" href="index.php?controleur=connexion&methode=connexion">{% if session.idCompte %}<i class="bi bi-person-circle icone-nav"></i>{% else %}Se connecter{% endif %}</a>
-							</li>
-						</ul>
+
+					</ul>
+					<ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-3">
+						<li class="nav-item">
+							<a class="nav-link {% if menu=='forum' %} active {% endif %}" href="phpbb">Forum</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link ms-1 {% if menu=='messagerie' %} active {% endif %}" href="index.php?controleur=messagerie&methode=lister"><i class="bi bi-envelope icone-nav"></i></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link ms-2 {% if menu=='comptes' %} active {% endif %}" href="index.php?controleur=connexion&methode=connexion">{% if session.idCompte %}<i class="bi bi-person-circle icone-nav"></i>{% else %}Se connecter{% endif %}</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</nav>
