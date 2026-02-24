@@ -26,7 +26,7 @@ Dans les instructions suivantes, remplacez "emplacement" par le nom du dossier q
 Lancer la commande suivante, le dossier "emplacement" doit sois : ne pas exister ou être vide.
 
 ```bash
-composer create-project phpbb/phpbb emplacement
+composer create-project phpbb/phpbb
 ```
 
 Ensuite, allez sur votre site, et ajouter "/emplacement" à la fin de l'URL.
