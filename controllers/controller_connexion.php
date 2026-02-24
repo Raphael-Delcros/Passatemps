@@ -69,7 +69,7 @@ class ControllerConnexion extends controller
                     $_SESSION['idCompte'] = $utilisateur->getIdCompte();
                     $_SESSION['role'] = $utilisateur->getRole(); 
 
-                    header('Location: index.php?controleur=compte&methode=afficher&id=' . $utilisateur->getIdCompte());
+                    header('Location: index.php?controleur=compte&methode=afficher');
                 } else {
                     $error = true;
                 }
