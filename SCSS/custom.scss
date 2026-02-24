@@ -78,8 +78,8 @@ body {
 }
 
 #form-recherche-jeux {
-  display: flex;
-  align-items: stretch;
+  width: 100%;
+  max-width: 1500px;
 }
 
 .zone-recherche {
@@ -88,6 +88,7 @@ body {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-right: 0;
+  width: 1000px;
 }
 
 .btn-loupe {
@@ -95,4 +96,5 @@ body {
   border-bottom-right-radius: 20px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+  width : 50px;
 }
