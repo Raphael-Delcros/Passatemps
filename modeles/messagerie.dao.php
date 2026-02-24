@@ -105,6 +105,7 @@ class MessagerieDao
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['compteId' => $compteId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
     }
 
 

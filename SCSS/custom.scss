@@ -76,25 +76,3 @@ body {
   transform: scale(1.8); // Agrandir l'icone
   transform-origin: center;
 }
-
-#form-recherche-jeux {
-  width: 100%;
-  max-width: 1500px;
-}
-
-.zone-recherche {
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border-right: 0;
-  width: 1000px;
-}
-
-.btn-loupe {
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  width : 50px;
-}

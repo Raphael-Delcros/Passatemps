@@ -42,7 +42,7 @@ class ControllerLivraison extends Controller
             $dao = new LivraisonDao($this->getPdo());
 
             $commande = $dao->findAllAssocFromIdWithAnnonceInfo($_SESSION['idCompte'], isset($_GET['id']) ? intval($_GET['id']) : null);
-            $template = $this->getTwig()->load('livraison.html.twig');
+            $template = $this->getTwig()->load('commande.html.twig');
             echo $template->render([
                 'commande' => $commande[0],
             ]);
