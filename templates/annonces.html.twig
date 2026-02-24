@@ -12,16 +12,38 @@
 <h1>Liste des annonces</h1>
 
 <div class="row row-cols-2 row-cols-md-4 g-4">
-    {% for a in annonces %}
-        <div class="col">
-            <div class="card h-100 shadow-lg border-0 p-4 text-center list-unstyled">
-                <li><img src="{{ a.url }}" alt="Photo {{ a.idAnnonce }}" width="100%"></li>
-                </br>
-                <strong>{{ a.titre }}</strong></br>
-                <a class="btn btn-primary" href="index.php?controleur=Annonce&methode=afficher&id={{ a.idAnnonce }}">Voir plus</a>
-            </div>
-        </div>
-    {% endfor %}
+    {% for annonce in annonces %}
+				<div class="col-md-4 mb-4">
+					<div class="card h-100 shadow-sm ">
+						{% if annonce.url %}
+							<img src="{{ annonce.url }}" class="card-img-top" alt="{{ annonce.titre }}">
+						{% endif %}
+
+						<div class="card-body">
+							<h5 class="card-title text-primary">{{ annonce.titre }}</h5>
+							
+							<div class="d-flex flex-column gap-2 my-3">
+								<div class="d-flex justify-content-between align-items-center">
+									<span class="badge bg-success fs-5">{{ annonce.prix }} €</span>
+									<span class="badge bg-info text-dark">État : {{ annonce.etatJeu }}</span>
+								</div>
+								<div class="text-muted italic">
+									<i class="bi bi-person"></i> Vendeur : <strong>{{ annonce.nomVendeur|default('Utilisateur') }}</strong>
+								</div>
+							</div>
+
+							<p class="card-text small">
+								{{ annonce.description|length > 80
+									? annonce.description|slice(0, 80) ~ '...'
+									: annonce.description
+								}}
+							</p>
+							
+							<a class="btn btn-primary" href="index.php?controleur=Annonce&methode=afficher&id={{ annonce.idAnnonce }}">Voir l'annonce</a>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
 </div>
 
 {% endblock %}

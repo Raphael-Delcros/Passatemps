@@ -29,10 +29,13 @@ class ControllerConnexion extends controller
             $template = $this->getTwig()->load('compte.html.twig');
             echo $template->render([
                 'compte' => $compte,
+                'menu' => 'comptes',
             ]);
         } else {
             $template = $this->getTwig()->load('connexion.html.twig');
-            echo $template->render();
+            echo $template->render([
+                'menu' => 'comptes',
+            ]);
         }
     }
 
@@ -69,7 +72,7 @@ class ControllerConnexion extends controller
                     $_SESSION['idCompte'] = $utilisateur->getIdCompte();
                     $_SESSION['role'] = $utilisateur->getRole(); 
 
-                    header('Location: index.php?controleur=compte&methode=afficher&id=' . $utilisateur->getIdCompte());
+                    header('Location: index.php?controleur=compte&methode=afficher');
                 } else {
                     $error = true;
                 }
@@ -80,6 +83,7 @@ class ControllerConnexion extends controller
                 $template = $this->getTwig()->load('connexion.html.twig');
                 echo $template->render([
                     'reussite' => false,
+                    'menu' => 'comptes',
                 ]);
             }
         }

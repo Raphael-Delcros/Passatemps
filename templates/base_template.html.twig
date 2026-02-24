@@ -92,9 +92,9 @@
 						<span class="navbar-toggler-icon"></span>
 					</button>
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
-						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-3">
 						<li class="nav-item">
-                            <a class="nav-link {% if menu=='annonce' %} active {% endif %}" href="index.php?controleur=annonce&methode=lister">Annonces</a>
+                            <a class="nav-link {% if menu=='annonces' %} active {% endif %}" href="index.php?controleur=annonce&methode=lister">Annonces</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if menu=='vendre' %} active {% endif %}" href="index.php?controleur=vendre&methode=creer">Vendre</a>
@@ -104,8 +104,11 @@
                         </li>
 						</a>
 						<form class="d-flex position-relative" role="search" id="form-recherche-jeux" autocomplete="off">
-    						<input class="form-control" type="search" placeholder="Rechercher un jeu" aria-label="Search" id="recherche-jeux"/>
+    						<input class="form-control zone-recherche" type="search" placeholder="Rechercher un jeu" aria-label="Search" id="recherche-jeux"/>
     						<button class="btn btn-outline-success" type="submit" hidden>Search</button>
+							<button class="btn btn-outline-primary btn-loupe" type="button" id="btn-recherche">
+            					<i class="bi bi-search"></i>
+        					</button>
 
    							 <ul id="resultats-autocomplete"
         						class="list-group position-absolute w-100"
@@ -115,7 +118,7 @@
 
 
 					</ul>
-					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+					<ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-3">
 						<li class="nav-item">
 							<a class="nav-link {% if menu=='forum' %} active {% endif %}" href="phpbb">Forum</a>
 						</li>
@@ -123,7 +126,7 @@
 							<a class="nav-link ms-1 {% if menu=='messagerie' %} active {% endif %}" href="index.php?controleur=messagerie&methode=lister"><i class="bi bi-envelope icone-nav"></i></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link ms-2 {% if menu=='compte' %} active {% endif %}" href="index.php?controleur=connexion&methode=connexion">{% if session.idCompte %}<i class="bi bi-person-circle icone-nav"></i>{% else %}Se connecter{% endif %}</a>
+							<a class="nav-link ms-2 {% if menu=='comptes' %} active {% endif %}" href="index.php?controleur=connexion&methode=connexion">{% if session.idCompte %}<i class="bi bi-person-circle icone-nav"></i>{% else %}Se connecter{% endif %}</a>
 						</li>
 					</ul>
 				</div>
@@ -213,6 +216,11 @@
         e.preventDefault(); // empêche le submit
         lancerRecherche();
     }
+	});
+
+	// SI CLIQUE SUR LA LOUPE
+	document.getElementById('btn-recherche').addEventListener('click', function() {
+    	lancerRecherche();
 	});
 
 	function lancerRecherche() {

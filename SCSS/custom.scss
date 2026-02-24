@@ -68,6 +68,12 @@ body {
 }
 
 [aria-expanded="true"] .arrow-icon {
+    transform: rotate(90deg); /* Adjust degrees as needed */
+}
+
+.icone-btn {
+  display: inline-block;
+  transform: scale(1.5);
   transform: rotate(90deg);
 }
 
@@ -75,4 +81,17 @@ body {
   display: inline-block; // Permet de ne pas considerer l'icone comme du texte
   transform: scale(1.8); // Agrandir l'icone
   transform-origin: center;
+}
+
+/* Style pour souligner la page active avec une ligne de couleur */
+.nav-link.active {
+    font-weight: bold;
+    color: $primary !important; 
+    border-bottom: 2px solid $primary;
+}
+
+/* Effet au survol pour la cohérence */
+.nav-link:hover {
+    color: $primary;
+    border-bottom: 2px solid #dee2e6;
 }

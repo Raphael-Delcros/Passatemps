@@ -26,14 +26,27 @@ class ControllerAdmin extends Controller
         }
     }
     /**
-     * @brief Affiche le tableau de bord admin
+     * @brief Affiche le tableau de bord admin avec statistiques
      */
     public function dashboard()
     {
+        // Initialisation des DAOs
+        $jeuDao = new JeuDao($this->getPdo());
+        $annonceDao = new AnnonceDao($this->getPdo());
+        $compteDao = new CompteDao($this->getPdo());
+
+        // Récupération des données pour le bloc "En résumé" [cite: 14]
+        $totalGames = $jeuDao->countAll();
+        $totalAnnonces = $annonceDao->countAll();
+        $totalUsers = $compteDao->countAll();
+
         $template = $this->getTwig()->load('admin_dashboard.html.twig');
         echo $template->render(
             [
-                'prenom' => $_SESSION['prenom']
+                'prenom'        => $_SESSION['prenom'],
+                'totalGames'    => $totalGames,    
+                'totalAnnonces' => $totalAnnonces, 
+                'totalUsers'    => $totalUsers     
             ]
         );
     }

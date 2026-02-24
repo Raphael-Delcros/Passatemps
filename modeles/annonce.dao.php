@@ -277,7 +277,7 @@ class AnnonceDao
      * 
      */
 
-     public function findAccount(int $q)
+    public function findAccount(int $q)
     {
         $sql = "SELECT C.Nom, C.prenom FROM annonce A
             JOIN Compte C ON A.idCompte = C.idCompte 
@@ -286,5 +286,30 @@ class AnnonceDao
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['q' => '%' . strtolower($q) . '%']);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Compte le nombre total d'annonces dans la base de données
+     *
+     * @return int Le nombre total d'annonces
+     */
+    public function countAll(): int
+    {
+        $sql = "SELECT COUNT(*) FROM annonce";
+        return (int) $this->pdo->query($sql)->fetchColumn();
+    }
+  
+  
+     /**
+     * Compte le nombre d4qnnonce lié au jeux
+     *
+     * @return int Le nombre total d'annonce
+     */
+    public function countAnnonceByJeu(int $id)
+    {
+        $sql = "SELECT COUNT(*) FROM annonce WHERE idJeu = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        return (int) $stmt->fetchColumn();
     }
 }

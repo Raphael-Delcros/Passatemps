@@ -19,12 +19,12 @@
 					<div class="row mb-3">
 						<div class="col-md-6">
 							<label class="form-label">Titre</label>
-							<input type="text" name="titre" class="form-control" value="{{ annonce.titre }}" required>
+							<input type="text" name="titre" class="form-control shadow-sm" value="{{ annonce.titre }}" required>
 						</div>
 						<div class="col-md-6">
 							<label class="form-label">Jeu</label>
 							<div class="position-relative">
-								<input type="text" id="jeu" class="form-control" value="{{ annonce.nomJeu }}" required>
+								<input type="text" id="jeu" class="form-control shadow-sm" value="{{ annonce.nomJeu }}" required>
 								<input type="hidden" name="idJeu" id="idJeu" value="{{ annonce.idJeu }}">
 								<ul id="resultats" class="list-group position-absolute w-100" style="z-index:2000; display:none;"></ul>
 							</div>
@@ -33,17 +33,17 @@
 
 					<div class="mb-3">
 						<label class="form-label">Description</label>
-						<textarea name="description" class="form-control" rows="3">{{ annonce.description }}</textarea>
+						<textarea name="description" class="form-control shadow-sm" rows="3">{{ annonce.description }}</textarea>
 					</div>
 
 					<div class="row mb-3">
 						<div class="col-md-4">
 							<label class="form-label">Prix (€)</label>
-							<input type="number" step="0.01" name="prix" class="form-control" value="{{ annonce.prix }}">
+							<input type="number" step="0.01" name="prix" class="form-control shadow-sm" value="{{ annonce.prix }}">
 						</div>
 						<div class="col-md-4">
 							<label class="form-label">État du jeu</label>
-							<select name="etatJeu" class="form-select">
+							<select name="etatJeu" class="form-select shadow-sm">
 								<option {% if annonce.etatJeu == 'Neuf' %} selected {% endif %}>Neuf</option>
 								<option {% if annonce.etatJeu == 'Très bon état' %} selected {% endif %}>Très bon état</option>
 								<option {% if annonce.etatJeu == 'Bon état' %} selected {% endif %}>Bon état</option>
@@ -51,7 +51,7 @@
 						</div>
 						<div class="col-md-4">
 							<label class="form-label">État Vente</label>
-							<select name="etatVente" class="form-select">
+							<select name="etatVente" class="form-select shadow-sm">
 								<option {% if annonce.etatVente == 'en Vente' %} selected {% endif %}>en Vente</option>
 								<option {% if annonce.etatVente == 'Vendu' %} selected {% endif %}>Vendu</option>
 							</select>
@@ -59,7 +59,7 @@
 					</div>
 					<div class="d-flex justify-content-between">
 						<a href="index.php?controleur=admin&methode=listeAnnonces" class="btn btn-outline-secondary">Annuler</a>
-						<button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+						<button type="submit" class="btn btn-primary">Enregistrer</button>
 					</div>
 				</form>
 			</div>
