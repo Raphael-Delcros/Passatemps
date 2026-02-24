@@ -84,6 +84,7 @@ class ControllerCompte extends Controller
         $template = $this->getTwig()->load('comptes.html.twig');
         echo $template->render([
             'comptes' => $comptes,
+            'menu' => 'comptes',
         ]);
     }
 
@@ -109,6 +110,7 @@ class ControllerCompte extends Controller
                     'other' => true,
                     'compte' => $compte,
                     'annonces' => $annonces,
+                    'menu' => 'comptes',
                 ]);
             } else {
                 $id = $_SESSION['idCompte'];
@@ -123,6 +125,7 @@ class ControllerCompte extends Controller
                     'other' => false,
                     'compte' => $compte,
                     'annonces' => $annonces,
+                    'menu' => 'comptes',
                 ]);
             }
         } else {
@@ -137,7 +140,11 @@ class ControllerCompte extends Controller
     public function inscription()
     {
         $template = $this->getTwig()->load('inscription.html.twig');
-        echo $template->render();
+        echo $template->render(
+            [
+                'menu' => 'comptes'
+            ]
+        );
     }
 
     /**
@@ -204,6 +211,7 @@ class ControllerCompte extends Controller
         $template = $this->getTwig()->load('inscription.html.twig');
         echo $template->render([
             'erreurs' => $erreurs,
+            'menu' => 'comptes'
         ]);
     }
 

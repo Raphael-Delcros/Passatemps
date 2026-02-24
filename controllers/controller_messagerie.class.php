@@ -33,7 +33,8 @@ class ControllerMessagerie extends Controller
             echo $template->render([
                 'messages' => $messages,
                 'utilisateurs' => $utilisateurs,
-                'id' => $id
+                'id' => $id,
+                'menu' => 'messagerie'
             ]);
         } else {
             $template = $this->getTwig()->load('connexion.html.twig');
@@ -73,7 +74,8 @@ class ControllerMessagerie extends Controller
                 'idCompte' => $id,
                 'monNom' => $monNom,
                 'monPrenom' => $monPrenom,
-                'erreur' => $erreur
+                'erreur' => $erreur,
+                'menu' => 'messagerie'
             ]);
         }
     }

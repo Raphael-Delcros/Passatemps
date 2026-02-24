@@ -86,8 +86,8 @@ body {
 /* Style pour souligner la page active avec une ligne de couleur */
 .nav-link.active {
     font-weight: bold;
-    color: $primary; 
-    border-bottom: 2px solid #0d6efd;
+    color: $primary !important; 
+    border-bottom: 2px solid $primary;
 }
 
 /* Effet au survol pour la cohérence */
