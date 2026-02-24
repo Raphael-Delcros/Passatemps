@@ -15,8 +15,8 @@
     {% for annonce in annonces %}
 				<div class="col-md-4 mb-4">
 					<div class="card h-100 shadow-sm ">
-						{% if annonce.urlPhoto %}
-							<img src="{{ annonce.urlPhoto }}" class="card-img-top" alt="{{ annonce.titre }}">
+						{% if annonce.url %}
+							<img src="{{ annonce.url }}" class="card-img-top" alt="{{ annonce.titre }}">
 						{% endif %}
 
 						<div class="card-body">
