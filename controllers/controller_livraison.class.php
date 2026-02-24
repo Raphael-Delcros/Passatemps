@@ -45,6 +45,7 @@ class ControllerLivraison extends Controller
             $template = $this->getTwig()->load('commande.html.twig');
             echo $template->render([
                 'commande' => $commande[0],
+                'menu' => 'commandes',
             ]);
         }
     }
@@ -66,6 +67,7 @@ class ControllerLivraison extends Controller
             $template = $this->getTwig()->load('commandes.html.twig');
             echo $template->render([
                 'commandes' => $commandes,
+                'menu' => 'commandes',
             ]);
         }
     }
@@ -102,7 +104,8 @@ class ControllerLivraison extends Controller
         $template = $this->getTwig()->load('recapitulatif.html.twig');
         echo $template->render([
             'annonce' => $annonce,
-            'livraison' => $livraison
+            'livraison' => $livraison,
+            'menu' => 'commandes'
         ]);
 
     }
