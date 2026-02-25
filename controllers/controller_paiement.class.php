@@ -104,12 +104,23 @@ class ControllerPaiement extends controller
             $validator = new Validator($this->reglesValidation);
             $donnesValides = $validator->valider($data);
             $messagesErreurs = $validator->getMessagesErreurs();
+            
+            $_SESSION['livraison'] = [
+                'ville' => $ville,
+                'codePostal' => $codePostal,
+                'adresse' => $adresse,
+                'complementAdresse' => $complementAdresse,
+                'idAnnonce' => $id
+            ];
 
             if (!$donnesValides) {
+
                 $template = $this->getTwig()->load('adresseLivraison.html.twig');
                 echo $template->render([
                     'erreurs' => $messagesErreurs,
-                    'donnees' => $data,
+                    'donnees' => $_SESSION['livraison'],
+                    'annonce' => $annonce,
+                    'jeu' => $jeu,
                     'menu' => 'annonce'
                 ]);
                 return;
@@ -133,6 +144,7 @@ class ControllerPaiement extends controller
                 'jeu' => $jeu,
                 'menu' => 'annonce'
             ]);
+            unset($_SESSION['livraison']);
         }
     }
 
@@ -243,5 +255,6 @@ class ControllerPaiement extends controller
             'livraison' => $livraison,
             'menu' => 'annonce'
         ]);
+        unset($_SESSION['livraison']);
     }
 }

@@ -19,23 +19,41 @@
 				<div class="row">
 					<div class="col">
 						<label for="ville" class="form-label required">Ville</label>
-						<input type="text" class="form-control shadow-sm" name="ville" placeholder="Bordeaux" title="Ville de la livraison" required>
+						<input type="text"
+							class="form-control shadow-sm"
+							name="ville"
+							placeholder="Bordeaux"
+							value="{{ donnees.ville ?? '' }}"
+							required>					
 					</div>
 					<div class="col-2">
 						<label for="codePostal" class="form-label required">Code Postal</label>
-						<input type="text" class="form-control shadow-sm" name="codePostal" placeholder="33000" title="Code Postal de la livraison" required>
+						<input type="text"
+							class="form-control shadow-sm"
+							name="codePostal"
+							placeholder="33000"
+							value="{{ donnees.codePostal ?? '' }}"
+							required>					
 					</div>
 				</div>
 				<div class="row mt-2">
 					<div class="col">
 						<label for="adresse" class="form-label required">Adresse</label>
-						<input type="text" class="form-control shadow-sm" name="adresse" placeholder="12 rue de la paix" title="Adresse de la livraison" required>
+						<input type="text"
+							class="form-control shadow-sm"
+							name="adresse"
+							placeholder="12 rue de la paix"
+							value="{{ donnees.adresse ?? '' }}"
+							required>					
 					</div>
 					<div class="col">
 						<label for="complementAdresse" class="form-label">Complement d'adresse</label>
-						<input type="text" class="form-control shadow-sm" name="complementAdresse" placeholder="Batiment A, Appartement 3" title="Complement d'adresse de la livraison">
+						<input type="text"
+							class="form-control shadow-sm"
+							name="complementAdresse"
+							placeholder="Batiment A, Appartement 3"
+							value="{{ donnees.complementAdresse ?? '' }}">					
 					</div>
-
 				</div>
 				<div class=" text-end">
                 	<button type="submit" class="btn btn-primary mt-3" href="index.php?controleur=paiement&methode=payer&id={{ annonce.idAnnonce }}">Continuer vers le paiement</button>
