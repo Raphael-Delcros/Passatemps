@@ -83,22 +83,23 @@ body {
   transform-origin: center;
 }
 
-/* Style pour souligner la page active avec une ligne de couleur */
+// Style pour souligner la page active en orange
 .nav-link.active {
   font-weight: bold;
   color: $primary !important;
-  box-shadow: inset 0 -2px 0 0 $primary; /* Crée une ligne interne en bas sans décaler le texte */
+  box-shadow: inset 0 -2px 0 0 $primary; // On utilise box-shadow pour éviter le déplacement du texte fait avec une border.
 }
 
 .nav-link {
-  display: inline-block; /* Important pour que transform fonctionne */
+  display: inline-block;
   transition:
     transform 0.3s ease,
     color 0.3s ease;
 }
 
+// Animation quand on passe la souris sur le lien.
 .nav-link:hover {
   color: $primary;
   box-shadow: inset 0 -2px 0 0 $primary;
-  transform: translateY(-2px); /* Le lien monte et reste là tant que la souris est dessus */
+  transform: translateY(-2px);
 }
