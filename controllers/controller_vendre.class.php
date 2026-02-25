@@ -39,13 +39,16 @@ class ControllerVendre extends controller
             ],
             'prix' => [
                 'obligatoire' => true,
-                'type' => 'float',
+                'type' => 'numeric',
             ],
             'etatJeu' => [
                 'obligatoire' => true,
                 'type' => 'string',
                 'valeurs_acceptables' => ['Neuf', 'Très bon état', 'Bon état', 'Abimé', 'Manque des pieces'],
             ],
+            'photos' => [
+                'obligatoire' => true
+            ]
         ];
     }
 
@@ -181,7 +184,7 @@ class ControllerVendre extends controller
         if ($jeu) {
             $data['jeu'] = $jeu->getNom();
         } else {
-            $messagesErreurs[] = "Le jeu sélectionné est invalide.";
+            $messagesErreurs["invalidGame"] = true;
         }
 
         if (!$donneesValides || !empty($messagesErreurs)) {
