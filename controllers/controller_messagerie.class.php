@@ -58,9 +58,12 @@ class ControllerMessagerie extends Controller
                 $erreur = false;
             }
 
-            $id = isset($_GET['id']) ? intval($_GET['id']) : null;
-            $nom = isset($_GET['nom']) ? $_GET['nom'] : null;
-            $prenom = isset($_GET['prenom']) ? $_GET['prenom'] : null;
+            $dao = new CompteDao($this->getPdo());
+            $compteAutre = $dao->find($_GET['id']);
+            
+            $id = $compteAutre->getIdCompte();
+            $nom = $compteAutre->getNom();
+            $prenom = $compteAutre->getPrenom();
             $monNom = isset($_SESSION['nom']) ? $_SESSION['nom'] : null;
             $monPrenom = isset($_SESSION['prenom']) ? $_SESSION['prenom'] : null;
 
