@@ -8,7 +8,7 @@
 {% block body %}
 <div class="container my-5">
 <div class="card shadow-lg border-0 p-3">
-	<form method="POST" action="index.php?controleur=vendre&methode=recap" class="row g-3 position-relative" autocomplete="off" novalidate enctype="multipart/form-data">
+	<form method="POST" action="index.php?controleur=vendre&methode=recap" class="row g-3 position-relative" autocomplete="off" enctype="multipart/form-data">
 		<h1>Vendre</h1>
 		<input type="hidden" name="controleur" value="vendre">
 		<input type="hidden" name="methode" value="confirmerVente">
@@ -25,6 +25,8 @@
 					type="text" 
 					class="form-control shadow-sm {% if erreurs['titreMandatory'] or erreurs['titreUnderLength'] or erreurs['titreOverLength'] %} border-danger{% endif %}" 
 					name="titre" 
+					minlength = "5"
+					maxlength = "100"
 					placeholder="Nom de l'annonce" 
 					title="Entrez le nom de l'annonce"
 					{ % if donnees.titre is defined %} value="{{ donnees.titre }}" { % endif %}
@@ -66,6 +68,8 @@
 				<textarea 
 				class="form-control shadow-sm {% if erreurs['descriptionMandatory'] or erreurs['descriptionUnderLength'] or erreurs['descriptionOverLength']%} border-danger {% endif %}" 
 				name="description" 
+				minlength = "10"
+				maxlength = "200"
 				placeholder="Description de l'annonce" 
 				title="Description de l'annonce" 
 				spellcheck="true"
