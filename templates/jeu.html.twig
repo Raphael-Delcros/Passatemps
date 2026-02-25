@@ -11,7 +11,7 @@
 	<div class="container my-5">
 		<div class="card shadow-lg border-0">
 			<div>
-				<a href="index.php?controleur=jeu&methode=lister" class="btn btn-outline-secondary m-3"><i class="bi bi-arrow-left"></i> Retour en arrière<a></div>
+				<a href="index.php?controleur=jeu&methode=lister" class="btn btn-outline-secondary m-3"><i class="bi bi-arrow-left">Retour </i><a></div>
 					<div class="row g-0">
 
 						<div class="col-md-4 p-4">
@@ -66,9 +66,11 @@
 			{% for annonce in annonces %}
 				<div class="col-md-4 mb-4">
 					<div class="card h-100 shadow-sm ">
-						{% if annonce.urlPhoto %}
-							<img src="{{ annonce.urlPhoto }}" class="card-img-top" alt="{{ annonce.titre }}">
-						{% endif %}
+						<div class="img-container-annonce">
+							{% if annonce.urlPhoto %}
+								<img src="{{ annonce.urlPhoto }}" class="img-annonce-propre card-img-top" alt="{{ annonce.titre }}">
+							{% endif %}
+						</div>
 
 						<div class="card-body">
 							<h5 class="card-title text-primary">{{ annonce.titre }}</h5>
@@ -92,8 +94,10 @@
 							
 							<a class="btn btn-primary" href="index.php?controleur=Annonce&methode=afficher&id={{ annonce.idAnnonce }}">Voir l'annonce</a>
 						</div>
-					{% endfor %}
+					</div>
 				</div>
-			{% endif %}
+			{% endfor %}
+		</div>
+	{% endif %}
 
-		{% endblock %}
+{% endblock %}

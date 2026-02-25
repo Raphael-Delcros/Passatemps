@@ -9,11 +9,12 @@
 	<form method="POST" novalidate action="index.php?controleur=paiement&methode=afficherResume">
 		<input type="hidden" name="idAnnonce" value="{{ annonce.idAnnonce }}">
 		<input type="hidden" name="ville" value="{{ ville }}">
-		<input type="hidden" name="pays" value="{{ pays }}">
 		<input type="hidden" name="adresse" value="{{ adresse }}">
 		<input type="hidden" name="codePostal" value="{{ codePostal }}">
+
 		<div class="row">
 			<h2 class="form-title">Détails du paiement</h2>
+
 			<p>Adresse de livraison→
 				<b>paiement</b>
 				→ récapituatif</p>
@@ -21,6 +22,9 @@
 			<!-- Paiement -->
 			<div class=" col mt-2 bg-light p-3 border border-2 rounded">
 
+				<div class="text-start">
+					<a href="index.php?controleur=paiement&methode=achat&id={{ annonce.idAnnonce }}" class="btn btn-outline-secondary border-2 mb-3"> <i class="bi bi-arrow-left"> Retour </i></a>
+				</div>
 				<div class="mb-4">
 					<label class="form-label required">Numéro de la carte</label>
 					<input type="text" name="numCarte" maxlength="16" minlength="16" class="form-control shadow-sm {% if erreurs['numCarteMandatory'] or erreurs['numCarteNotInt'] or erreurs['numCarteIncorrectLength'] %} border-danger{% endif %}" placeholder="1234 1234 1234 1234" required>
@@ -66,10 +70,7 @@
 				</div>
 
 				<div class="row">
-					<div class="col-md-6">
-						<a href="index.php?controleur=livraison&methode=achat&id={{ annonce.idAnnonce }}" class="btn btn-secondary w-100 mt-3 shadow-sm">Annuler</a>
-					</div>
-					<div class="col-md-6">
+					<div class="text-end">
 						<button type="submit" class="btn btn-primary w-100 mt-3 shadow-sm">
 							Payer
 						</button>

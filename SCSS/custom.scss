@@ -103,3 +103,49 @@ body {
   box-shadow: inset 0 -2px 0 0 $primary;
   transform: translateY(-2px);
 }
+
+/* Conteneur d'image pour 4 colonnes */
+.img-container-annonce {
+    width: 100%;
+    height: 180px;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Préserve le ratio, pas de rognage */
+.img-annonce-propre {
+    max-width: 100%;
+    max-height: 180px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+#form-recherche-jeux {
+  width: 100%;
+  max-width: 400px;
+}
+
+.zone-recherche {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+  width : 25vw;
+}
+
+.btn-loupe {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  width : 3vw;
+}
+
+.navbar {
+  overflow-x: hidden;
+}

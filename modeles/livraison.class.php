@@ -13,7 +13,6 @@ class Livraison
     // --- Attributs ---
     private ?int $idLivraison;
     private ?string $ville;
-    private ?string $pays;
     private ?string $adresse;
     private ?string $codePostal;
     private ?string $dateCommande;
@@ -30,7 +29,6 @@ class Livraison
      *
      * @param integer|null $idLivraison Identifiant de la livraison
      * @param string|null $ville Ville de livraison
-     * @param string|null $pays Pays de livraison
      * @param string|null $adresse Adresse de livraison
      * @param string|null $codePostal Code postal de livraison
      * @param string|null $dateCommande Date de la commande
@@ -44,7 +42,6 @@ class Livraison
     public function __construct(
         ?int $idLivraison = null,
         ?string $ville = null,
-        ?string $pays = null,
         ?string $adresse = null,
         ?string $codePostal = null,
         ?string $dateCommande = null,
@@ -57,7 +54,6 @@ class Livraison
     ) {
         $this->idLivraison = $idLivraison;
         $this->ville = $ville;
-        $this->pays = $pays;
         $this->adresse = $adresse;
         $this->codePostal = $codePostal;
         $this->dateCommande = $dateCommande;
@@ -106,22 +102,6 @@ class Livraison
     public function setVille(?string $ville): void
     {
         $this->ville = $ville;
-    }
-
-    /**
-     * Get the value of pays
-     */
-    public function getPays(): ?string
-    {
-        return $this->pays;
-    }
-
-    /**
-     * Set the value of pays
-     */
-    public function setPays(?string $pays): void
-    {
-        $this->pays = $pays;
     }
 
     /**
