@@ -123,3 +123,29 @@ body {
     height: auto;
     object-fit: contain;
 }
+
+#form-recherche-jeux {
+  width: 100%;
+  max-width: 400px;
+}
+
+.zone-recherche {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+  width : 25vw;
+}
+
+.btn-loupe {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  width : 3vw;
+}
+
+.navbar {
+  overflow-x: hidden;
+}
