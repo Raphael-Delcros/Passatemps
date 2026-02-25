@@ -9,7 +9,6 @@
 	<form method="POST" action="index.php?controleur=paiement&methode=afficherResume">
 		<input type="hidden" name="idAnnonce" value="{{ annonce.idAnnonce }}">
 		<input type="hidden" name="ville" value="{{ ville }}">
-		<input type="hidden" name="pays" value="{{ pays }}">
 		<input type="hidden" name="adresse" value="{{ adresse }}">
 		<input type="hidden" name="codePostal" value="{{ codePostal }}">
 		<div class="row">
@@ -23,23 +22,39 @@
 
 				<div class="mb-4">
 					<label class="form-label required">Numéro de la carte</label>
-					<input type="text" name="numCarte" class="form-control shadow-sm" placeholder="1234 1234 1234 1234" required>
+					<input type="text" name="numCarte"
+						class="form-control shadow-sm"
+						placeholder="1234 1234 1234 1234"
+						value="{{ donnees.numCarte ?? '' }}"
+						required>
 				</div>
 
 				<div class="row mb-4">
 					<div class="col-md-6">
 						<label class="form-label required">Date d'expiration</label>
-						<input type="text" name="dateExpiration" class="form-control shadow-sm" placeholder="MM/YY" required>
+						<input type="text" name="dateExpiration"
+							class="form-control shadow-sm"
+							placeholder="MM/YY"
+							value="{{ donnees.dateExpiration ?? '' }}"
+							required>				
 					</div>
 					<div class="col-md-6">
 						<label class="form-label required">Code de Sécurité</label>
-						<input type="text" name="codeSecurite" class="form-control shadow-sm" placeholder="CVC" required>
-					</div>
+						<input type="text" name="codeSecurite"
+							class="form-control shadow-sm"
+							placeholder="CVC"
+							value="{{ donnees.codeSecurite ?? '' }}"
+							required>					
+	   				</div>
 				</div>
 
 				<div class="mb-4">
 					<label class="form-label required">Nom sur la carte</label>
-					<input type="text" name="nomCarte" class="form-control shadow-sm" placeholder="Votre nom" required>
+					<input type="text" name="nomCarte"
+						class="form-control shadow-sm"
+						placeholder="Votre nom"
+						value="{{ donnees.nomCarte ?? '' }}"
+						required>				
 				</div>
 
 				<div class="row">

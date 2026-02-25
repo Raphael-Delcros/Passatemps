@@ -74,11 +74,6 @@ class ControllerPaiement extends controller
                 'type' => 'string',
                 'format' => $config['regex']['texte']
             ],
-            'pays' => [
-                'obligatoire' => true,
-                'type' => 'string',
-                'format' => $config['regex']['texte']
-            ],
             'codePostal' => [
                 'obligatoire' => true,
                 'type' => 'integer',
@@ -119,6 +114,15 @@ class ControllerPaiement extends controller
                 ]);
                 return;
             }
+
+            $_SESSION['livraison'] = [
+                'ville' => $ville,
+                'adresse' => $adresse,
+                'codePostal' => $codePostal,
+                'complementAdresse' => $complementAdresse,
+                'idAnnonce' => $id
+            ];
+
             $template = $this->getTwig()->load('paiement.html.twig');
             echo $template->render([
                 'annonce' => $annonce,
@@ -197,7 +201,6 @@ class ControllerPaiement extends controller
         $array = [
             'idLivraison'        => null,
             'ville'              => $_POST['ville'] ?? null,
-            'pays'               => $_POST['pays'] ?? null,
             'adresse'            => $_POST['adresse'] ?? null,
             'codePostal'         => $_POST['codePostal'] ?? null,
             'dateCommande'       => date('Y-m-d'),
@@ -217,10 +220,19 @@ class ControllerPaiement extends controller
         $messagesErreurs = $validator->getMessagesErreurs();
 
         if (!$donnesValides) {
+
+            // Sauvegarde des données carte en session
+            $_SESSION['paiement'] = $data;
+        
             $template = $this->getTwig()->load('paiement.html.twig');
             echo $template->render([
                 'erreurs' => $messagesErreurs,
                 'donnees' => $data,
+                'annonce' => $annonce,
+                'ville' => $_SESSION['livraison']['ville'] ?? null,
+                'adresse' => $_SESSION['livraison']['adresse'] ?? null,
+                'codePostal' => $_SESSION['livraison']['codePostal'] ?? null,
+                'complementAdresse' => $_SESSION['livraison']['complementAdresse'] ?? null,
                 'menu' => 'annonce'
             ]);
             return;
