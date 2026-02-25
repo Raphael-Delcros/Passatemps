@@ -15,6 +15,9 @@
 
 		<div class="row">
 			<div class=" col mt-2 bg-light p-3 border border-2 rounded">
+				<div class="text-start">
+						<a class="btn btn-outline-secondary mb-3" href="index.php?controleur=Annonce&methode=afficher&id={{ annonce.idAnnonce }}"> <i class="bi bi-arrow-left"> Retour </i> </a>
+				</div>
 				<h3 class="text-center">Adresse de livraison</h3>
 				<div class="row">
 					<div class="col">
@@ -56,9 +59,6 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col mt-3 text-start">
-						<a class="btn btn-outline-secondary mt-3" href="index.php?controleur=Annonce&methode=afficher&id={{ annonce.idAnnonce }}"> Retourner en arrière </a>
-					</div>
 					<div class="col mt-3 text-end">
 						<button type="submit" class="btn btn-primary mt-3" href="index.php?controleur=paiement&methode=payer&id={{ annonce.idAnnonce }}">Continuer vers le paiement</button>
 					</div>
