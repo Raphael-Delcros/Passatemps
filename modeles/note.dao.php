@@ -92,8 +92,19 @@ class NoteDAO{
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['idCompteNote' => $idCompteNote]);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
-        var_dump($stmt->fetch());
         return $stmt->fetch() ?: null;
 
     }
+
+    public function insert(int $idComteQuiNote, int $idComteNote, int $laNote): void
+    {
+        $sql = "INSERT INTO" .Config::get()['database']['prefixe_table'] . "note VALUE (idCompteQuiNote, idCompteNote, laNote)";
+        $stmt= $this->pdo->prepare($sql);
+        $stmt-> execute([
+            'idCompteNote' => $idCompteNote, 
+            'idCompteQuiNote' => $idCompteQuiNote,
+            'laNote' => $laNote,
+        ]);
+    }
+
 }
