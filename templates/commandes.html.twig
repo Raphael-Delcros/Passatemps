@@ -69,7 +69,7 @@
 													
 
 													<div class="">
-														<h2>Nom et prénom du vendeur <!-- METTRE nom et prénom du vendeur--></h2>
+														<h2>{{nom}}{{prenom}} <!-- METTRE nom et prénom du vendeur--></h2>
 
 														<div id="rating" class="mb-3">
 															{% for i in 1..5 %}
@@ -126,15 +126,11 @@
 												<div class="modal-footer">
 													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
 
-													<form action="index.php?controleur=messagerie&methode=envoyer" method="POST" class="input-group">
-														<input type="hidden" name="idDestinataire" value="{{ idCompte }}">
-														<input type="hidden" name="nomDestinataire" value="{{ nom }}">
-														<input type="hidden" name="prenomDestinataire" value="{{ prenom }}">
-														<input type="text" name="message" class="form-control bg-light" placeholder="Écrivez votre message..." required autocomplete="off">
-														<button class="btn btn-primary px-4" type="submit"></button>
+													<form method="POST" action="index.php?controleur=note&methode=insert">
+														<button type="button" class="btn btn-primary">Enregistrer la note</button>
 													</form>
 
-													<button type="button" class="btn btn-primary">Enregistrer la note</button>
+													
 
 												</div>
 												</div>
