@@ -124,7 +124,7 @@
 		<div class="row mt-2">
 			<div class="col-6 mt-2">
 				<label for="photos" class="form-label required">Photos de l'annonce</label>
-				<input type="file" class="form-control shadow-sm {% if erreurs['prixMandatory'] or erreurs['prixNotNumeric'] %} border-danger {% endif %}" name="photos" accept=".png,.jpeg,.jpg" title="Photos de l'annonce" required>
+				<input type="file" class="form-control shadow-sm {% if erreurs['photosMandatory'] %} border-danger {% endif %}" name="photos" accept=".png,.jpeg,.jpg" title="Photos de l'annonce" required>
 				{% if erreurs['photosMandatory'] %}<p class="text-danger small">Il faut au moins une photo</p>{% endif %}
 			</div>
 			
