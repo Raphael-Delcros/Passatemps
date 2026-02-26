@@ -10,7 +10,12 @@
 		<div class="row row-cols-md-2 align-items-center">
 			<div class="col">
 				<div class="card h-100 p-3" style="width: 300px">
-					<img src="{{ annonce.urlPhoto }}" class="card-img-top" h="300" alt="Photo {{ annonce.idAnnonce }}">
+					<div class="row text-start">
+						<a href="index.php?controleur=jeu&methode=afficher&id={{ annonce.idAnnonce }}" class="btn btn-outline-secondary border-2 mb-4" style="width: 100px"> <i class="bi bi-arrow-left"> Retour </i></a>
+					</div>
+					<div class="row">
+						<img src="{{ annonce.urlPhoto }}" class="card-img-top" h="300" alt="Photo {{ annonce.idAnnonce }}">
+					</div>
 				</div>
 			</div>
 
