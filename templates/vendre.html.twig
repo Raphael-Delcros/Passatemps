@@ -6,9 +6,9 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container my-5">
+<div class="container my-5">
 <div class="card shadow-lg border-0 p-3">
-	<form method="POST" action="index.php?controleur=vendre&methode=recap" class="row g-3 position-relative" autocomplete="off" novalidate enctype="multipart/form-data">
+	<form method="POST" action="index.php?controleur=vendre&methode=recap" class="row g-3 position-relative" autocomplete="off" enctype="multipart/form-data">
 		<h1>Vendre</h1>
 		<input type="hidden" name="controleur" value="vendre">
 		<input type="hidden" name="methode" value="confirmerVente">
@@ -23,12 +23,17 @@
 				<div class="position-relative">
 					<input 
 					type="text" 
-					class="form-control shadow-sm" 
+					class="form-control shadow-sm {% if erreurs['titreMandatory'] or erreurs['titreUnderLength'] or erreurs['titreOverLength'] %} border-danger{% endif %}" 
 					name="titre" 
+					minlength = "5"
+					maxlength = "100"
 					placeholder="Nom de l'annonce" 
 					title="Entrez le nom de l'annonce"
 					{ % if donnees.titre is defined %} value="{{ donnees.titre }}" { % endif %}
 					required>
+					{% if erreurs['titreMandatory'] %}<p class="text-danger small">Le titre est obligatoire.</p>{% endif %}
+					{% if erreurs['titreUnderLength'] %}<p class="text-danger small">Le titre est trop court.</p>{% endif %}
+					{% if erreurs['titreOverLength'] %}<p class="text-danger small">Le titre est trop long.</p>{% endif %}
 				</div>
 			</div>
 
@@ -38,7 +43,7 @@
 				<div class="position-relative">
 					<input type="text" 
 					id="jeu" 
-					class="form-control shadow-sm" 
+					class="form-control shadow-sm {% if erreurs['invalidGame'] %} border-danger{% endif %}" 
 					name="jeu" 
 					placeholder="Nom du jeu" 
 					title="Entrez le nom du jeu" 
@@ -49,6 +54,7 @@
 					
 					#}
 					required>
+					{% if erreurs['invalidGame'] %}<p class="text-danger small">Le jeu n'est pas dans notre base de données.</p>{% endif %}
 
 					<ul id="resultats" class="list-group position-absolute w-100" style="z-index:2000; display:none; max-height:300px; overflow:auto; top:100%; left:0;"></ul>
 				</div>
@@ -60,13 +66,19 @@
 			<label for="description" class="form-label required">Description</label>
 			<div class="position-relative">
 				<textarea 
-				class="form-control shadow-sm" 
+				class="form-control shadow-sm {% if erreurs['descriptionMandatory'] or erreurs['descriptionUnderLength'] or erreurs['descriptionOverLength']%} border-danger {% endif %}" 
 				name="description" 
+				minlength = "10"
+				maxlength = "200"
 				placeholder="Description de l'annonce" 
 				title="Description de l'annonce" 
 				spellcheck="true"
 				{# Seul moyen trouvé pour pré-remplir le textarea #}
 				required>{{ donnees.description is defined ? donnees.description : '' }}</textarea> 
+					{% if erreurs['descriptionMandatory'] %}<p class="text-danger small">La description est obligatoire.</p>{% endif %}
+					{% if erreurs['descriptionUnderLength'] %}<p class="text-danger small">La description est trop courte.</p>{% endif %}
+					{% if erreurs['descriptionOverLength'] %}<p class="text-danger small">La description est trop longue.</p>{% endif %}
+
 			</div>
 		</div>
 
@@ -77,12 +89,16 @@
 				<div class="position-relative">
 					<input 
 					type="number" 
-					class="form-control shadow-sm" 
+					class="form-control shadow-sm {% if erreurs['prixMandatory'] or erreurs['prixNotNumeric'] %} border-danger {% endif %}" 
 					name="prix" 
 					placeholder="12.50" 
 					title="Prix de l'annonce" 
 					{ % if donnees.prix is defined %} value="{{ donnees.prix }}" { % endif %}
 					required>
+					{% if erreurs['prixMandatory'] %}<p class="text-danger small">Le prix est obligatoire.</p>{% endif %}
+					{% if erreurs['prixNotNumeric'] %}<p class="text-danger small">Le prix doit être un nombre.</p>{% endif %}
+					
+					
 				</div>
 			</div>
 
@@ -91,7 +107,7 @@
 
 				<label for="etatJeu" class="form-label required">Etat du jeu</label>
 				<div class="position-relative">
-					<select class="form-select shadow-sm" name="etatJeu" title="Etat du jeu" required>
+					<select class="form-select shadow-sm {% if erreurs['etatJeuInvalidValue'] %} border-danger {% endif %}" name="etatJeu" title="Etat du jeu" required>
 						<option selected>Choisir</option>
 						<option>Neuf</option>
 						<option>Très bon état</option>
@@ -99,6 +115,8 @@
 						<option>Abimé</option>
 						<option>Manque des pieces</option>
 					</select>
+					{% if erreurs['etatJeuInvalidValue'] %}<p class="text-danger small">Il faut séléctionner un état.</p>{% endif %}
+					
 				</div>
 			</div>
 		</div>
@@ -107,9 +125,11 @@
 			<div class="col mt-2">
 				<label for="photos" class="form-label required">Photos de l'annonce</label>
 				<input type="file" class="form-label" name="photos" accept=".png,.jpeg,.jpg" title="Photos de l'annonce" required>
+				{% if erreurs['photosMandatory'] %}<p class="text-danger small">Il faut au moins une photo</p>{% endif %}
 			</div>
+			
 			{# Confirmation #}
-			<div class="col align-items-end">
+			<div class="row align-items-end">
 				<div class="d-grid gap-2 d-md-flex justify-content-md-end">
 					<button type="submit" class="btn btn-primary me-md-2">Publier l'annonce</button>
 				</div>
@@ -118,17 +138,8 @@
 
 		{{ message }}
 	</form>
-	{% if erreurs is defined and erreurs|length > 0 %}
-		<div class="alert alert-danger mt-3">
-			<ul class="mb-0">
-				{% for erreur in erreurs %}
-					<li>{{ erreur }}</li>
-				{% endfor %}
-			</ul>
 		</div>
 		</div>
-		</div>
-	{% endif %}
 {% endblock %}
 
 {% block script %}

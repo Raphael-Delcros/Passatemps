@@ -60,7 +60,7 @@ class Validator
         // 1. Vérification de la règle "obligatoire" avant toute autre validation.
         if (isset($regles['obligatoire']) && $regles['obligatoire'] && empty($valeur))
         {
-            $this->messagesErreurs[] = "Le champ $champ est obligatoire.";
+            $this->messagesErreurs[$champ."Mandatory"] = true;
             return false; // Arrêter ici si le champ est obligatoire et vide
         }
 
@@ -78,71 +78,71 @@ class Validator
                 case 'type':
                     if ($parametre === 'string' && !is_string($valeur))
                     {
-                        $this->messagesErreurs[] = "Le champ $champ doit être une chaîne de caractères.";
+                        $this->messagesErreurs[$champ."NotString"] = true;
                         $estValide = false;
                     }
                     elseif ($parametre === 'integer' && !filter_var($valeur, FILTER_VALIDATE_INT))
                     {
-                        $this->messagesErreurs[] = "Le champ $champ doit être un nombre entier.";
+                        $this->messagesErreurs[$champ."NotInt"] = true;
                         $estValide = false;
                     }
                     elseif ($parametre === 'numeric' && !is_numeric($valeur))
                     {
-                        $this->messagesErreurs[] = "Le champ $champ doit être une valeur numérique.";
+                        $this->messagesErreurs[$champ."NotNumeric"] = true;
                         $estValide = false;
                     }
                     break;
                 case 'longueurMin':
                     if (strlen($valeur) < $parametre)
                     {
-                        $this->messagesErreurs[] = "Le champ $champ doit comporter au moins $parametre caractères.";
+                        $this->messagesErreurs[$champ."UnderLength"] = true;
                         $estValide = false;
                     }
                     break;
                 case 'longueurMax':
                     if (strlen($valeur) > $parametre)
                     {
-                        $this->messagesErreurs[] = "Le champ $champ ne doit pas dépasser $parametre caractères.";
+                        $this->messagesErreurs[$champ."OverLength"] = true;
                         $estValide = false;
                     }
                     break;
                 case 'longueurExacte':
                     if (strlen($valeur) !== $parametre)
                     {
-                        $this->messagesErreurs[] = "Le champ $champ doit comporter exactement $parametre caractères.";
+                        $this->messagesErreurs[$champ."IncorrectLength"] = true;
                         $estValide = false;
                     }
                     break;
                 case 'format':
                     if (is_string($parametre) && !preg_match($parametre, $valeur))
                     {
-                        $this->messagesErreurs[] = "Le format du champ $champ est invalide.";
+                        $this->messagesErreurs[$champ."BadFormat"] = true;
                         $estValide = false;
                     }
                     elseif ($parametre === FILTER_VALIDATE_EMAIL && !filter_var($valeur, FILTER_VALIDATE_EMAIL))
                     {
-                        $this->messagesErreurs[] = "L'adresse email est invalide.";
+                        $this->messagesErreurs[$champ."InvalidEmail"] = true;
                         $estValide = false;
                     }
                     break;
                 case 'plageMin':
                     if ($valeur < $parametre)
                     {
-                        $this->messagesErreurs[] = "La valeur de $champ doit être au minimum $parametre.";
+                        $this->messagesErreurs[$champ."UnderValue"] = true;
                         $estValide = false;
                     }
                     break;
                 case 'plageMax':
                     if ($valeur > $parametre)
                     {
-                        $this->messagesErreurs[] = "La valeur de $champ ne doit pas dépasser $parametre.";
+                        $this->messagesErreurs[$champ."OverValue"] = true;
                         $estValide = false;
                     }
                     break;
                 case 'valeurs_acceptables':
                     if (!in_array($valeur, $parametre))
                     {
-                        $this->messagesErreurs[] = "La valeur de $champ n'est pas acceptable.";
+                        $this->messagesErreurs[$champ."InvalidValue"] = true;
                         $estValide = false;
                     }
             }

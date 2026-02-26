@@ -8,7 +8,8 @@
 {% block body %}
 	<form method="POST" action="index.php?controleur=paiement&methode=payer" class="row g-3 position-relative" autocomplete="off" enctype="multipart/form-data">
 		<h1 class="text-center">Acheter votre jeu</h1>
-        <p><b>Adresse de livraison</b>→ paiement → récapituatif</p>
+		<p>
+			<b>Adresse de livraison</b>→ paiement → récapituatif</p>
 		<input type="hidden" name="controleur" value="paiement">
 		<input type="hidden" name="methode" value="afficher">
 		<input type="hidden" name="idAnnonce" value="{{ annonce.idAnnonce }}">
@@ -22,32 +23,38 @@
 				<div class="row">
 					<div class="col">
 						<label for="ville" class="form-label required">Ville</label>
-						<input type="text"
-							class="form-control shadow-sm"
-							name="ville"
-							placeholder="Bordeaux"
-							value="{{ donnees.ville ?? '' }}"
-							required>					
+						<input type="text" class="form-control shadow-sm {% if erreurs['villeMandatory'] or erreurs['villeBadFormat'] %} border-danger {% endif %}" value="{{ donnees.ville ?? '' }}" name="ville" placeholder="Bordeaux" title="Ville de la livraison" required>
+						{% if erreurs['villeMandatory'] %}
+							<p class="text-danger small">La ville est obligatoire.</p>
+						{% endif %}
+						{% if erreurs['villeBadFormat'] %}
+							<p class="text-danger small">La ville n'a pas le bon format.</p>
+						{% endif %}
 					</div>
+
 					<div class="col-2">
 						<label for="codePostal" class="form-label required">Code Postal</label>
-						<input type="text"
-							class="form-control shadow-sm"
-							name="codePostal"
-							placeholder="33000"
-							value="{{ donnees.codePostal ?? '' }}"
-							required>					
+						<input type="text" value="{{ donnees.codePostal ?? '' }}" class="form-control shadow-sm {% if erreurs['codePostalMandatory'] or erreurs['codePostalIncorrectLength'] %} border-danger{% endif %}" name="codePostal" placeholder="33000" title="Code Postal de la livraison" required>
+						{% if erreurs['codePostalMandatory'] %}
+							<p class="text-danger small">Le code postal est obligatoire.</p>
+						{% endif %}
+						{% if erreurs['codeIncorrectLength'] %}
+							<p class="text-danger small">Le code postal doit faire 5 caractères.</p>
+						{% endif %}
 					</div>
 				</div>
 				<div class="row mt-2">
 					<div class="col">
 						<label for="adresse" class="form-label required">Adresse</label>
 						<input type="text"
-							class="form-control shadow-sm"
+							class="form-control shadow-sm {% if erreurs['adresseMandatory'] %} border-danger {% endif %}"
 							name="adresse"
 							placeholder="12 rue de la paix"
 							value="{{ donnees.adresse ?? '' }}"
 							required>					
+						{% if erreurs['adresseMandatory'] %}
+							<p class="text-danger small">L'adresse est obligatoire.</p>
+						{% endif %}
 					</div>
 					<div class="col">
 						<label for="complementAdresse" class="form-label">Complement d'adresse</label>
@@ -69,7 +76,9 @@
 
 			<div class="col-3 bg-light p-3 border border-2 rounded">
 				<h3>{{ jeu.nom}}</h3>
-				<p><strong>Titre de l'annonce :</strong> {{ annonce.titre }}</p>
+				<p>
+					<strong>Titre de l'annonce :</strong>
+					{{ annonce.titre }}</p>
 				<p>
 					<strong>Prix :</strong>
 					{{ annonce.prix }}
@@ -82,16 +91,4 @@
 					{{annonce.description}}</p>
 			</div>
 		</div>
-
-		<div class="row mt-2">
-			<div class="col mt-2">
-				{% if erreurs is defined and erreurs|length > 0 %}
-					<div class="alert alert-danger mt-3">
-						<ul class="mb-0">
-							{% for erreur in erreurs %}
-								<li>{{ erreur }}</li>
-							{% endfor %}
-						</ul>
-					</div>
-				{% endif %}
-			{% endblock %}
+	{% endblock %}

@@ -14,32 +14,74 @@
 						<div class="row">
 							<div class="mb-3 col">
 								<label for="nom" class="form-label required">Nom</label>
-								<input type="text" class="form-control shadow-sm" id="nom" name="nom" placeholder="Entrez votre nom" title="Entrez votre nom" minlength="3" maxlength="50" pattern="{{constantes.regex.texte_espace}}" required>
+								<input type="text" class="form-control shadow-sm {% if erreurs['nomUnderLength'] or erreurs['nomOverLength'] or erreurs['nomMandatory'] %} border-danger{% endif %}" id="nom" name="nom" placeholder="Entrez votre nom" title="Entrez votre nom" minlength="2" maxlength="50" pattern="{{constantes.regex.texte_espace}}" required>
+								{% if erreurs['nomUnderLength'] %}
+									<p class="text-danger small">Le nom est trop court.</p>
+								{% endif %}
+								{% if erreurs['nomOverLength'] %}
+									<p class="text-danger small">Le nom est trop long.</p>
+								{% endif %}
+								{% if erreurs['nomMandatory'] %}
+									<p class="text-danger small">Le nom est obligatoire.</p>
+								{% endif %}
 							</div>
 							<div class="mb-3 col">
 								<label for="prenom" class="form-label required">Prénom</label>
-								<input type="text" class="form-control shadow-sm" id="prenom" name="prenom" placeholder="Entrez votre prénom" title="Entrez votre prénom" minlength="3" maxlength="50" pattern="{{ constantes.regex.texte }}" required>
+								<input type="text" class="form-control shadow-sm {% if erreurs['prenomUnderLength'] or erreurs['prenomOverLength'] or erreurs['prenomMandatory'] %} border-danger{% endif %}" id="prenom" name="prenom" placeholder="Entrez votre prénom" title="Entrez votre prénom" minlength="2" maxlength="50" pattern="{{ constantes.regex.texte }}" required>
+								{% if erreurs['prenomUnderLength'] %}
+									<p class="text-danger small">Le prenom est trop court.</p>
+								{% endif %}
+								{% if erreurs['prenomOverLength'] %}
+									<p class="text-danger small">Le prenom est trop long.</p>
+								{% endif %}
+								{% if erreurs['prenomMandatory'] %}
+									<p class="text-danger small">Le prenom est obligatoire.</p>
+								{% endif %}
 							</div>
 						</div>
 						<div class="mb-3">
 							<label for="email" class="form-label required">Email</label>
-							<input type="email" class="form-control shadow-sm" id="email" name="email" placeholder="Entrez votre email" title="Entrez votre email" minlength="5" maxlength="254" pattern="{{ constantes.regex.email }}" required>
+							<input type="email" class="form-control shadow-sm {% if erreurs['usedEmail'] or erreurs['emailInvalidEmail'] or erreurs['emailMandatory'] %} border-danger{% endif %}" id="email" name="email" placeholder="Entrez votre email" title="Entrez votre email" minlength="5" maxlength="254" pattern="{{ constantes.regex.email }}" required>
+							{% if erreurs['usedEmail'] %}
+								<p class="text-danger small">L'email est déjà utilisé.</p>
+							{% endif %}
+							{% if erreurs['emailInvalidEmail'] %}
+								<p class="text-danger small">Email invalide.</p>
+							{% endif %}
+							{% if erreurs['emailMandatory'] %}
+								<p class="text-danger small">L'email est obligatoire.</p>
+							{% endif %}
 						</div>
 						<div class="mb-3">
 							<label for="password" class="form-label required">Mot de passe</label>
-							<input type="password" class="form-control shadow-sm" id="password" name="password" title="8 caractères, 1 caractère spécial, 1 majuscule et un chiffre minimum" placeholder="Veuillez mettre votre mot de passe." minlength="8" maxlength="32" pattern={{ constantes.regex.mot_de_passe }} required>
+							<input type="password" class="form-control shadow-sm {% if erreurs['passwordBadFormat'] or erreurs['passwordMandatory'] %}border-danger{% endif %}" id="password" name="password" title="8 caractères, 1 caractère spécial, 1 majuscule et un chiffre minimum" placeholder="Veuillez mettre votre mot de passe." minlength="8" maxlength="32" pattern={{ constantes.regex.mot_de_passe }} required>
+							{% if erreurs['passwordBadFormat'] %}
+								<p class="text-danger small">Le mot de passe trop faible.</p>
+							{% endif %}
+							{% if erreurs['passwordMandatory'] %}
+								<p class="text-danger small">Le mot de passe est obligatoire.</p>
+							{% endif %}
+
 						</div>
 
 						<div class="mb-3">
 							<label for="passwordMatch" class="form-label required">Confirmer le mot de passe</label>
-							<input type="password" class="form-control shadow-sm" id="passwordMatch" name="passwordMatch" placeholder="Entrez confirmer mot de passe" title="Veuillez confirmer votre mot de passe." pattern={{ constantes.regex.mot_de_passe }} required>
+							<input type="password" class="form-control shadow-sm {% if erreurs['passNotMatching'] %}border-danger{% endif %}" id="passwordMatch" name="passwordMatch" placeholder="Entrez confirmer mot de passe" title="Veuillez confirmer votre mot de passe." pattern={{ constantes.regex.mot_de_passe }} required>
+							{% if erreurs['passNotMatching'] %}
+								<p class="text-danger small">La vérification n'est pas le même que le mot de passe.</p>
+							{% endif %}
+
 						</div>
 
 						<div class="mb-3 form-check">
-							<input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+							<input type="checkbox" class="form-check-input {% if erreurs['termsMandatory'] %}border-danger{% endif %}" id="terms" name="terms" required>
 							<label class="form-check-label required" for="terms">J'accepte les
 								<a href="legal.php#conditions-utilisation">termes et conditions</a>
 								de Passatemps</label>
+							{% if erreurs['termsMandatory'] %}
+								<p class="text-danger small">Vous n'avez pas accépté les termes et conditions.</p>
+							{% endif %}
+
 						</div>
 
 						<div class="mb-3 form-check">
@@ -52,15 +94,6 @@
 							<button type="submit" class="btn btn-primary">S'inscrire</button>
 						</div>
 					</form>
-					{% if erreurs is defined and erreurs|length > 0 %}
-						<div class="alert alert-danger mt-3">
-							<ul class="mb-0">
-								{% for erreur in erreurs %}
-									<li>{{ erreur }}</li>
-								{% endfor %}
-							</ul>
-						</div>
-					{% endif %}
 					<a class="text-center mt-3" href="index.php?controleur=connexion&methode=connexion">Se connecter</a>
 				</div>
 			</div>

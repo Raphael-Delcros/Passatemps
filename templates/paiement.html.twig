@@ -6,7 +6,7 @@
 
 {% block body %}
 
-	<form method="POST" action="index.php?controleur=paiement&methode=afficherResume">
+	<form method="POST" novalidate action="index.php?controleur=paiement&methode=afficherResume">
 		<input type="hidden" name="idAnnonce" value="{{ annonce.idAnnonce }}">
 		<input type="hidden" name="ville" value="{{ ville }}">
 		<input type="hidden" name="adresse" value="{{ adresse }}">
@@ -27,36 +27,46 @@
 				</div>
 				<div class="mb-4">
 					<label class="form-label required">Numéro de la carte</label>
-					<input type="text" name="numCarte"
-						class="form-control shadow-sm"
-						placeholder="1234 1234 1234 1234"
-						required>
+					<input type="text" name="numCarte" maxlength="16" minlength="16" class="form-control shadow-sm {% if erreurs['numCarteMandatory'] or erreurs['numCarteNotInt'] or erreurs['numCarteIncorrectLength'] %} border-danger{% endif %}" placeholder="1234 1234 1234 1234" required>
+					{% if erreurs['numCarteMandatory'] %}
+						<p class="text-danger small">Le numéro de carte est obligatoire.</p>
+					{% endif %}
+					{% if erreurs['numCarteNotInt'] or erreurs['numCarteIncorrectLength']%}
+						<p class="text-danger small">Le numéro de carte est invalide.</p>
+					{% endif %}
 				</div>
-
 				<div class="row mb-4">
 					<div class="col-md-6">
 						<label class="form-label required">Date d'expiration</label>
-						<input type="text" name="dateExpiration"
-							class="form-control shadow-sm"
-							placeholder="MM/YY"
-							required>				
+						<input type="text" name="dateExpiration" maxlength="5" minlength="5" class="form-control shadow-sm {% if erreurs['dateExpirationMandatory'] or erreurs['dateExpirationIncorrectLength'] %} border-danger {% endif %}" placeholder="MM/YY" required>
+						{% if erreurs['dateExpirationMandatory'] %}
+							<p class="text-danger small">La date d'expiration est obligatoire.</p>
+						{% endif %}
+						{% if erreurs['dateExpirationIncorrectLength']%}
+							<p class="text-danger small">La date d'expiration est invalide.</p>
+						{% endif %}
 					</div>
 					<div class="col-md-6">
 						<label class="form-label required">Code de Sécurité</label>
-						<input type="text" name="codeSecurite"
-							class="form-control shadow-sm"
-							placeholder="CVC"
-							required>					
-	   				</div>
+						<input type="text" name="codeSecurite" maxlength="3" minlength="3" class="form-control shadow-sm {% if erreurs['codeSecuriteMandatory'] or erreurs['codeSecuriteIncorrectLength'] %} border-danger {% endif %}}" placeholder="CVC" required>
+						{% if erreurs['dateExpirationMandatory'] %}
+							<p class="text-danger small">Le code de sécurité est obligatoire.</p>
+						{% endif %}
+						{% if erreurs['dateExpirationIncorrectLength']%}
+							<p class="text-danger small">La code de sécurité est invalide.</p>
+						{% endif %}
+					</div>
 				</div>
 
 				<div class="mb-4">
 					<label class="form-label required">Nom sur la carte</label>
-					<input type="text" name="nomCarte"
-						class="form-control shadow-sm"
-						placeholder="Votre nom"
-						value="{{ donnees.nomCarte ?? '' }}"
-						required>				
+					<input type="text" name="nomCarte" class="form-control shadow-sm {% if erreurs['nomCarteMandatory'] or erreurs['nomCarteNotString'] %} border-danger {% endif %}}" placeholder="Votre nom" required>
+					{% if erreurs['nomCarteMandatory'] %}
+						<p class="text-danger small">Le nom sur la carte est obligatoire.</p>
+					{% endif %}
+					{% if erreurs['nomCarteNotString']%}
+						<p class="text-danger small">Le nom sur la carte est invalide.</p>
+					{% endif %}
 				</div>
 
 				<div class="row">
@@ -120,7 +130,7 @@
 						</span>
 						{{adresse}}
 					</div>
-						<br>
+					<br>
 					{% if complementAdresse %}
 						<div class="d-flex justify-content-between">
 							<span>
@@ -133,16 +143,4 @@
 			</div>
 		</div>
 	</form>
-
-	<div class="row mt-2">
-		<div class="col mt-2">
-			{% if erreurs is defined and erreurs|length > 0 %}
-				<div class="alert alert-danger mt-3">
-					<ul class="mb-0">
-						{% for erreur in erreurs %}
-							<li>{{ erreur }}</li>
-						{% endfor %}
-					</ul>
-				</div>
-			{% endif %}
 {% endblock %}
