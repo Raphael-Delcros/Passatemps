@@ -34,20 +34,43 @@
 					<h5 class="fw-bold">
 						<i class="bi bi-person me-2"></i>Personnel</h5>
 					<p class="small text-muted">Ces informations seront visibles sur votre profil public.</p>
+					<p class="small text-muted">Laisser vide si vous ne souhaitez pas les modifier.</p>
 				</div>
 				<div class="col-md-8">
 					<div class="row g-3">
 						<div class="col-md-6">
 							<label class="form-label fw-bold small">Prénom</label>
-							<input type="text" name="prenom" class="form-control border-2" value="{{ compte.prenom }}">
+							<input type="text" name="prenom" class="form-control shadow-sm {% if erreurs['prenomUnderLength'] or erreurs['prenomNotString'] or erreurs['prenomOverLength'] or erreurs['prenomBadFormat']  %} border-danger {% endif %}" value="{{ compte.prenom }}">
+							{% if erreurs %}<p class="text-danger small">
+								{% if erreurs['prenomUnderLength'] %}Le prénom est trop court.<br>{% endif %}
+								{% if erreurs['prenomNotString'] %}Le prénom n'est pas une chaîne de caractères valide.<br>{% endif %}
+								{% if erreurs['prenomOverLength'] %}Le prénom est trop long.<br>{% endif %}
+								{% if erreurs['prenomBadFormat'] %}Le prénom ne respecte pas le format requis.<br>{% endif %}
+						    </p>
+							{% endif %}
 						</div>
 						<div class="col-md-6">
 							<label class="form-label fw-bold small">Nom</label>
-							<input type="text" name="nom" class="form-control border-2" value="{{ compte.nom }}">
+							<input type="text" name="nom" class="form-control shadow-sm {% if erreurs['nomUnderLength'] or erreurs['nomNotString'] or erreurs['nomOverLength'] or erreurs['nomBadFormat']  %} border-danger {% endif %}" value="{{ compte.nom }}">
+							{% if erreurs %}<p class="text-danger small">
+								{% if erreurs['nomUnderLength'] %}Le nom est trop court.<br>{% endif %}
+								{% if erreurs['nomNotString'] %}Le nom n'est pas une chaîne de caractères valide.<br>{% endif %}
+								{% if erreurs['nomOverLength'] %}Le nom est trop long.<br>{% endif %}
+								{% if erreurs['nomBadFormat'] %}Le nom ne respecte pas le format requis.<br>{% endif %}
+						    </p>
+							{% endif %}
 						</div>
 						<div class="col-12">
 							<label class="form-label fw-bold small">Email</label>
-							<input type="email" name="email" class="form-control border-2" value="{{ compte.email }}">
+							<input type="email" name="email" class="form-control shadow-sm {% if erreurs['emailNotString'] or erreurs['emailUnderLength'] or erreurs['emailOverLength'] or erreurs['emailInvalidEmail'] or erreurs['usedEmail'] %} border-danger {% endif %}" value="{{ compte.email }}">
+							{% if erreurs %}<p class="text-danger small">
+								{% if erreurs['emailNotString'] %}L'email n'est pas une chaîne de caractères valide.<br>{% endif %}
+								{% if erreurs['emailUnderLength'] %}L'email est trop court.<br>{% endif %}
+								{% if erreurs['emailOverLength'] %}L'email est trop long.<br>{% endif %}
+								{% if erreurs['emailInvalidEmail'] %}L'email n'est pas valide.<br>{% endif %}
+								{% if erreurs['usedEmail'] %}Cet email est déjà utilisé.<br>{% endif %}
+						    </p>
+							{% endif %}
 						</div>
 					</div>
 				</div>
@@ -56,18 +79,6 @@
 				<button type="submit" class="btn btn-primary border-2 px-4">Enregistrer les modifications</button>
 			</div>
 		</form>
-
-		{% if modifPerso %}
-			{% if not erreur %}
-				<div class="alert alert-success mt-3">Mot de passe mis à jour avec succès.</div>
-			{% else %}
-				{% for message in erreur %}
-					<div class="alert alert-danger mt-3">
-						<p>{{ message }}</p>
-					</div>
-				{% endfor %}
-			{% endif %}
-		{% endif %}
 
 		<div class="mt-5 pt-4 border-top">
 			<form method="POST" action="index.php?controleur=parametre&methode=changerMdp" class="row mb-4">
@@ -79,18 +90,32 @@
 
 					<div class="col ">
 						<label class="form-label fw-bold small">Entrez votre mot de passe actuel</label>
-						<input type="password" name="mot_de_passe_actuel" class="form-control border-2">
+						<input type="password" name="currentPassword" class="form-control shadow-sm {% if erreurs['currentPasswordMandatory'] or erreurs['currentPasswordInvalid'] %} border-danger {% endif %}" required>
+						{% if erreurs %}<p class="text-danger small">
+							{% if erreurs['currentPasswordInvalid'] %}Le mot de passe actuel est incorrect.<br>{% endif %}
+							{% if erreurs['currentPasswordMandatory'] %}Le mot de passe actuel est obligatoire.<br>{% endif %}
+					    </p>
+						{% endif %}
 					</div>
 					<div class="row">
 						<div class="col">
 							<div class="row g-3">
 								<div class="col-md-6">
 									<label class="form-label fw-bold small">Nouveau mot de passe</label>
-									<input type="password" name="nouveau_mot_de_passe" class="form-control border-2" title="8 caractères, 1 caractère spécial, 1 majuscule et un chiffre minimum" pattern="{{ constantes.regex.mot_de_passe }}">
+									<input type="password" name="newPassword" class="form-control shadow-sm {% if erreurs['newPasswordMandatory'] or erreurs['newPasswordBadFormat'] or erreurs['newPasswordUnderLength'] or erreurs['newPasswordOverLength'] or erreurs['newPasswordNotString'] %} border-danger {% endif %}" title="8 caractères, 1 caractère spécial, 1 majuscule et un chiffre minimum" pattern="{{ constantes.regex.mot_de_passe }}">
+									{% if erreurs %}<p class="text-danger small">
+										{% if erreurs['newPasswordMandatory'] %}Le nouveau mot de passe est obligatoire.<br>{% endif %}
+										{% if erreurs['newPasswordBadFormat'] %}Le nouveau mot de passe ne respecte pas le format requis.<br>{% endif %}
+										{% if erreurs['newPasswordUnderLength'] %}Le nouveau mot de passe est trop court.<br>{% endif %}
+										{% if erreurs['newPasswordOverLength'] %}Le nouveau mot de passe est trop long.<br>{% endif %}
+										{% if erreurs['newPasswordNotString'] %}Le nouveau mot de passe n'est pas une chaîne de caractères valide.<br>{% endif %}
+								    </p>
+									{% endif %}
 								</div>
 								<div class="col">
 									<label class="form-label fw-bold small">Confirmation</label>
-									<input type="password" name="confirmation" class="form-control border-2">
+									<input type="password" name="confirmation" class="form-control shadow-sm {% if erreurs['confirmationMandatory'] or erreurs['confirmationBadFormat'] or erreurs['confirmationUnderLength'] or erreurs['confirmationOverLength'] or erreurs['confirmationNotString'] or erreurs['confirmationMismatch'] %} border-danger {% endif %}" required>
+									{% if erreurs['confirmationMismatch'] %}<p class="text-danger small">Le nouveau mot de passe et la confirmation ne correspondent pas.</p>{% endif %}
 								</div>
 							</div>
 						</div>
@@ -102,19 +127,6 @@
 					<button type="submit" class="btn btn-primary border-2 px-4">Changer de mot de passe</button>
 				</div>
 
-				{% if modifMDP %}
-					{% if not erreur %}
-						<div class="alert alert-success mt-3">Mot de passe mis à jour avec succès.</div>
-					{% else %}
-						<div class="alert alert-danger mt-3">
-							<ul class="mb-0">
-								{% for message in erreur %}
-									<li>{{ message }}</li>
-								{% endfor %}
-							</ul>
-						</div>
-					{% endif %}
-				{% endif %}
 			</form>
 		</div>
 
