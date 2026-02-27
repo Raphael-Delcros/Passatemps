@@ -53,14 +53,14 @@ class ControllerCompte extends Controller
             ],
             'nom' => [
                 'obligatoire' => true,
-                'longueurMin' => 3,
+                'longueurMin' => 2,
                 'longueurMax' => 50,
                 'type' => 'string',
                 'format' => $config['regex']['texte_espace']
             ],
             'prenom' => [
                 'obligatoire' => true,
-                'longueurMin' => 3,
+                'longueurMin' => 2,
                 'longueurMax' => 50,
                 'type' => 'string',
                 'format' => $config['regex']['texte']
@@ -178,11 +178,11 @@ class ControllerCompte extends Controller
 
         // Gérer le cas où l'email existe déjà
         if ($dao->findEmail($email)) {
-            $messagesErreurs[] = "Cet email est déjà utilisé. Veuillez en choisir un autre.";
+            $messagesErreurs["usedEmail"] = true;
         }
         // Gérer le cas où les mots de passe ne correspondent pas
         if ($_POST['password'] != $_POST['passwordMatch']) {
-            $messagesErreurs[] = "Le mot de passe n'est pas le même dans les deux champs !";
+            $messagesErreurs["passNotMatching"] = true;
         }
 
         if ($donneesValides && empty($messagesErreurs)) {
