@@ -46,12 +46,16 @@
 											<a href="index.php?controleur=livraison&methode=afficher&id={{ commande.idLivraison }}" class="btn btn-primary btn-sm">Voir Détails</a>
 										</td>
 
+										
+
+
 
 										{% if commande.status == livré %} <!-- ATTENTION incompréhension car ça fonctionne pas ma commade n'est pas livrée mais le bonton fonctionne -->
 											<td class="text-nowrap">
 
 											<!-- Button No -->
-											<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+											
+											<button href="index.php?controleur=livraison&methode=afficher&id={{ commande.idLivraison }}" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
 											Noter
 											</button>
 
@@ -77,8 +81,6 @@
 																data-value="{{ i }}"></i>
 															{% endfor %}
 														</div>
-
-														<input type="hidden" name="rating" id="ratingValue">
 
 														<!-- JS pour la notation avec étoiles-->
 

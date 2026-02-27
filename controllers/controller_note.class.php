@@ -62,4 +62,10 @@ class controllerNote extends Controller {
         ]);
     }
 
+    public function insertionDeLaNote(){
+        $idCompteNote = isset($_GET['id']) ? intval($_GET['id']) : null;
+        $dao = new NoteDao($this->getPdo());
+        $note = $dao->findNoteurs($idCompteNote);
+    }
+
 }
