@@ -83,9 +83,10 @@ class ControllerJeu extends Controller
         $dao = new JeuDao($this->getPdo());
         $annonceDao = new AnnonceDao($this->getPdo());
         $jeux = $dao->findAllAssoc();
+        $top10Annonces = $dao->findTop10ByAnnonces();
+        $top10Categories = $dao->findTop10ByCategories();
 
         // Génération automatique des vignettes dans images/vignette/
-        $imagesDir = Config::get()['application']['game_image_path'];
         $vignetteDir = Config::get()['application']['thumbnail_image_path'];
 
         if (!is_dir($vignetteDir)) {
@@ -99,7 +100,7 @@ class ControllerJeu extends Controller
 
             $filename = basename($jeu['url']);
             $jeu['nbAnnonces'] = $annonceDao->countAnnonceByJeu($jeu['idJeu']);
-            
+
             $srcPath = Config::get()['application']['game_image_path'] . $filename;
             $destPath = Config::get()['application']['thumbnail_image_path'] . $filename;
 
@@ -113,13 +114,17 @@ class ControllerJeu extends Controller
                 $this->generateThumbnail($srcPath, $destPath, 300, 200);
             }
         }
+
         $categorieDao = new CategorieDao($this->getPdo());
         $categories = $categorieDao->findAllAssoc();
 
-        $template = $this->getTwig()->load('jeux.html.twig');
+        $template = $this->getTwig()->load('accueil.html.twig');
         echo $template->render([
-            'jeux' => $jeux,
-            'categories' => $categories
+            'jeux'           => $jeux,
+            'categories'     => $categories,
+            'top10Annonces'  => $top10Annonces,
+            'top10Categories' => $top10Categories,
+            // ... tes autres variables existantes (filtresActifs, nbResultats)
         ]);
     }
     /**
