@@ -1,0 +1,289 @@
+{% extends 'base_template.html.twig' %}
+{% block title %}
+	{{ constantes.application.website_name }}
+	- Jeux disponibles
+{% endblock %}
+
+{% block body %}
+
+	<div class="py-5 mb-5 text-center bg-light rounded-4 shadow-sm border border-white position-relative overflow-hidden">
+		<div class="position-absolute top-0 start-0 w-100 h-100 opacity-10" style="background-image: url('https://www.transparenttextures.com/patterns/cubes.png');"></div>
+		<div class="container py-4 position-relative">
+			<h1 class="display-4 fw-bold text-dark mb-3">Donnez une seconde vie à vos jeux</h1>
+			<p class="lead text-muted mb-4 mx-auto" style="max-width: 600px;">
+				La site préférée des passionnés de jeux de société. Achetez, vendez et complétez votre collection au meilleur prix.
+			</p>
+			<div class="d-flex justify-content-center gap-3">
+				<a href="#catalogue" class="btn btn-primary btn-lg px-4 rounded-pill">Explorer le catalogue</a>
+				<a href="index.php?controleur=vendre&methode=creer" class="btn btn-outline-primary btn-lg px-4 rounded-pill">Vendre un jeu</a>
+			</div>
+		</div>
+	</div>
+
+	{#  SECTION DES CARROUSSEL #}
+	<div class="container px-0">
+		<div
+			class="row g-4 mb-5">
+			{# TOP ANNONCES #}
+			{% if top10Annonces is defined and top10Annonces is not empty %}
+				<div class="col-12">
+					<div class="d-flex align-items-center justify-content-between mb-3 px-2">
+						<h2 class="h5 fw-bold mb-0 d-flex align-items-center gap-2">
+							Les jeux les plus vendus
+						</h2>
+					</div>
+					<div class="drag-scroll d-flex gap-3 pb-3 px-2" style="overflow-x: auto; scrollbar-width: none;">
+						{% for jeu in top10Annonces %}
+							<div class="top-card card shadow-sm flex-shrink-0 border-0">
+								<div class="position-relative">
+									<span class="badge bg-light text-dark border p-2 m-2">#{{ loop.index }}</span>
+									<div class="p-3 bg-white text-center rounded-top" style="height: 120px;" ondragstart="return false;">
+										<img src="{{ constantes.application.thumbnail_image_path }}{{ jeu.url|default('default_game.png') }}" class="img-fluid h-100 object-fit-contain" alt="{{ jeu.nom }}">
+									</div>
+								</div>
+								<a href="index.php?controleur=Jeu&methode=afficher&id={{ jeu.idJeu }}" class="card-body p-2 text-center bg-light rounded-bottom">
+									<p class="small fw-bold mb-0 text-truncate">{{ jeu.nom }}</p>
+									<span class="badge text-primary p-0" style="font-size: 0.75rem;">{{ jeu.nbAnnonces }}
+										annonces</span>
+								</a>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			{% endif %}
+
+			{# TOP CATEGORIES #}
+			{% if top10Categories is defined and top10Categories is not empty %}
+				<div class="col-12">
+					<div class="d-flex align-items-center justify-content-between mb-3 px-2">
+						<h2 class="h5 fw-bold mb-0 d-flex align-items-center gap-2">
+							Les jeux aux catégories les plus populaires
+						</h2>
+					</div>
+					<div class="drag-scroll d-flex gap-3 pb-3 px-2" style="overflow-x: auto; scrollbar-width: none;">
+						{% for categorie in top10Categories %}
+							<div class="top-card card shadow-sm flex-shrink-0 border-0">
+								<div class="position-relative">
+									<span class="badge bg-light text-dark border p-2 m-2">#{{ loop.index }}</span>
+									<div class="p-3 bg-white text-center rounded-top" style="height: 120px;" ondragstart="return false;">
+										<img src="{{ constantes.application.thumbnail_image_path }}{{ categorie.url|default('default_game.png') }}" class="img-fluid h-100 object-fit-contain" alt="{{ categorie.nom }}">
+									</div>
+								</div>
+								<a href="index.php?controleur=Jeu&methode=afficher&id={{ categorie.idJeu }}" class="card-body p-2 text-center bg-light rounded-bottom">
+									<p class="small fw-bold mb-0 text-truncate">{{ categorie.nom }}</p>
+									<span class="badge text-primary p-0" style="font-size: 0.75rem;">{{ categorie.nbAnnonces }}
+										annonces</span>
+								</a>
+							</div>
+						{% endfor %}
+					</div>
+
+				</div>
+			{% endif %}
+		</div>
+	</div>
+
+	{# ===== CATALOGUE + FILTRES ===== #}
+	<div id="catalogue" class="pt-4">
+		<div class="d-flex align-items-center justify-content-between mb-4">
+			<h2 class="h4 fw-bold mb-0">Catalogue complet</h2>
+		</div>
+
+		<div class="card mb-4 border-0 shadow-sm">
+			<div class="card-header bg-white">
+				<button class="btn btn-link w-100 text-start text-decoration-none d-flex justify-content-between align-items-center p-2 text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#filtresAvances" aria-expanded="false" aria-controls="filtresAvances">
+					<span class="fw-semibold d-flex align-items-center gap-2">
+						<i class="bi bi-funnel-fill text-primary"></i>
+						Filtres avancés
+					</span>
+					<i class="bi bi-chevron-right arrow-icon text-muted"></i>
+				</button>
+			</div>
+			<div id="filtresAvances" class="collapse">
+				<div class="card-body pt-2">
+					<form method="get" id="filtre-form">
+						<input type="hidden" name="controleur" value="jeu">
+						<input type="hidden" name="methode" value="filtrer">
+
+						<div class="row g-3">
+
+							<div class="col-md-6">
+								<label class="form-label fw-semibold">Catégories</label>
+								<div class="form-check mb-2">
+									<input class="form-check-input" type="checkbox" name="categoriesStrictes" value="1" id="categoriesStrictes" {% if filtresActifs.categoriesStrictes == '1' %} checked {% endif %}>
+									<label class="form-check-label" for="categoriesStrictes">
+										<small class="text-muted">Toutes les catégories sélectionnées obligatoires</small>
+									</label>
+								</div>
+								<div class="border rounded p-3" style="max-height: 180px; overflow-y: auto;">
+									{% for categorie in categories %}
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" name="categories[]" value="{{ categorie.nom }}" id="cat_{{ categorie.idCategorie }}" {% if categorie.nom in filtresActifs.categories %} checked {% endif %}>
+											<label class="form-check-label small" for="cat_{{ categorie.idCategorie }}">
+												{{ categorie.nom }}
+											</label>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<label class="form-label fw-semibold">Nombre de joueurs</label>
+								<input type="number" name="nbJoueurs" class="form-control mb-3" placeholder="Ex : 4" value="{{ filtresActifs.nbJoueurs }}" min="1" max="100">
+
+								<label class="form-label fw-semibold">Durée de partie (min)</label>
+								<div class="row g-2 mb-3">
+									<div class="col">
+										<input type="number" name="dureeMin" class="form-control" placeholder="Min" value="{{ filtresActifs.dureeMin }}" min="1" max="1440">
+									</div>
+									<div class="col">
+										<input type="number" name="dureeMax" class="form-control" placeholder="Max" value="{{ filtresActifs.dureeMax }}" min="1" max="1440">
+									</div>
+								</div>
+
+								<label class="form-label fw-semibold">Nom du jeu</label>
+								<input type="text" name="nom" class="form-control mb-3" placeholder="Rechercher un jeu..." value="{{ filtresActifs.nom }}">
+
+								<label class="form-label fw-semibold">Type</label>
+								<select name="estExtension" class="form-select">
+									<option value="">-- Tous --</option>
+									<option value="0" {% if filtresActifs.estExtension == '0' %} selected {% endif %}>Jeux de base</option>
+									<option value="1" {% if filtresActifs.estExtension == '1' %} selected {% endif %}>Extensions</option>
+								</select>
+							</div>
+
+							<div class="col-md-6">
+								<label class="form-label fw-semibold">Date de sortie</label>
+								<div class="row g-2">
+									<div class="col">
+										<input type="date" name="dateAvant" class="form-control" value="{{ filtresActifs.dateAvant }}">
+										<small class="text-muted">Avant</small>
+									</div>
+									<div class="col">
+										<input type="date" name="dateApres" class="form-control" value="{{ filtresActifs.dateApres }}">
+										<small class="text-muted">Après</small>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<label class="form-label fw-semibold">Extensions disponibles</label>
+								<select name="aExtensions" class="form-select">
+									<option value="">-- Peu importe --</option>
+									<option value="1" {% if filtresActifs.aExtensions == '1' %} selected {% endif %}>Avec extensions</option>
+									<option value="0" {% if filtresActifs.aExtensions == '0' %} selected {% endif %}>Sans extensions</option>
+								</select>
+							</div>
+
+						</div>
+
+						<div class="mt-4 d-flex gap-2 justify-content-between">
+							<a href="index.php?controleur=jeu&methode=lister" class="btn btn-outline-secondary">
+								Réinitialiser
+							</a>
+							<button type="submit" class="btn btn-primary">
+								<i class="bi bi-search me-1"></i>
+								Rechercher
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		{% if nbResultats is defined %}
+			<p class="text-muted mb-3 small">{{ nbResultats }}
+				jeu(x) trouvé(s)</p>
+		{% endif %}
+
+		{% if jeux is empty %}
+			<div class="text-center py-5 text-muted">
+				<i class="bi bi-search fs-1 d-block mb-3 opacity-25"></i>
+				Aucun jeu ne correspond à vos critères.
+			</div>
+		{% else %}
+			<div class="row g-4">
+				{% for jeu in jeux %}
+					<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+						<div class="card h-100 shadow-sm border-0 d-flex flex-column">
+							{% if jeu.url is defined and jeu.url %}
+								<div class="pt-3 px-3 d-flex justify-content-center" style="height:160px; background:#f8f9fa;">
+									<img src="{{ constantes.application.thumbnail_image_path }}{{ jeu.url }}" class="img-fluid" style="object-fit:contain; max-height:100%;" alt="{{ jeu.nom }}">
+								</div>
+							{% endif %}
+							<div class="card-body d-flex flex-column justify-content-between">
+								<div>
+									<h5 class="card-title text-center fw-bold mb-2">{{ jeu.nom }}</h5>
+									<div class="text-center">
+										<p class="card-text text-muted small mb-1">
+											<i class="bi bi-people me-1"></i>
+											{{ jeu.nbJoueursMin }}
+											à
+											{{ jeu.nbJoueursMax }}
+											joueurs
+										</p>
+										{% if jeu.dureePartie %}
+											<p class="card-text text-muted small mb-1">
+												<i class="bi bi-clock me-1"></i>
+												{{ jeu.dureePartie }}
+												min
+											</p>
+										{% endif %}
+										{% if jeu.idJeuPrincipal %}
+											<span class="badge bg-info mb-1">Extension</span>
+										{% endif %}
+										<p class="card-text text-muted small mb-0">
+											{% if jeu.nbAnnonces > 1 %}
+												{{ jeu.nbAnnonces }}
+												annonces
+											{% elseif jeu.nbAnnonces == 1 %}
+												1 annonce
+											{% else %}
+												Aucune annonce
+											{% endif %}
+										</p>
+									</div>
+								</div>
+								<a href="index.php?controleur=Jeu&methode=afficher&id={{ jeu.idJeu }}" class="btn btn-primary w-100 mt-3">
+									Voir les annonces
+								</a>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+		{# ===== DRAG TO SCROLL ===== #}
+		<script>
+			document.querySelectorAll('.drag-scroll').forEach(slider => {
+let isDown = false,
+startX,
+scrollLeft;
+
+slider.addEventListener('mousedown', e => {
+isDown = true;
+slider.style.cursor = 'grabbing';
+startX = e.pageX - slider.offsetLeft;
+scrollLeft = slider.scrollLeft;
+});
+slider.addEventListener('mouseleave', () => {
+isDown = false;
+slider.style.cursor = 'grab';
+});
+slider.addEventListener('mouseup', () => {
+isDown = false;
+slider.style.cursor = 'grab';
+});
+slider.addEventListener('mousemove', e => {
+if (! isDown) 
+return;
+
+e.preventDefault();
+const x = e.pageX - slider.offsetLeft;
+slider.scrollLeft = scrollLeft - (x - startX) * 1.5;
+});
+});
+		</script>
+
+	{% endblock %}
