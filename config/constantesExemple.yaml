@@ -5,6 +5,8 @@ database:
     user:
     password:
     prefixe_table:
+    backup_path:
+    mysqldump_path: # Lien vers mySQLdump.
 
 # Configuration de l'application
 application:
