@@ -1,12 +1,12 @@
 {% extends 'base_template.html.twig' %}
 
-{% block title %}Administration - {{ constantes.application.website_name }}{% endblock %}
+{% block title %}Modération - {{ constantes.application.website_name }}{% endblock %}
 
 {% block body %}
 <div class="container mt-5">
     <div class="row mb-4">
         <div class="col">
-            <h1 class="border-bottom pb-2">Tableau de Bord Administrateur</h1>
+            <h1 class="border-bottom pb-2">Tableau de Bord {% if role == 'moderateur' %}Modérateur {% else %}Administrateur{% endif %}</h1>
             <p class="text-muted">Bienvenue, {{prenom}}. Que souhaitez-vous gérer aujourd'hui ?</p>
         </div>
     </div>

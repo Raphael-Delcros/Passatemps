@@ -43,8 +43,8 @@
 									<a href="index.php?controleur=admin&methode=formulaireModifCompte&id={{ c.idCompte }}" class="btn btn-sm btn-primary">
 										<i class="bi bi-pencil-square icone-btn"></i>
 									</a>
-									<a href="index.php?controleur=admin&methode=supprimerCompte&id={{ c.idCompte }}" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer le compte de {{ c.prenom }} ?')">
-										<i class="bi bi-trash icone-btn"></i>
+									{% if role == 'moderateur' and c.role == 'utilisateur' %}<a href="index.php?controleur=admin&methode=supprimerCompte&id={{ c.idCompte }}" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer le compte de {{ c.prenom }} ?')"><i class="bi bi-trash icone-btn"></i>{% endif %}
+									{% if role == 'administrateur' %}<a href="index.php?controleur=admin&methode=supprimerCompte&id={{ c.idCompte }}" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer le compte de {{ c.prenom }} ?')"><i class="bi bi-trash icone-btn"></i>{% endif %}
 									</a>
 								</td>
 							</tr>

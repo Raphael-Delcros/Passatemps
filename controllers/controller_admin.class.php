@@ -20,7 +20,7 @@ class ControllerAdmin extends Controller
         }
 
         // Vérification du rôle
-        if ($_SESSION['role'] !== 'administrateur') {
+        if ($_SESSION['role'] === 'utilisateur' ) {
             header('Location: index.php');
             exit;
         }
@@ -46,7 +46,8 @@ class ControllerAdmin extends Controller
                 'prenom'        => $_SESSION['prenom'],
                 'totalGames'    => $totalGames,    
                 'totalAnnonces' => $totalAnnonces, 
-                'totalUsers'    => $totalUsers     
+                'totalUsers'    => $totalUsers,
+                'role'          => $_SESSION['role']
             ]
         );
     }
@@ -223,7 +224,8 @@ class ControllerAdmin extends Controller
         $comptes = $dao->findAllAssoc();
 
         echo $this->getTwig()->render('admin_liste_comptes.html.twig', [
-            'comptes' => $comptes
+            'comptes' => $comptes,
+            'role'    => $_SESSION['role']
         ]);
     }
 
@@ -234,6 +236,8 @@ class ControllerAdmin extends Controller
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
         $dao = new CompteDao($this->getPdo());
         $compte = $dao->findAssoc($id);
+        
+        
 
         echo $this->getTwig()->render('admin_form_compte.html.twig', [
             'compte' => $compte
