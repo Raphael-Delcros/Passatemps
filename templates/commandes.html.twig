@@ -75,52 +75,25 @@
 													<div class="">
 														<h2>{{nom}}{{prenom}} <!-- METTRE nom et prénom du vendeur--></h2>
 
-														<div id="rating" class="mb-3">
-															{% for i in 1..5 %}
-																<i class="bi bi-star fs-2 text-secondary star"
-																data-value="{{ i }}"></i>
-															{% endfor %}
-														</div>
+														<label for="customRange2" class="form-label"></label>
+														<input type="range" class="form-range" min="0" max="5" id="customRange2">
+														<br>
+														Note : 
+														<output for="customRange2" id="rangeValue" aria-hidden="true"></output> / 5
 
-														<!-- JS pour la notation avec étoiles-->
+														<!-- JS pour voir la note en dessous du range-->
 
 														<script>
-														document.addEventListener("DOMContentLoaded", function () {
+															// This is an example script, please modify as needed
+															const rangeInput = document.getElementById('customRange2');
+															const rangeOutput = document.getElementById('rangeValue');
 
-															const stars = document.querySelectorAll("#rating .star");
-															const ratingValue = document.getElementById("ratingValue");
-															const ratingContainer = document.getElementById("rating");
+															// Set initial value
+															rangeOutput.textContent = rangeInput.value;
 
-															stars.forEach(star => {
-
-																star.addEventListener("mouseover", function () {
-																	updateStars(this.dataset.value);
-																});
-
-																star.addEventListener("click", function () {
-																	ratingValue.value = this.dataset.value;
-																	updateStars(this.dataset.value);
-																});
-
+															rangeInput.addEventListener('input', function() {
+																rangeOutput.textContent = this.value;
 															});
-
-															ratingContainer.addEventListener("mouseleave", function () {
-																updateStars(ratingValue.value);
-															});
-
-															function updateStars(value) {
-																stars.forEach(star => {
-																	if (star.dataset.value <= value) {
-																		star.classList.remove("bi-star", "text-secondary");
-																		star.classList.add("bi-star-fill", "text-warning");
-																	} else {
-																		star.classList.remove("bi-star-fill", "text-warning");
-																		star.classList.add("bi-star", "text-secondary");
-																	}
-																});
-															}
-
-														});
 														</script>
 
 													</div>
@@ -128,11 +101,12 @@
 												<div class="modal-footer">
 													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
 
-													<form method="POST" action="index.php?controleur=note&methode=insert">
+													<form method="POST" action="index.php?controleur=note&methode=insert" class="input-group">
+														<input type="hidden" name="idCompteQuiNote" value="{{ quiNote }}">
+														<input type="hidden" name="idCompteNote" value="{{ estNote }}">
+														<input type="hidden" name="note" value="{{ note }}">
 														<button type="button" class="btn btn-primary">Enregistrer la note</button>
 													</form>
-
-													
 
 												</div>
 												</div>

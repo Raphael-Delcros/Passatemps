@@ -62,7 +62,20 @@ class controllerNote extends Controller {
         ]);
     }
 
-    public function insertionDeLaNote(){
+    public function insererLaNote(){
+
+        //1. Vérification données POST
+
+        //il faut que je récupère 3 valeurs l'idCompteQuiNote, l'idCompteNote, et la note
+        
+
+        $idDest = $_POST['idDestinataire'];
+        $nomDest = $_POST['nomDestinataire'] ?? ''; // Récupéré du champ caché
+        $prenomDest = $_POST['prenomDestinataire'] ?? ''; // Récupéré du champ caché
+
+
+        //recup de la note :
+        // $niveaujava = $_POST['customRange2'];
         $idCompteNote = isset($_GET['id']) ? intval($_GET['id']) : null;
         $dao = new NoteDao($this->getPdo());
         $note = $dao->findNoteurs($idCompteNote);
