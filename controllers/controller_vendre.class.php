@@ -150,8 +150,7 @@ class ControllerVendre extends controller
     {
         $data = $_POST;
         $config = Config::get();
-        var_dump($_FILES);
-        
+            
         // Gestion de l'upload de fichier
         if (isset($_FILES['photos']) && $_FILES['photos']['error'] === UPLOAD_ERR_OK) {
             $uploaddir = $config['application']['image_upload_path'];

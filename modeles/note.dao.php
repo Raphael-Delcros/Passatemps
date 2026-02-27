@@ -92,7 +92,6 @@ class NoteDAO{
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['idCompteNote' => $idCompteNote]);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
-        var_dump($stmt->fetch());
         return $stmt->fetch() ?: null;
 
     }
