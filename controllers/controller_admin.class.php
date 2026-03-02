@@ -330,20 +330,20 @@ class ControllerAdmin extends Controller
     {
         // On récupère le nom du fichier 
         $fileName = isset($_GET['file']) ? $_GET['file'] : null;
-        
+
         // Configuration des variables via la classe Config
         $config = Config::get()['database'];
         $user = $config['user'];
         $host = $config['host'];
         $db_name = $config['name'];
         $base_path = $config['backup_path'];
-        $mysql_path = $config['mysql_path']; 
+        $mysql_path = $config['mysql_path'];
 
         // Chemin complet du fichier à restaurer
         $file_to_restore = $base_path . $fileName;
 
         if (!file_exists($file_to_restore)) {
-            $this->dashboard(false); 
+            $this->dashboard(false);
             return;
         }
         $cmd = sprintf(
@@ -365,5 +365,31 @@ class ControllerAdmin extends Controller
         } else {
             $this->dashboard(true);
         }
+    }
+
+    /**
+     * @brief Affiche la liste des sauvegardes disponibles
+     */
+    public function gestionBackups()
+    {
+        $config = Config::get()['database'];
+        $base_path = $config['backup_path'];
+        $listeFichiers = [];
+
+        // On scanne le dossier si il existe
+        if (is_dir($base_path)) {
+            // scandir récupère tout, on filtre pour ne garder que les .sql
+            $fichiers = scandir($base_path, SCANDIR_SORT_DESCENDING);
+            foreach ($fichiers as $f) {
+                if (str_ends_with($f, '.sql')) {
+                    $listeFichiers[] = $f;
+                }
+            }
+        }
+
+        echo $this->getTwig()->render('admin_liste_backups.html.twig', [
+            'listeFichiers' => $listeFichiers,
+            'backupPath'    => $base_path
+        ]);
     }
 }

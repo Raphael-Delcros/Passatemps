@@ -14,7 +14,7 @@
 			</div>
 		</div>
 
-		{% if backup is defined %}
+		{% if backup is not null %}
 			{% if backup %}
 				<div class="alert alert-success mt-3">
 					<p>Backup réussie! Vérifier vos fichiers locaux. ({{ constantes.database.backup_path }})</p>
@@ -87,18 +87,19 @@
 			</div>
 		</div>
 		{% if compte.role == 'administrateur' %}
-			<a class="btn btn-primary mt-2" href="index.php?controleur=admin&methode=sauvegarderBdd">Sauvegarder la base de données en local</a>
-			<h3>Sauvegardes disponibles</h3>
-			<ul>
-				{% for fichier in listeFichiers %}
-					<li>
-						{{ fichier }}
-						<a href="index.php?controleur=admin&methode=restaurerBdd&file={{ fichier }}" onclick="return confirm('Attention, cela écrasera les données actuelles. Continuer ?')">
-							[Restaurer]
-						</a>
-					</li>
-				{% endfor %}
-			</ul>
+			<div class="mt-4 p-3 border rounded bg-light">
+				<h5>Maintenance du système</h5>
+				<div class="d-flex gap-2">
+					<a class="btn btn-primary" href="index.php?controleur=admin&methode=sauvegarderBdd">
+						<i class="bi bi-cloud-download"></i>
+						Créer une sauvegarde
+					</a>
+					<a class="btn btn-outline-info" href="index.php?controleur=admin&methode=gestionBackups">
+						<i class="bi bi-folder2-open"></i>
+						Gérer les sauvegardes existantes
+					</a>
+				</div>
+			</div>
 		{% endif %}
 		<div class="mt-5">
 			<a href="index.php" class="btn btn-outline-secondary">
