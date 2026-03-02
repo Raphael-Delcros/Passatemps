@@ -44,6 +44,12 @@
 						<i class="bi bi-calendar3 me-2 text-primary"></i>Membre depuis le
 						{{ compte.dateInscription }}
 					</span>
+					{% if compte.role != 'utilisateur' %}
+						<span class="badge {% if compte.role == 'administrateur' %} bg-danger text-light {% else %} bg-primary text-dark {% endif %}  border p-2 px-3">
+							<i class="bi bi-people me-2"></i>Role :
+							{{ compte.role|capitalize }}
+						</span>
+					{% endif %}
 				</div>
 				{% if compte.note %}
 					<div class="col-auto">
@@ -57,7 +63,7 @@
 
 			{% if other == false %}
 				<div class="mt-4 d-flex gap-2">
-					{% if compte.role == 'administrateur' %}
+					{% if compte.role == 'administrateur' or compte.role == 'moderateur' %}
 						<a href="index.php?controleur=admin&methode=dashboard" class="btn btn-danger">
 							<i class="bi bi-shield-lock me-2"></i>Back-Office
 						</a>

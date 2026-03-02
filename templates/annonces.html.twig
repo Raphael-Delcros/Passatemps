@@ -1,13 +1,13 @@
 {% extends 'base_template.html.twig' %}
 
-{% block title %}{{ constantes.application.website_name }} - Annonces{% endblock %}
+{% block title %}
+	{{ constantes.application.website_name }}
+	- Annonces
+{% endblock %}
 
 {% block body %}
-   		<ul id="resultats-autocomplete"
-        	class="list-group position-absolute w-100"
-        	style="top: 100%; left: 0; z-index: 1000; display: none;">
-    	</ul>
-	</form>
+	<ul id="resultats-autocomplete" class="list-group position-absolute w-100" style="top: 100%; left: 0; z-index: 1000; display: none;"></ul>
+</form>
 
 	<div class="text-start">
         	<a href="index.php" class="btn btn-outline-secondary"><i class="bi bi-arrow-left">Retour</i></a>
@@ -16,40 +16,45 @@
 <h1>Liste des annonces</h1>
 
 <div class="row row-cols-2 row-cols-md-4 g-4">
-    {% for annonce in annonces %}
-				<div class="col-md-4 mb-4">
-					<div class="card h-100 shadow-sm ">
-						<div class="img-container-annonce">
-							{% if annonce.urlPhoto %}
-								<img src="{{ annonce.urlPhoto }}" class="img-annonce-propre card-img-top" alt="{{ annonce.titre }}">
-							{% endif %}
+	{% for annonce in annonces %}
+		{% if annonce.etatVente == 'enVente' %}
+			<div class="col-md-4 mb-4">
+				<div class="card h-100 shadow-sm ">
+					<div class="img-container-annonce">
+						{% if annonce.urlPhoto %}
+							<img src="{{ annonce.urlPhoto }}" class="img-annonce-propre card-img-top" alt="{{ annonce.titre }}">
+						{% endif %}
+					</div>
+
+					<div class="card-body">
+						<h5 class="card-title text-primary">{{ annonce.titre }}</h5>
+
+						<div class="d-flex flex-column gap-2 my-3">
+							<div class="d-flex justify-content-between align-items-center">
+								<span class="badge bg-success fs-5">{{ annonce.prix }}
+									€</span>
+								<span class="badge bg-info text-dark">État :
+									{{ annonce.etatJeu }}</span>
+							</div>
+							<div class="text-muted italic">
+								<i class="bi bi-person"></i>
+								Vendeur :
+								<strong>{{ annonce.prenomVendeur }}
+									{{ annonce.nomVendeur }}</strong>
+							</div>
 						</div>
 
-						<div class="card-body">
-							<h5 class="card-title text-primary">{{ annonce.titre }}</h5>
-							
-							<div class="d-flex flex-column gap-2 my-3">
-								<div class="d-flex justify-content-between align-items-center">
-									<span class="badge bg-success fs-5">{{ annonce.prix }} €</span>
-									<span class="badge bg-info text-dark">État : {{ annonce.etatJeu }}</span>
-								</div>
-								<div class="text-muted italic">
-									<i class="bi bi-person"></i> Vendeur : <strong>{{ annonce.prenomVendeur }} {{ annonce.nomVendeur }}</strong>
-								</div>
-							</div>
-
-							<p class="card-text small">
-								{{ annonce.description|length > 80
+						<p class="card-text small">
+							{{ annonce.description|length > 80
 									? annonce.description|slice(0, 80) ~ '...'
 									: annonce.description
 								}}
-							</p>
-							
-							<a class="btn btn-primary" href="index.php?controleur=Annonce&methode=afficher&id={{ annonce.idAnnonce }}">Voir l'annonce</a>
-						</div>
+						</p>
+
+						<a class="btn btn-primary" href="index.php?controleur=Annonce&methode=afficher&id={{ annonce.idAnnonce }}">Voir l'annonce</a>
 					</div>
 				</div>
-			{% endfor %}
-</div>
-
-{% endblock %}
+			</div>
+		{% endif %}
+	{% endfor %}
+</div>{% endblock %}
