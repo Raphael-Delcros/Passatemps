@@ -154,7 +154,7 @@ class LivraisonDao
             'idAnnonce' => $livraison->getIdAnnonce(),
             'idCompteAcheteur' => $livraison->getIdCompteAcheteur(),
             'numeroDeSuivi' => random_int(1000000000,9999999999) . 'FR',
-            'status' => 'Vendu'
+            'status' => 'vendu'
         ]);
     }
 }

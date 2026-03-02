@@ -88,26 +88,16 @@ class AnnonceDao
      */
     public function findAssoc(?int $id)
     {
-        // 1. Récupère l'annonce
-    $sql = "SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub, 
-        a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur
+        $sql = "SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub, a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur, p.url
         FROM annonce a
+        JOIN photo p ON p.idAnnonce = a.idAnnonce
         WHERE a.idAnnonce = :id";
-    $stmt = $this->pdo->prepare($sql);
-    $stmt->execute(['id' => $id]);
-    $annonce = $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
 
-    if (!$annonce) return null;
 
-    // 2. Récupère toutes ses photos
-    $sqlPhotos = "SELECT url FROM photo WHERE idAnnonce = :id";
-    $stmt = $this->pdo->prepare($sqlPhotos);
-    $stmt->execute(['id' => $id]);
-    $photos = $stmt->fetchAll(PDO::FETCH_COLUMN);
-
-    $annonce['urlPhoto']  = $photos[0] ?? null; 
-    $annonce['urlPhotos'] = $photos;            
-    return $annonce;
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        return $stmt->fetch() ?: null;
     }
 
 
@@ -122,7 +112,6 @@ class AnnonceDao
         FROM annonce a
         LEFT JOIN photo p ON p.idAnnonce = a.idAnnonce
         LEFT JOIN compte c ON c.idCompte = a.idCompteVendeur
-        WHERE a.etatVente != 'Vendu'
         ORDER BY a.idAnnonce";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -150,9 +139,7 @@ class AnnonceDao
         $annonce->setUrlPhoto($tableauAssoc['url'] ?? null);
         $annonce->setNomVendeur($tableauAssoc['nom'] ?? null);
         $annonce->setPrenomVendeur($tableauAssoc['prenom'] ?? null);
-        $annonce->setUrlPhoto($tableauAssoc['urlPhotos'][0] ?? null);
-        $annonce->setUrlPhotos($tableauAssoc['urlPhotos'] ?? []);
-
+        
         return $annonce;
     }
     /**
@@ -225,7 +212,7 @@ class AnnonceDao
         LEFT JOIN photo p ON p.idAnnonce = a.idAnnonce
         LEFT JOIN compte C ON C.idCompte = a.idCompteVendeur
         WHERE a.idJeu = :idJeu
-        AND a.etatVente != 'Vendu'  
+        AND a.etatVente != 'vendu'  
         ORDER BY a.datePub DESC
     ";
         //AND a.etatVente = 'en Vente'
