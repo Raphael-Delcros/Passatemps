@@ -3,6 +3,9 @@
 {% block title %}Administration - {{ constantes.application.website_name }}{% endblock %}
 
 {% block body %}
+<div class="text-start">
+        	<a href="index.php?controleur=connexion&methode=connexion&id={{ annonce.idAnnonce }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left">Retour</i></a>
+		</div>
 <div class="container mt-5">
     <div class="row mb-4">
         <div class="col">
@@ -67,12 +70,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="mt-5">
-        <a href="index.php" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Retour au site
-        </a>
     </div>
 </div>
 {% endblock %}
