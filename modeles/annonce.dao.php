@@ -311,7 +311,7 @@ class AnnonceDao
      */
     public function countAnnonceByJeu(int $id)
     {
-        $sql = "SELECT COUNT(*) FROM annonce WHERE idJeu = :id";
+        $sql = "SELECT COUNT(*) FROM annonce WHERE idJeu = :id AND etatVente = 'enVente'";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         return (int) $stmt->fetchColumn();

@@ -124,7 +124,6 @@ class ControllerJeu extends Controller
             'categories'     => $categories,
             'top10Annonces'  => $top10Annonces,
             'top10Categories' => $top10Categories,
-            // ... tes autres variables existantes (filtresActifs, nbResultats)
         ]);
     }
     /**
