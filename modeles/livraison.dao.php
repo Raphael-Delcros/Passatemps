@@ -153,8 +153,8 @@ class LivraisonDao
             'dateReception'           => $livraison->getDateReception(),
             'idAnnonce' => $livraison->getIdAnnonce(),
             'idCompteAcheteur' => $livraison->getIdCompteAcheteur(),
-            'numeroDeSuivi' => $livraison->getNumeroDeSuivi(),
-            'status' => $livraison->getStatus()
+            'numeroDeSuivi' => random_int(1000000000,9999999999) . 'FR',
+            'status' => 'Vendu'
         ]);
     }
 }

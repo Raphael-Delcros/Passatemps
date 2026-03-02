@@ -57,7 +57,16 @@ class ControllerAnnonce extends controller
         $nom = $compteVendeur->getPrenom();
         $prenom = $compteVendeur->getNom();
         $idVendeur = $compteVendeur->getIdCompte();
-
+        
+        if (!$annonce || $annonce->getEtatVente() === 'Vendu') {
+            $template = $this->getTwig()->load('erreur.html.twig'); 
+            echo $template->render([
+                'message' => 'Cette annonce n\'est plus disponible.',
+                'menu' => 'annonces'
+            ]);
+            return;
+        }
+        
         $template = $this->getTwig()->load('annonce.html.twig');
         echo $template->render([
             'annonce' => $annonce,

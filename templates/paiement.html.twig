@@ -26,7 +26,7 @@
 			<div class=" col mt-2 bg-white p-3 border border-2 rounded">
 				<div class="mb-4">
 					<label class="form-label required">Numéro de la carte</label>
-					<input type="text" name="numCarte" maxlength="16" minlength="16" class="form-control shadow-sm {% if erreurs['numCarteMandatory'] or erreurs['numCarteNotInt'] or erreurs['numCarteIncorrectLength'] %} border-danger{% endif %}" placeholder="1234 1234 1234 1234" required>
+					<input type="text" id="numCarte" name="numCarte" longueurExacte="19" class="form-control shadow-sm {% if erreurs['numCarteMandatory'] or erreurs['numCarteNotInt'] or erreurs['numCarteIncorrectLength'] %} border-danger{% endif %}" placeholder="1234 1234 1234 1234" required>
 					{% if erreurs['numCarteMandatory'] %}
 						<p class="text-danger small">Le numéro de carte est obligatoire.</p>
 					{% endif %}
@@ -37,7 +37,7 @@
 				<div class="row mb-4">
 					<div class="col-md-6">
 						<label class="form-label required">Date d'expiration</label>
-						<input type="text" name="dateExpiration" maxlength="5" minlength="5" class="form-control shadow-sm {% if erreurs['dateExpirationMandatory'] or erreurs['dateExpirationIncorrectLength'] %} border-danger {% endif %}" placeholder="MM/YY" required>
+						<input type="text" id="dateExpiration" name="dateExpiration" maxlength="5" minlength="5" class="form-control shadow-sm {% if erreurs['dateExpirationMandatory'] or erreurs['dateExpirationIncorrectLength'] %} border-danger {% endif %}" placeholder="MM/YY" required>
 						{% if erreurs['dateExpirationMandatory'] %}
 							<p class="text-danger small">La date d'expiration est obligatoire.</p>
 						{% endif %}
@@ -47,7 +47,7 @@
 					</div>
 					<div class="col-md-6">
 						<label class="form-label required">Code de Sécurité</label>
-						<input type="text" name="codeSecurite" maxlength="3" minlength="3" class="form-control shadow-sm {% if erreurs['codeSecuriteMandatory'] or erreurs['codeSecuriteIncorrectLength'] %} border-danger {% endif %}}" placeholder="CVC" required>
+						<input type="text" id="codeSecurite" name="codeSecurite" maxlength="3" minlength="3" class="form-control shadow-sm {% if erreurs['codeSecuriteMandatory'] or erreurs['codeSecuriteIncorrectLength'] %} border-danger {% endif %}}" placeholder="CVC" required>
 						{% if erreurs['dateExpirationMandatory'] %}
 							<p class="text-danger small">Le code de sécurité est obligatoire.</p>
 						{% endif %}
@@ -142,4 +142,7 @@
 			</div>
 		</div>
 	</form>
+
+	<script src="JS/paiement.js" defer></script>
+
 {% endblock %}

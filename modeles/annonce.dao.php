@@ -110,6 +110,7 @@ class AnnonceDao
         FROM annonce a
         LEFT JOIN photo p ON p.idAnnonce = a.idAnnonce
         LEFT JOIN compte c ON c.idCompte = a.idCompteVendeur
+        WHERE a.etatVente != 'Vendu'
         ORDER BY a.idAnnonce";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
