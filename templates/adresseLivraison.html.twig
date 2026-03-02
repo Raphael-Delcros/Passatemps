@@ -27,15 +27,27 @@
 				<div class="row">
 					<div class="row">
 						<div class="row">
-							<div class="col-3">
+							<div class="col">
 								<label for="codePostal" class="form-label required">Code Postal</label>
-								<input type="text" id="codePostal" class="form-control shadow-sm" name="codePostal" list="liste-codes" placeholder="33000" value="{{ donnees.codePostal ?? '' }}" required autocomplete="off">
+								<input type="text" id="codePostal" list="liste-codes" value="{{ donnees.codePostal ?? '' }}" class="form-control shadow-sm {% if erreurs['codePostalMandatory'] or erreurs['codePostalIncorrectLength'] %} border-danger{% endif %}" name="codePostal" placeholder="33000" title="Code Postal de la livraison" required>
 								<datalist id="liste-codes"></datalist>
+								{% if erreurs['codePostalMandatory'] %}
+									<p class="text-danger small">Le code postal est obligatoire.</p>
+								{% endif %}
+								{% if erreurs['codeIncorrectLength'] %}
+									<p class="text-danger small">Le code postal doit faire 5 caractères.</p>
+								{% endif %}
 							</div>
 							<div class="col">
 								<label for="ville" class="form-label required">Ville</label>
-								<input type="text" id="ville" class="form-control shadow-sm  capitalize-input" name="ville" list="liste-villes" placeholder="Bordeaux" value="{{ donnees.ville ?? '' }}" required autocomplete="off">
+								<input type="text" id="ville" list="liste-villes" class="form-control shadow-sm capitalize-input {% if erreurs['villeMandatory'] or erreurs['villeBadFormat'] %} border-danger {% endif %}" value="{{ donnees.ville ?? '' }}" name="ville" placeholder="Bordeaux" title="Ville de la livraison" required>
 								<datalist id="liste-villes"></datalist>
+								{% if erreurs['villeMandatory'] %}
+									<p class="text-danger small">La ville est obligatoire.</p>
+								{% endif %}
+								{% if erreurs['villeBadFormat'] %}
+									<p class="text-danger small">La ville n'a pas le bon format.</p>
+								{% endif %}
 							</div>
 						</div>
 					</div>
@@ -43,7 +55,10 @@
 				<div class="row mt-2">
 					<div class="col">
 						<label for="adresse" class="form-label required">Adresse</label>
-						<input type="text" class="form-control shadow-sm" name="adresse" placeholder="12 rue de la paix" value="{{ donnees.adresse ?? '' }}" required>
+						<input type="text" class="form-control shadow-sm {% if erreurs['adresseMandatory'] %} border-danger {% endif %}" name="adresse" placeholder="12 rue de la paix" value="{{ donnees.adresse ?? '' }}" required>
+						{% if erreurs['adresseMandatory'] %}
+							<p class="text-danger small">L'adresse est obligatoire.</p>
+						{% endif %}
 					</div>
 					<div class="col">
 						<label for="complementAdresse" class="form-label">Complement d'adresse</label>
@@ -116,6 +131,8 @@ villeList.appendChild(opt);
 if (data.length === 1) 
 villeInput.value = data[0].nom;
 
+
+
 }
 });
 }
@@ -134,7 +151,7 @@ data.forEach(commune => {
 commune.codesPostaux.forEach(cp => {
 let opt = document.createElement('option');
 opt.value = cp;
-opt.textContent = commune.nom; 
+opt.textContent = commune.nom;
 cpList.appendChild(opt);
 });
 });
