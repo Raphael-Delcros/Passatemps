@@ -48,8 +48,12 @@
 								</td>
 								<td>{{ annonce.etatJeu }}</td>
 								<td>
-									<span class="badge {{ annonce.etatVente == 'en Vente' ? 'bg-primary' : 'bg-success' }}">
-										{{ annonce.etatVente|capitalize }}
+									<span class="badge {{ annonce.etatVente == 'enVente' ? 'bg-primary' : 'bg-success' }}">
+										{% if annonce.etatVente == 'enVente' %}En vente
+										{% else %}
+										{# L'autre option est 'vendu' #}
+										{{ annonce.etatVente|capitalize }} 
+										{% endif %}
 									</span>
 								</td>
 								<td class="text-nowrap text-end">
