@@ -5,6 +5,9 @@ database:
     user:
     password:
     prefixe_table:
+    backup_path:
+    mysqldump_path: # Lien vers mySQLdump.
+    mysql_path: # Lien vers mysql.exe, nécessaire pour la restauration de la base de données via le dashboard admin
 
 # Configuration de l'application
 application:

@@ -463,7 +463,7 @@ class JeuDao
                    COUNT(A.idAnnonce) AS nbAnnonces
             FROM jeu J
             LEFT JOIN photo P ON J.idPhoto = P.idPhoto
-            LEFT JOIN annonce A ON J.idJeu = A.idJeu
+            LEFT JOIN annonce A ON J.idJeu = A.idJeu AND etatVente = 'enVente'
             GROUP BY J.idJeu, J.nom, J.nbJoueursMin, J.nbJoueursMax, 
                      J.dureePartie, J.idJeuPrincipal, P.url
             ORDER BY nbAnnonces DESC
@@ -480,14 +480,26 @@ class JeuDao
      */
     public function findTop10ByCategories(): array
     {
-        $sql = "SELECT J.idJeu, J.nom, J.nbJoueursMin, J.nbJoueursMax,
-                   J.dureePartie, J.idJeuPrincipal, P.url,
-                   C.nom AS nomCategorie
-            FROM jeu J
-            LEFT JOIN photo P ON J.idPhoto = P.idPhoto
-            INNER JOIN cataloguer CAT ON J.idJeu = CAT.idJeu
-            INNER JOIN categorie C ON CAT.idCategorie = C.idCategorie
-            WHERE CAT.idCategorie = (
+        $sql = "SELECT J.idJeu,
+                J.nom,
+                J.nbJoueursMin, 
+                J.nbJoueursMax,
+                J.dureePartie, 
+                J.idJeuPrincipal, 
+                P.url,
+                C.nom AS nomCategorie,
+                (
+                    SELECT COUNT(*) 
+                    FROM annonce A 
+                    WHERE A.idJeu = J.idJeu 
+                    AND A.etatVente = 'enVente'
+                ) AS nbAnnonces
+                
+                FROM jeu J
+                LEFT JOIN photo P ON J.idPhoto = P.idPhoto
+                INNER JOIN cataloguer CAT ON J.idJeu = CAT.idJeu
+                INNER JOIN categorie C ON CAT.idCategorie = C.idCategorie
+                WHERE CAT.idCategorie = (
                 SELECT idCategorie
                 FROM cataloguer
                 GROUP BY idCategorie

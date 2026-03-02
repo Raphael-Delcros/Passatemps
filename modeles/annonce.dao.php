@@ -327,10 +327,21 @@ class AnnonceDao
      */
     public function countAnnonceByJeu(int $id)
     {
-        $sql = "SELECT COUNT(*) FROM annonce WHERE idJeu = :id AND etatVente != 'Vendu'";
+        $sql = "SELECT COUNT(*) FROM annonce WHERE idJeu = :id AND etatVente != 'vendu'";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         return (int) $stmt->fetchColumn();
     }
     
+    /**
+     * Change l'etatVente du jeu à Vendu s'il est enVente
+     * 
+     * @return boolean True si OK, false si Erreur
+     */
+    public function changeToSold(int $id)
+    {
+        $sql = "UPDATE annonce SET etatVente = 'vendu' WHERE idAnnonce = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
+    }
 }
