@@ -223,9 +223,15 @@ class ControllerPaiement extends controller
             'numeroDeSuivi'      => null,
             'status'             => null
         ];
-        $dao = new LivraisonDao($this->getPdo());
-        $livraison = $dao->hydrate($array);
-        $dao->insertIntoDatabase($livraison);
+        $livraisonDao = new LivraisonDao($this->getPdo());
+        $livraison = $livraisonDao->hydrate($array);
+        $livraisonDao->insertIntoDatabase($livraison);
+        
+        // On passe l'annonce de enVente à vendu
+        $annonceDao = new AnnonceDao($this->getPdo());
+        $annonceDao->changeToSold($id);
+
+        
 
         $validator = new Validator($this->reglesValidation);
         $donnesValides = $validator->valider($data);
