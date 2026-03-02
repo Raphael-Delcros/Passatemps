@@ -7,6 +7,9 @@
 
 {% block body %}
 	<div class="container mt-5">
+		<div class="text-start">
+        	<a href="index.php" class="btn btn-outline-secondary"><i class="bi bi-arrow-left">Retour</i></a>
+		</div>
 		<h1 class="text-center fw-bold">
 			Votre Messagerie
 		</h1>
@@ -75,7 +78,7 @@
 					{% else %}
 						<div class="text-center p-5">
 							<i class="bi bi-chat-square-dots text-muted" style="font-size: 3rem;"></i>
-							<p class="mt-3 text-muted">Aucun utilisateurs trouvé pour le moment.</p>
+							<p class="mt-3 text-muted">Aucuns utilisateurs trouvé pour le moment.</p>
 						</div>
 					{% endif %}
 				{% endfor %}

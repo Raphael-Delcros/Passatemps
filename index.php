@@ -4,6 +4,22 @@ session_start();
 // Ajout du code commun à toutes les pages
 require_once 'include.php';
 
+if (isset($_GET['controleur']) && isset($_GET['methode'])) {
+
+    // Ne pas écraser si on est déjà sur la même page
+    if (!isset($_SESSION['current_page'])) {
+        $_SESSION['current_page'] = null;
+    }
+
+    $_SESSION['previous_page'] = $_SESSION['current_page'] ?? null;
+
+    $_SESSION['current_page'] = [
+        'controleur' => $_GET['controleur'],
+        'methode' => $_GET['methode'],
+        'id' => $_GET['id'] ?? null
+    ];
+}
+
 try {
     // Récupération du contrôleur
     if (isset($_GET['controleur'])) {
