@@ -161,7 +161,7 @@ class LivraisonDao
 
     //fonction qui récupère l'identifiant du compte vendeur
 
-    public function getIdVendeur(int $idLivraison): int{
+    public function getIdVendeur(int $idLivraison){
         $sql = "SELECT a.idCompteVendeur FROM " . Config::get()['database']['prefixe_table'] . "annonce a JOIN " . Config::get()['database']['prefixe_table'] . "livraison l ON l.idAnnonce = a.idAnnonce WHERE l.idLivraison= :idLivraison";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['idLivraison' => $idLivraison]);

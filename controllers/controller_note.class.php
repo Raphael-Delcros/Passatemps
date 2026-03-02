@@ -64,21 +64,53 @@ class controllerNote extends Controller {
 
     public function insererLaNote(){
 
-        //1. Vérification données POST
+        // 1. Vérification session
+        if (!isset($_SESSION['idCompte'])) {
+            header("Location: index.php?controleur=connexion"); // Rediriger vers connexion si pas de session
+            exit();
+        }
 
-        //il faut que je récupère 3 valeurs l'idCompteQuiNote, l'idCompteNote, et la note
+
+        $dao = new LivraisonDao($this->getPdo());
+
+        $idCompteQuiNote = $_POST['idCompteQuiNote'] ?? '';
+        $idCompteNote = $dao->getIdVendeur($_POST['idLivraison']);
+        $note = $_POST['note']; 
+
+        var_dump($note);
+
+
+        $idCompteQuiNoteInt = intval($idCompteQuiNote);
+        $idCompteNoteInt = intval($idCompteNote, $base = 10);
+        $noteInt = intval($note, $base = 10);
+
+        
+        var_dump($idCompteQuiNoteInt);
+        var_dump($idCompteQuiNote);
         
 
-        $idDest = $_POST['idDestinataire'];
-        $nomDest = $_POST['nomDestinataire'] ?? ''; // Récupéré du champ caché
-        $prenomDest = $_POST['prenomDestinataire'] ?? ''; // Récupéré du champ caché
-
-
-        //recup de la note :
-        // $niveaujava = $_POST['customRange2'];
-        $idCompteNote = isset($_GET['id']) ? intval($_GET['id']) : null;
+        // 4. Insertion
         $dao = new NoteDao($this->getPdo());
-        $note = $dao->findNoteurs($idCompteNote);
+        $notation = new Note(
+            $noteInt,
+            $idCompteQuiNoteInt,
+            $idCompteNote
+        );
+
+        $result = $dao->insert($notation);
+
+        // 5. REDIRECTION (C'est ici que ça se joue)
+        if ($result) {
+            // On construit l'URL de retour avec tous les paramètres nécessaires
+            $url = "index.php?controleur=livraison&methode=lister";
+            header("Location: " . $url);
+            exit();
+        } else {
+            // En cas d'erreur, on peut rediriger vers une page d'erreur ou la messagerie
+            header("Location: index.php?controleur=messagerie&error=1");
+            exit();
+        }
+
     }
 
 }

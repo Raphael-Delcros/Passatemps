@@ -68,7 +68,7 @@
 													</button>
 												</div>
 												<div class="modal-body">
-													<!-- Notation avec les étoiles-->
+													<!-- Notation -->
 													
 													
 
@@ -76,36 +76,24 @@
 														<h2>{{nom}}{{prenom}} <!-- METTRE nom et prénom du vendeur--></h2>
 
 														<label for="customRange2" class="form-label"></label>
-														<input type="range" class="form-range" min="0" max="5" id="customRange2">
+														<input type="range" class="form-range" min=0 max=5 id="customRange2">
 														<br>
 														Note : 
 														<output for="customRange2" id="rangeValue" aria-hidden="true"></output> / 5
 
 														<!-- JS pour voir la note en dessous du range-->
 
-														<script>
-															// This is an example script, please modify as needed
-															const rangeInput = document.getElementById('customRange2');
-															const rangeOutput = document.getElementById('rangeValue');
-
-															// Set initial value
-															rangeOutput.textContent = rangeInput.value;
-
-															rangeInput.addEventListener('input', function() {
-																rangeOutput.textContent = this.value;
-															});
-														</script>
+														
 
 													</div>
 												</div>
 												<div class="modal-footer">
 													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
 
-													<form method="POST" action="index.php?controleur=note&methode=insert" class="input-group">
-														<input type="hidden" name="idCompteQuiNote" value="{{ quiNote }}">
-														<input type="hidden" name="idCompteNote" value="{{ estNote }}">
-														<input type="hidden" name="note" value="{{ note }}">
-														<button type="button" class="btn btn-primary">Enregistrer la note</button>
+													<form method="POST" action="index.php?controleur=note&methode=insererLaNote" class="input-group">
+														<input type="hidden" name="idLivraison" value="{{ commande.idLivraison }}">
+														<input type="hidden" name="note" id="idNote">
+														<button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Enregistrer la note</button>
 													</form>
 
 												</div>
@@ -131,4 +119,20 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		// This is an example script, please modify as needed
+	const rangeInput = document.getElementById('customRange2');
+	const rangeOutput = document.getElementById('rangeValue');
+	const note = document.getElementById('idNote');
+
+	// Set initial value
+	rangeOutput.textContent = rangeInput.value;
+	note.value = 3;
+
+	rangeInput.addEventListener('input', function() {
+		rangeOutput.textContent = this.value;
+		note.value = this.value;
+
+	});
+	</script>
 {% endblock %}

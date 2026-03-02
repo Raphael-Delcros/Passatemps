@@ -96,15 +96,17 @@ class NoteDAO{
 
     }
 
-    public function insert(int $idComteQuiNote, int $idComteNote, int $laNote): void
+    public function insert(Note $note): bool
     {
-        $sql = "INSERT INTO" .Config::get()['database']['prefixe_table'] . "note VALUE (idCompteQuiNote, idCompteNote, laNote)";
+        $sql = "INSERT INTO " .Config::get()['database']['prefixe_table'] . "note (idCompteQuiNote, idCompteNote, note)
+        VALUES (:idCompteQuiNote, :idCompteNote, :note)";
         $stmt= $this->pdo->prepare($sql);
-        $stmt-> execute([
-            'idCompteNote' => $idCompteNote, 
-            'idCompteQuiNote' => $idCompteQuiNote,
-            'laNote' => $laNote,
+        $result = $stmt-> execute([
+            'idCompteNote' => $note -> getNote(), 
+            'idCompteQuiNote' => $note -> getIdCompteQuiNote(),
+            'note' => $note -> getIdCompteNote()
         ]);
+        return $result;
     }
 
 }
