@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file jeu.dao.php
  * @brief DAO pour la gestion des jeux
@@ -265,7 +266,7 @@ class JeuDao
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-        public function findNameWithId(int $id): array
+    public function findNameWithId(int $id): array
     {
         $sql = "SELECT nom
             FROM jeu
@@ -274,7 +275,7 @@ class JeuDao
         $stmt->execute(['id' => $id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
     public function research(string $q): array
     {
         $sql = "SELECT J.idJeu, J.nom, J.nbJoueursMin, J.nbJoueursMax, P.url
@@ -449,5 +450,54 @@ class JeuDao
         $stmt->execute($filter->getParams());
 
         return (int) $stmt->fetchColumn();
+    }
+
+    /**
+     * @brief Récupère les 10 jeux avec le plus d'annonces
+     * @return array
+     */
+    public function findTop10ByAnnonces(): array
+    {
+        $sql = "SELECT J.idJeu, J.nom, J.nbJoueursMin, J.nbJoueursMax, 
+                   J.dureePartie, J.idJeuPrincipal, P.url,
+                   COUNT(A.idAnnonce) AS nbAnnonces
+            FROM jeu J
+            LEFT JOIN photo P ON J.idPhoto = P.idPhoto
+            LEFT JOIN annonce A ON J.idJeu = A.idJeu
+            GROUP BY J.idJeu, J.nom, J.nbJoueursMin, J.nbJoueursMax, 
+                     J.dureePartie, J.idJeuPrincipal, P.url
+            ORDER BY nbAnnonces DESC
+            LIMIT 10";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @brief Récupère les 10 jeux avec le plus de catégories
+     * @return array
+     */
+    public function findTop10ByCategories(): array
+    {
+        $sql = "SELECT J.idJeu, J.nom, J.nbJoueursMin, J.nbJoueursMax,
+                   J.dureePartie, J.idJeuPrincipal, P.url,
+                   C.nom AS nomCategorie
+            FROM jeu J
+            LEFT JOIN photo P ON J.idPhoto = P.idPhoto
+            INNER JOIN cataloguer CAT ON J.idJeu = CAT.idJeu
+            INNER JOIN categorie C ON CAT.idCategorie = C.idCategorie
+            WHERE CAT.idCategorie = (
+                SELECT idCategorie
+                FROM cataloguer
+                GROUP BY idCategorie
+                ORDER BY COUNT(*) DESC
+                LIMIT 1
+            )
+            LIMIT 10";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
