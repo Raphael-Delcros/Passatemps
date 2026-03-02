@@ -1,5 +1,7 @@
 <?php
 
+use phpDocumentor\Reflection\Types\Boolean;
+
 /**
  * @file controller_admin.class.php
  * @brief Contrôleur pour les actions administratives
@@ -28,12 +30,14 @@ class ControllerAdmin extends Controller
     /**
      * @brief Affiche le tableau de bord admin avec statistiques
      */
-    public function dashboard()
+    public function dashboard(bool $backupBdd = null)
     {
         // Initialisation des DAOs
         $jeuDao = new JeuDao($this->getPdo());
         $annonceDao = new AnnonceDao($this->getPdo());
         $compteDao = new CompteDao($this->getPdo());
+        $compte = $compteDao->find($_SESSION['idCompte']);
+        
 
         // Récupération des données pour le bloc "En résumé" [cite: 14]
         $totalGames = $jeuDao->countAll();
@@ -46,7 +50,9 @@ class ControllerAdmin extends Controller
                 'prenom'        => $_SESSION['prenom'],
                 'totalGames'    => $totalGames,    
                 'totalAnnonces' => $totalAnnonces, 
-                'totalUsers'    => $totalUsers     
+                'totalUsers'    => $totalUsers,
+                'backup'        => $backupBdd,
+                'compte'        => $compte,
             ]
         );
     }
@@ -272,5 +278,46 @@ class ControllerAdmin extends Controller
         }
         header('Location: index.php?controleur=admin&methode=listeComptes');
         exit;
+    }
+    
+    /**
+     * Sauvegarde la base de donnée en local
+     *
+     * @return void
+     */
+    public function sauvegarderBdd()
+    {
+        // Configuration des variables
+        $config = Config::get()['database'];
+        $user = $config['user'];
+        $host = $config['host'];
+        $db_name = $config['name'];
+        $base_path = $config['backup_path']; // Note le double slash à la fin pour Windows
+        $mysqldump_path = $config['mysqldump_path'];
+        
+        // Configuration du nom de fichier
+        $date_string = date('Y-m-d_H-i'); 
+        $backup_file = $base_path . 'backupdb_' . $date_string . '.sql';
+        
+        // Commande windows a executer
+        $cmd = sprintf(
+            '%s --user=%s --host=%s %s > %s 2>&1',
+            $mysqldump_path,
+            escapeshellarg($user),
+            escapeshellarg($host),
+            escapeshellarg($db_name),
+            escapeshellarg($backup_file)
+        );
+        
+        // $output = [];
+$return_var = null;
+exec($cmd, $output, $return_var);
+
+// 5. Affichage du résultat
+        if ($return_var !== 0) {
+            $this->dashboard(false);
+        } else {
+            $this->dashboard(true);
+        }
     }
 }
