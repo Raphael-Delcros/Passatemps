@@ -302,14 +302,14 @@ class ControllerAdmin extends Controller
 
         // Commande windows a executer
         $cmd = sprintf(
-            '%s --user=%s --host=%s --password=%s %s > %s 2>&1',
-            $mysqldump_path,
-            escapeshellarg($user),
-            escapeshellarg($host),
-            escapeshellarg($db_pass),
-            escapeshellarg($db_name),
-            escapeshellarg($backup_file)
-        );
+        '"%s" --user=%s --host=%s --password=%s --result-file=%s %s 2>&1',
+        $mysqldump_path,
+        escapeshellarg($user),
+        escapeshellarg($host),
+        escapeshellarg($db_pass),
+        escapeshellarg($backup_file),
+        escapeshellarg($db_name)
+    );
 
         // $output = [];
         $return_var = null;
@@ -338,6 +338,7 @@ class ControllerAdmin extends Controller
         $user = $config['user'];
         $host = $config['host'];
         $db_name = $config['name'];
+        $db_pass = $config['password'];
         $base_path = $config['backup_path'];
         $mysql_path = $config['mysql_path'];
 
@@ -349,17 +350,19 @@ class ControllerAdmin extends Controller
             return;
         }
         $cmd = sprintf(
-            '"%s" --user=%s --host=%s %s < %s 2>&1',
+            '"%s" --user=%s --host=%s --password=%s %s < %s 2>&1',
             $mysql_path,
             escapeshellarg($user),
             escapeshellarg($host),
             escapeshellarg($db_name),
+            escapeshellarg($db_pass),
             escapeshellarg($file_to_restore)
         );
 
         $output = [];
         $return_var = null;
         exec($cmd, $output, $return_var);
+        var_dump($output);
 
         // Affichage du résultat via le dashboard 
         if ($return_var !== 0) {
