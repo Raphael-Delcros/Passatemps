@@ -70,40 +70,38 @@ class controllerNote extends Controller {
             exit();
         }
 
-
+        //2.Récupération des variables utiles
         $dao = new LivraisonDao($this->getPdo());
 
-        $idCompteQuiNote = $_POST['idCompteQuiNote'] ?? '';
-        $idCompteNote = $dao->getIdVendeur($_POST['idLivraison']);
-        $note = $_POST['note']; 
+        $idCompteNote = $dao->getIdVendeur($_POST['idLivraison']); //un tableau
+        $note = $_POST['note']; //un string
+        $idCompteQuiNote = $_SESSION['idCompte']; 
 
-        var_dump($note);
+        $noteInt = intval($note, $base = 10); //string -> int 
+        $idCompteNoteInt = $idCompteNote['idCompteVendeur']; //tableau -> int 
 
 
-        $idCompteQuiNoteInt = intval($idCompteQuiNote);
-        $idCompteNoteInt = intval($idCompteNote, $base = 10);
-        $noteInt = intval($note, $base = 10);
-
-        
-        var_dump($idCompteQuiNoteInt);
+        var_dump($noteInt);
         var_dump($idCompteQuiNote);
-        
+        var_dump($idCompteNoteInt);
 
-        // 4. Insertion
+
+        // 3. Insertion
         $dao = new NoteDao($this->getPdo());
+
         $notation = new Note(
             $noteInt,
-            $idCompteQuiNoteInt,
-            $idCompteNote
+            $idCompteQuiNote,
+            $idCompteNoteInt
         );
 
         $result = $dao->insert($notation);
 
-        // 5. REDIRECTION (C'est ici que ça se joue)
+        // 4. REDIRECTION 
         if ($result) {
             // On construit l'URL de retour avec tous les paramètres nécessaires
-            $url = "index.php?controleur=livraison&methode=lister";
-            header("Location: " . $url);
+
+            //header("index.php?controleur=livraison&methode=lister");
             exit();
         } else {
             // En cas d'erreur, on peut rediriger vers une page d'erreur ou la messagerie
