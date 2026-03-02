@@ -33,3 +33,4 @@
 !composer.lock
 !package.json
 !package-lock.json
+!images/backgroundIcon.png
