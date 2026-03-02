@@ -5,6 +5,11 @@
 {% endblock %}
 
 {% block body %}
+	<div class="text-start">
+		<a href="index.php?controleur=connexion&methode=connexion&id={{ annonce.idAnnonce }}" class="btn btn-outline-secondary">
+			<i class="bi bi-arrow-left">Retour</i>
+		</a>
+	</div>
 	<div class="container mt-5">
 		<div class="row mb-4">
 			<div class="col">
@@ -14,7 +19,7 @@
 			</div>
 		</div>
 
-		{% if backup is defined %}
+		{% if backup is not null %}
 			{% if backup %}
 				<div class="alert alert-success mt-3">
 					<p>Backup réussie! Vérifier vos fichiers locaux. ({{ constantes.database.backup_path }})</p>
@@ -85,15 +90,11 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		{% if compte.role == 'administrateur' %}
-			<a class="btn btn-primary mt-2" href="index.php?controleur=admin&methode=sauvegarderBdd">Sauvegarder la base de données en local</a>
-		{% endif %}
-		<div class="mt-5">
-			<a href="index.php" class="btn btn-outline-secondary">
-				<i class="bi bi-arrow-left"></i>
-				Retour au site
-			</a>
+			{% if compte.role == 'administrateur' %}
+				<div>
+					<a class="btn btn-primary mt-2" href="index.php?controleur=admin&methode=sauvegarderBdd">Sauvegarder la base de données en local</a>
+				</div>
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}

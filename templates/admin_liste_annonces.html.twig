@@ -8,13 +8,9 @@
 
 {% block body %}
 	<div class="container mt-5">
+			<a href="index.php?controleur=admin&methode=dashboard&id={{ annonce.idAnnonce }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left">Retour</i></a>
 		<div class="d-flex justify-content-between align-items-center mb-4">
 			<h1>Gestion des Annonces</h1>
-		</div>
-
-
-		<div class="mb-2">
-			<a href="index.php?controleur=admin&methode=dashboard" class="btn btn-outline-secondary">Retour Dashboard</a>
 		</div>
 		<div class="card shadow-sm border-0">
 			<div class="table-responsive">
@@ -70,10 +66,6 @@
 					</tbody>
 				</table>
 			</div>
-		</div>
-
-		<div class="mt-4">
-			<a href="index.php?controleur=admin&methode=dashboard" class="btn btn-outline-secondary">Retour Dashboard</a>
 		</div>
 	</div>
 {% endblock %}
