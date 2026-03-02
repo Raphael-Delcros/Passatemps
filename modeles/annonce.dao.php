@@ -305,7 +305,7 @@ class AnnonceDao
   
   
      /**
-     * Compte le nombre d4qnnonce lié au jeux
+     * Compte le nombre d'annonces liées aux jeux
      *
      * @return int Le nombre total d'annonce
      */
