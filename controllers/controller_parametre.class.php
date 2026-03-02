@@ -32,21 +32,21 @@ class ControllerParametre extends Controller
         $config = Config::get();
         $this->reglesValidationPerso = [
             'email' => [
-                'obligatoire' => true,
+                'obligatoire' => false,
                 'longueur_min' => 5,
                 'longueur_max' => 254,
                 'type' => 'string',
                 'format' => FILTER_VALIDATE_EMAIL,
             ],
             'nom' => [
-                'obligatoire' => true,
+                'obligatoire' => false,
                 'longueurMin' => 3,
                 'longueurMax' => 50,
                 'type' => 'string',
                 'format' => $config['regex']['texte_espace']
             ],
             'prenom' => [
-                'obligatoire' => true,
+                'obligatoire' => false,
                 'longueurMin' => 3,
                 'longueurMax' => 50,
                 'type' => 'string',
@@ -54,27 +54,20 @@ class ControllerParametre extends Controller
             ],
         ];
         $this->reglesValidationMdp = [
-            'mot_de_passe_actuel' => [
+            'currentPassword' => [
                 'obligatoire' => true,
                 'longueurMin' => 8,
                 'longueurMax' => 32,
                 'type' => 'string',
                 'format' => $config['regex']['mot_de_passe']
             ],
-            'nouveau_mot_de_passe' => [
+            'newPassword' => [
                 'obligatoire' => true,
                 'longueurMin' => 8,
                 'longueurMax' => 32,
                 'type' => 'string',
                 'format' => $config['regex']['mot_de_passe']
-            ],
-            'confirmation' => [
-                'obligatoire' => true,
-                'longueurMin' => 8,
-                'longueurMax' => 32,
-                'type' => 'string',
-                'format' => $config['regex']['mot_de_passe']
-            ],
+            ]
         ];
     }
 
@@ -92,9 +85,7 @@ class ControllerParametre extends Controller
 
         $template = $this->getTwig()->load('parametre.html.twig');
         echo $template->render([
-            'modifPerso' => $modifPerso,
-            'modifMDP' => $modifMDP,
-            'erreur' => $erreur
+            'erreurs' => $erreur
         ]);
     }
 
@@ -119,8 +110,15 @@ class ControllerParametre extends Controller
             $messagesErreurs = $validator->getMessagesErreurs();
 
             if (isset($_POST['email']) && !empty($_POST['email'])) {
-                $compte->setEmail(strip_tags($_POST['email']));
-                $_SESSION['email'] = strip_tags($_POST['email']);
+                $dao = new CompteDao($this->getPdo());
+
+                // Gérer le cas où l'email existe déjà
+                if ($dao->findEmail($_POST['email'])) {
+                    $messagesErreurs["usedEmail"] = true;
+                } else {
+                    $compte->setEmail(strip_tags($_POST['email']));
+                    $_SESSION['email'] = strip_tags($_POST['email']);
+                }
             }
 
             if (isset($_POST['nom']) && !empty($_POST['nom'])) {
@@ -153,12 +151,12 @@ class ControllerParametre extends Controller
         $donneesValides = $validator->valider($donnees);
         $messagesErreurs = $validator->getMessagesErreurs();
 
-        if (isset($_POST['mot_de_passe_actuel'])) {
+        if (isset($_POST['currentPassword']) && !empty($_POST['currentPassword'])) {
             // Vérifier que le mot de passe actuel est correct
-            if (password_verify($_POST['mot_de_passe_actuel'], $compte->getMotDePasseHache())) {
+            if (password_verify($_POST['currentPassword'], $compte->getMotDePasseHache())) {
                 // Si le mot de passe actuel est correct, vérifier les nouveaux mots de passe
-                if (isset($_POST['nouveau_mot_de_passe']) && isset($_POST['confirmation'])) {
-                    $newPassword = $_POST['nouveau_mot_de_passe'];
+                if (isset($_POST['newPassword']) && isset($_POST['confirmation'])) {
+                    $newPassword = $_POST['newPassword'];
                     $confirmPassword = $_POST['confirmation'];
                     // Mettre à jour le mot de passe si un nouveau mot de passe est fourni et qu'il correspond à la confirmation
                     if ($newPassword == $confirmPassword) {
@@ -168,17 +166,14 @@ class ControllerParametre extends Controller
                             $compte->setMotDePasseHache($hashedPassword);
                             $dao->update($compte);
                         }
+                    } else {
+                        $messagesErreurs['confirmationMismatch'] = true;
                     }
                 }
-                else {
-                    $messagesErreurs[] = "Le nouveau mot de passe et la confirmation ne correspondent pas.";
-                }
-            }
-            else {
-                $messagesErreurs[] = "Le mot de passe actuel est incorrect.";
+            } else {
+                $messagesErreurs['currentPasswordInvalid'] = true;
             }
         }
-
         $this->afficher(false, true, $messagesErreurs);
     }
 
