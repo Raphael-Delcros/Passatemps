@@ -292,6 +292,7 @@ class ControllerAdmin extends Controller
         $user = $config['user'];
         $host = $config['host'];
         $db_name = $config['name'];
+        $db_pass = $config['password'];
         $base_path = $config['backup_path']; // Note le double slash à la fin pour Windows
         $mysqldump_path = $config['mysqldump_path'];
         
@@ -301,10 +302,11 @@ class ControllerAdmin extends Controller
         
         // Commande windows a executer
         $cmd = sprintf(
-            '%s --user=%s --host=%s %s > %s 2>&1',
+            '%s --user=%s --host=%s --password=%s %s > %s 2>&1',
             $mysqldump_path,
             escapeshellarg($user),
             escapeshellarg($host),
+            escapeshellarg($db_pass),
             escapeshellarg($db_name),
             escapeshellarg($backup_file)
         );
