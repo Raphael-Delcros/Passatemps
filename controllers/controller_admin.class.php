@@ -362,7 +362,6 @@ class ControllerAdmin extends Controller
         $output = [];
         $return_var = null;
         exec($cmd, $output, $return_var);
-        var_dump($output);
 
         // Affichage du résultat via le dashboard 
         if ($return_var !== 0) {
