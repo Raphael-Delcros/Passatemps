@@ -9,7 +9,8 @@
  * @brief Classe ControllerBannissement pour gérer les actions liées aux bannissements
  */
 class controllerNote extends Controller {
-    public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader) {
+    public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
+    {
         parent::__construct($twig, $loader);
     }
 
@@ -64,6 +65,7 @@ class controllerNote extends Controller {
 
     public function insererLaNote(){
 
+        
         // 1. Vérification session
         if (!isset($_SESSION['idCompte'])) {
             header("Location: index.php?controleur=connexion"); // Rediriger vers connexion si pas de session
@@ -80,12 +82,6 @@ class controllerNote extends Controller {
         $noteInt = intval($note, $base = 10); //string -> int 
         $idCompteNoteInt = $idCompteNote['idCompteVendeur']; //tableau -> int 
 
-
-        var_dump($noteInt);
-        var_dump($idCompteQuiNote);
-        var_dump($idCompteNoteInt);
-
-
         // 3. Insertion
         $dao = new NoteDao($this->getPdo());
 
@@ -97,11 +93,14 @@ class controllerNote extends Controller {
 
         $result = $dao->insert($notation);
 
-        // 4. REDIRECTION 
+
+
+        
+
+        // 5. REDIRECTION (C'est ici que ça se joue)
         if ($result) {
             // On construit l'URL de retour avec tous les paramètres nécessaires
-
-            //header("index.php?controleur=livraison&methode=lister");
+            header("Location: index.php?controleur=livraison&methode=lister");
             exit();
         } else {
             // En cas d'erreur, on peut rediriger vers une page d'erreur ou la messagerie

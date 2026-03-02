@@ -101,13 +101,12 @@ class NoteDAO{
         $sql = "INSERT INTO " .Config::get()['database']['prefixe_table'] . "note (note, idCompteQuiNote, idCompteNote)
         VALUES (:note, :idCompteQuiNote, :idCompteNote)";
         $stmt= $this->pdo->prepare($sql);
-        var_dump($note -> getNote());
         $result = $stmt-> execute([
             'idCompteNote' => $note ->getIdCompteNote(), 
             'idCompteQuiNote' => $note -> getIdCompteQuiNote(),
             'note' => $note -> getNote()
         ]);
-        return $result;
+        return true;
     }
 
 }
