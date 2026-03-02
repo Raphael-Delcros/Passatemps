@@ -77,8 +77,7 @@ class ControllerPaiement extends controller
             'codePostal' => [
                 'obligatoire' => true,
                 'type' => 'integer',
-                'longueurMin' => 5,
-                'longueurMax' => 5
+                'longueurExacte' => 5
             ],
             'adresse' => [
                 'obligatoire' => true,
@@ -190,20 +189,20 @@ class ControllerPaiement extends controller
             'numCarte' => [
                 'obligatoire' => true,
                 'type' => 'integer',
-                'longueurMin' => 16,
-                'longueurMax' => 16
+                'longueurExacte' => 16
             ],
             'dateExpiration' => [
                 'obligatoire' => true,
-                'type' => 'date',
-                'longueurMin' => 5,
-                'longueurMax' => 5
+                'longueurExacte' => 5
             ],
             'codeSecurite' => [
                 'obligatoire' => true,
                 'type' => 'integer',
-                'longueurMin' => 3,
-                'longueurMax' => 3
+                'longueurExacte' => 3
+            ],
+            'nomCarte' => [
+                'obligatoire' => true,
+                'type' => 'string',
             ]
         ];
 
