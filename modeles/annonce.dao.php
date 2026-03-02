@@ -205,16 +205,14 @@ class AnnonceDao
      */
     public function findByJeu(int $idJeu): array
     {
-        $sql = "
-        SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub,
+        $sql = "SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub,
                a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur, p.url, C.nom, C.prenom
         FROM annonce a
         LEFT JOIN photo p ON p.idAnnonce = a.idAnnonce
         LEFT JOIN compte C ON C.idCompte = a.idCompteVendeur
         WHERE a.idJeu = :idJeu
         AND a.etatVente != 'vendu'  
-        ORDER BY a.datePub DESC
-    ";
+        ORDER BY a.datePub DESC";
         //AND a.etatVente = 'en Vente'
 
         $stmt = $this->pdo->prepare($sql);
@@ -331,4 +329,5 @@ class AnnonceDao
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute(['id' => $id]);
     }
+    
 }

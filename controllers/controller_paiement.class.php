@@ -231,9 +231,11 @@ class ControllerPaiement extends controller
         // On passe l'annonce de enVente à vendu
         $annonceDao = new AnnonceDao($this->getPdo());
         $annonceDao->changeToSold($id);
-
         
-
+        // Recup info jeu
+        $jeuDao = new JeuDao($this->getPdo());
+        $jeu = $jeuDao->findNameWithId($_POST['idAnnonce'])[0];
+        
         $validator = new Validator($this->reglesValidationPaiement);
         $donnesValides = $validator->valider($data);
         $messagesErreurs = $validator->getMessagesErreurs();
@@ -260,7 +262,8 @@ class ControllerPaiement extends controller
         echo $template->render([
             'annonce' => $annonce,
             'livraison' => $livraison,
-            'menu' => 'annonce'
+            'menu' => 'annonce',
+            'jeu' => $jeu
         ]);
         unset($_SESSION['livraison']);
     }
