@@ -9,10 +9,38 @@
 	<div class="container mt-5">
 		<div class="row row-cols-md-2 align-items-center">
 			<div class="col">
-				<div class="card h-100 p-3" style="width: 300px">
-					<img src="{{ annonce.urlPhoto }}" class="card-img-top" h="300" alt="Photo {{ annonce.idAnnonce }}">
-				</div>
-			</div>
+    			<div class="card h-100 p-3" style="width: 300px">
+        			{% if annonce.urlPhotos is defined and annonce.urlPhotos|length > 1 %}
+            		{# Carrousel si plusieurs photos #}
+            			<div id="carouselAnnonce" class="carousel slide" data-bs-ride="carousel">
+                			<div class="carousel-indicators">
+                    			{% for photo in annonce.urlPhotos %}
+                        			<button type="button" data-bs-target="#carouselAnnonce" data-bs-slide-to="{{ loop.index0 }}"
+                            			{% if loop.first %}class="active" aria-current="true"{% endif %}
+                            			aria-label="Photo {{ loop.index }}">
+                        			</button>
+                    			{% endfor %}
+                			</div>
+                		<div class="carousel-inner">
+                    		{% for photo in annonce.urlPhotos %}
+                        		<div class="carousel-item {% if loop.first %}active{% endif %}">
+                            		<img src="/{{ photo }}" class="d-block w-100 card-img-top" alt="Photo {{ loop.index }}">
+                        		</div>
+                    	{% endfor %}
+                	</div>
+                	<button class="carousel-control-prev" type="button" data-bs-target="#carouselAnnonce" data-bs-slide="prev">
+                    	<span class="carousel-control-prev-icon"></span>
+                	</button>
+                	<button class="carousel-control-next" type="button" data-bs-target="#carouselAnnonce" data-bs-slide="next">
+                    	<span class="carousel-control-next-icon"></span>
+                	</button>
+            	</div>
+        		{% else %}
+            	{# Image unique comme avant #}
+            		<img src="{{ annonce.urlPhoto }}" class="card-img-top" alt="Photo {{ annonce.idAnnonce }}">
+        	{% endif %}
+    		</div>
+		</div>
 
 			<div class="col">
 				<div
@@ -23,7 +51,7 @@
 							{{ prenom|first|upper }}{{ nom|first|upper }}
 						</div>
 						<div class="ms-3">
-							<span class="text-muted small d-block">Vendu par</span>
+							<span class="text-muted small d-block">Vendu par </span>
 							<h4 class="mb-0">{{ prenom }}
 								{{ nom }}</h4>
 						</div>

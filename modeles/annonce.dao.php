@@ -88,17 +88,29 @@ class AnnonceDao
      */
     public function findAssoc(?int $id)
     {
-        $sql = "SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub, a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur, p.url
+        // 1. Récupère l'annonce
+    $sql = "SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub, 
+        a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur
         FROM annonce a
-        JOIN photo p ON p.idAnnonce = a.idAnnonce
         WHERE a.idAnnonce = :id";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute(['id' => $id]);
+    $annonce = $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
 
+    if (!$annonce) return null;
 
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['id' => $id]);
-        $stmt->setFetchMode(PDO::FETCH_ASSOC);
-        return $stmt->fetch() ?: null;
+    // 2. Récupère toutes ses photos
+    $sqlPhotos = "SELECT url FROM photo WHERE idAnnonce = :id";
+    $stmt = $this->pdo->prepare($sqlPhotos);
+    $stmt->execute(['id' => $id]);
+    $photos = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+    $annonce['urlPhoto']  = $photos[0] ?? null; 
+    $annonce['urlPhotos'] = $photos;            
+    return $annonce;
     }
+
+
     /**
      * Renvoie toutes les annonces sous forme de tableau associatif
      *
@@ -138,6 +150,9 @@ class AnnonceDao
         $annonce->setUrlPhoto($tableauAssoc['url'] ?? null);
         $annonce->setNomVendeur($tableauAssoc['nom'] ?? null);
         $annonce->setPrenomVendeur($tableauAssoc['prenom'] ?? null);
+        $annonce->setUrlPhoto($tableauAssoc['urlPhotos'][0] ?? null);
+        $annonce->setUrlPhotos($tableauAssoc['urlPhotos'] ?? []);
+
         return $annonce;
     }
     /**
@@ -210,7 +225,7 @@ class AnnonceDao
         LEFT JOIN photo p ON p.idAnnonce = a.idAnnonce
         LEFT JOIN compte C ON C.idCompte = a.idCompteVendeur
         WHERE a.idJeu = :idJeu
-          
+        AND a.etatVente != 'Vendu'  
         ORDER BY a.datePub DESC
     ";
         //AND a.etatVente = 'en Vente'
@@ -312,7 +327,7 @@ class AnnonceDao
      */
     public function countAnnonceByJeu(int $id)
     {
-        $sql = "SELECT COUNT(*) FROM annonce WHERE idJeu = :id";
+        $sql = "SELECT COUNT(*) FROM annonce WHERE idJeu = :id AND etatVente != 'Vendu'";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         return (int) $stmt->fetchColumn();

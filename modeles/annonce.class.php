@@ -23,6 +23,8 @@ class Annonce
     private ?string $urlPhoto;
     private ?string $nomVendeur = null;
     private ?string $prenomVendeur = null;
+    private array $urlPhotos = [];
+
 
     /**
      * Constructeur de la classe Annonce
@@ -278,4 +280,8 @@ class Annonce
     public function setPrenomVendeur(?string $prenom): void {
         $this->prenomVendeur = $prenom;
     }
+
+    public function getUrlPhotos(): array { return $this->urlPhotos; }
+    
+    public function setUrlPhotos(array $urlPhotos): void { $this->urlPhotos = $urlPhotos; }
 }
