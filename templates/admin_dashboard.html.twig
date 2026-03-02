@@ -19,6 +19,10 @@
 			</div>
 		</div>
 
+<pre>
+    {{ dump(backup) }}
+</pre>
+
 		{% if backup is not null %}
 			{% if backup %}
 				<div class="alert alert-success mt-3">
@@ -90,11 +94,27 @@
 					</div>
 				</div>
 			</div>
-			{% if compte.role == 'administrateur' %}
-				<div>
-					<a class="btn btn-primary mt-2" href="index.php?controleur=admin&methode=sauvegarderBdd">Sauvegarder la base de données en local</a>
+		</div>
+		{% if compte.role == 'administrateur' %}
+			<div class="mt-4 p-3 border rounded bg-light">
+				<h5>Maintenance du système</h5>
+				<div class="d-flex gap-2">
+					<a class="btn btn-primary" href="index.php?controleur=admin&methode=sauvegarderBdd">
+						<i class="bi bi-cloud-download"></i>
+						Créer une sauvegarde
+					</a>
+					<a class="btn btn-outline-info" href="index.php?controleur=admin&methode=gestionBackups">
+						<i class="bi bi-folder2-open"></i>
+						Restaurer une sauvegarde
+					</a>
 				</div>
-			{% endif %}
+			</div>
+		{% endif %}
+		<div class="mt-5">
+			<a href="index.php" class="btn btn-outline-secondary">
+				<i class="bi bi-arrow-left"></i>
+				Retour au site
+			</a>
 		</div>
 	</div>
 {% endblock %}

@@ -37,7 +37,7 @@ class ControllerAdmin extends Controller
         $annonceDao = new AnnonceDao($this->getPdo());
         $compteDao = new CompteDao($this->getPdo());
         $compte = $compteDao->find($_SESSION['idCompte']);
-        
+
 
         // Récupération des données pour le bloc "En résumé" [cite: 14]
         $totalGames = $jeuDao->countAll();
@@ -48,8 +48,8 @@ class ControllerAdmin extends Controller
         echo $template->render(
             [
                 'prenom'        => $_SESSION['prenom'],
-                'totalGames'    => $totalGames,    
-                'totalAnnonces' => $totalAnnonces, 
+                'totalGames'    => $totalGames,
+                'totalAnnonces' => $totalAnnonces,
                 'totalUsers'    => $totalUsers,
                 'backup'        => $backupBdd,
                 'compte'        => $compte,
@@ -279,7 +279,7 @@ class ControllerAdmin extends Controller
         header('Location: index.php?controleur=admin&methode=listeComptes');
         exit;
     }
-    
+
     /**
      * Sauvegarde la base de donnée en local
      *
@@ -295,31 +295,106 @@ class ControllerAdmin extends Controller
         $db_pass = $config['password'];
         $base_path = $config['backup_path']; // Note le double slash à la fin pour Windows
         $mysqldump_path = $config['mysqldump_path'];
-        
+
         // Configuration du nom de fichier
-        $date_string = date('Y-m-d_H-i'); 
+        $date_string = date('Y-m-d_H-i');
         $backup_file = $base_path . 'backupdb_' . $date_string . '.sql';
-        
+
         // Commande windows a executer
         $cmd = sprintf(
-            '%s --user=%s --host=%s --password=%s %s > %s 2>&1',
-            $mysqldump_path,
-            escapeshellarg($user),
-            escapeshellarg($host),
-            escapeshellarg($db_pass),
-            escapeshellarg($db_name),
-            escapeshellarg($backup_file)
-        );
-        
-        // $output = [];
-$return_var = null;
-exec($cmd, $output, $return_var);
+        '"%s" --user=%s --host=%s --password=%s --result-file=%s %s 2>&1',
+        $mysqldump_path,
+        escapeshellarg($user),
+        escapeshellarg($host),
+        escapeshellarg($db_pass),
+        escapeshellarg($backup_file),
+        escapeshellarg($db_name)
+    );
 
-// 5. Affichage du résultat
+        // $output = [];
+        $return_var = null;
+        exec($cmd, $output, $return_var);
+
+        // 5. Affichage du résultat
         if ($return_var !== 0) {
             $this->dashboard(false);
         } else {
             $this->dashboard(true);
         }
+    }
+
+
+    /**
+     * Restaure la base de données à partir d'un fichier SQL spécifique
+     * @param string|null $fileName Nom du fichier à restaurer (ex: backupdb_2026-02-23_15-23.sql)
+     */
+    public function restaurerBdd()
+    {
+        // On récupère le nom du fichier 
+        $fileName = isset($_GET['file']) ? $_GET['file'] : null;
+
+        // Configuration des variables via la classe Config
+        $config = Config::get()['database'];
+        $user = $config['user'];
+        $host = $config['host'];
+        $db_name = $config['name'];
+        $db_pass = $config['password'];
+        $base_path = $config['backup_path'];
+        $mysql_path = $config['mysql_path'];
+
+        // Chemin complet du fichier à restaurer
+        $file_to_restore = $base_path . $fileName;
+
+        if (!file_exists($file_to_restore)) {
+            $this->dashboard(false);
+            return;
+        }
+        $cmd = sprintf(
+            '"%s" --user=%s --host=%s --password=%s %s < %s 2>&1',
+            $mysql_path,
+            escapeshellarg($user),
+            escapeshellarg($host),
+            escapeshellarg($db_name),
+            escapeshellarg($db_pass),
+            escapeshellarg($file_to_restore)
+        );
+
+        $output = [];
+        $return_var = null;
+        exec($cmd, $output, $return_var);
+        var_dump($output);
+
+        // Affichage du résultat via le dashboard 
+        if ($return_var !== 0) {
+            $this->dashboard(false);
+        } else {
+            $this->dashboard(true);
+        }
+    }
+
+    /**
+     * @brief Affiche la liste des sauvegardes disponibles
+     */
+    public function gestionBackups()
+    {
+        $config = Config::get()['database'];
+        $base_path = $config['backup_path'];
+        $listeFichiers = [];
+
+        // On scanne le dossier si il existe
+        if (is_dir($base_path)) {
+            // scandir récupère tout, on filtre pour ne garder que les .sql
+            $fichiers = scandir($base_path, SCANDIR_SORT_DESCENDING);
+            foreach ($fichiers as $f) {
+                if (str_ends_with($f, '.sql')) {
+                    $listeFichiers[] = $f;
+                }
+            }
+        }
+
+        echo $this->getTwig()->render('admin_liste_backups.html.twig', [
+            'listeFichiers' => $listeFichiers,
+            'backupPath'    => $base_path
+        ]);
     }
 }
