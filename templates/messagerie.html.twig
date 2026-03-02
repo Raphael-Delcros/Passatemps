@@ -8,7 +8,7 @@
 {% block body %}
 	<div class="container mt-5">
 		<div class="text-start">
-        	<a href="index.php" class="btn btn-outline-secondary"><i class="bi bi-arrow-left">Retour</i></a>
+        	<a href="index.php?controleur={{ session.previous_page.controleur }}&methode={{ session.previous_page.methode }}{% if session.previous_page.id %}&id={{ session.previous_page.id }}{% endif %}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left">Retour</i></a>
 		</div>
 		<h1 class="text-center fw-bold">
 			Votre Messagerie
