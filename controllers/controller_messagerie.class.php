@@ -99,7 +99,7 @@ class ControllerMessagerie extends Controller
 
         // 2. Vérification données POST
         if (!isset($_POST['message'], $_POST['idDestinataire'])) {
-            header("Location: index.php?controleur=messagerie");
+            header("Location: index.php?controleur=note");
             exit();
         }
 
