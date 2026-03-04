@@ -145,6 +145,12 @@ body {
   width : 3vw;
 }
 
+.big-checkmark{
+  display: inline-block;
+  color: $success;
+  transform: scale(3);
+}
+
 // .navbar {
 //   overflow-x: hidden;
 // }

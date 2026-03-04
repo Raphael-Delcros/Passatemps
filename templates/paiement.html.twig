@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block body %}
+	<div class="text-start">
+		<a href="index.php?controleur=paiement&methode=achat&id={{ annonce.idAnnonce }}" class="btn btn-outline-secondary border-2 mb-3"> <i class="bi bi-arrow-left"> Retour </i></a>
+	</div>
 
 	<form method="POST" novalidate action="index.php?controleur=paiement&methode=afficherResume">
 		<input type="hidden" name="idAnnonce" value="{{ annonce.idAnnonce }}">
@@ -16,18 +19,14 @@
 			<h2 class="form-title">Détails du paiement</h2>
 
 			<p>Adresse de livraison→
-				<b>paiement</b>
-				→ récapituatif</p>
+				<b>Paiement</b>
+				→ C'est bon !</p>
 
 			<!-- Paiement -->
-			<div class=" col mt-2 bg-light p-3 border border-2 rounded">
-
-				<div class="text-start">
-					<a href="index.php?controleur=paiement&methode=achat&id={{ annonce.idAnnonce }}" class="btn btn-outline-secondary border-2 mb-3"> <i class="bi bi-arrow-left"> Retour </i></a>
-				</div>
+			<div class="col-8 bg-white p-3 border border-2 rounded">
 				<div class="mb-4">
 					<label class="form-label required">Numéro de la carte</label>
-					<input type="text" name="numCarte" maxlength="16" minlength="16" class="form-control shadow-sm {% if erreurs['numCarteMandatory'] or erreurs['numCarteNotInt'] or erreurs['numCarteIncorrectLength'] %} border-danger{% endif %}" placeholder="1234 1234 1234 1234" required>
+					<input type="text" id="numCarte" name="numCarte" longueurExacte="19" class="form-control shadow-sm {% if erreurs['numCarteMandatory'] or erreurs['numCarteNotInt'] or erreurs['numCarteIncorrectLength'] %} border-danger{% endif %}" placeholder="1234 1234 1234 1234" required>
 					{% if erreurs['numCarteMandatory'] %}
 						<p class="text-danger small">Le numéro de carte est obligatoire.</p>
 					{% endif %}
@@ -38,7 +37,7 @@
 				<div class="row mb-4">
 					<div class="col-md-6">
 						<label class="form-label required">Date d'expiration</label>
-						<input type="text" name="dateExpiration" maxlength="5" minlength="5" class="form-control shadow-sm {% if erreurs['dateExpirationMandatory'] or erreurs['dateExpirationIncorrectLength'] %} border-danger {% endif %}" placeholder="MM/YY" required>
+						<input type="text" id="dateExpiration" name="dateExpiration" maxlength="5" minlength="5" class="form-control shadow-sm {% if erreurs['dateExpirationMandatory'] or erreurs['dateExpirationIncorrectLength'] %} border-danger {% endif %}" placeholder="MM/YY" required>
 						{% if erreurs['dateExpirationMandatory'] %}
 							<p class="text-danger small">La date d'expiration est obligatoire.</p>
 						{% endif %}
@@ -48,7 +47,7 @@
 					</div>
 					<div class="col-md-6">
 						<label class="form-label required">Code de Sécurité</label>
-						<input type="text" name="codeSecurite" maxlength="3" minlength="3" class="form-control shadow-sm {% if erreurs['codeSecuriteMandatory'] or erreurs['codeSecuriteIncorrectLength'] %} border-danger {% endif %}}" placeholder="CVC" required>
+						<input type="text" id="codeSecurite" name="codeSecurite" maxlength="3" minlength="3" class="form-control shadow-sm {% if erreurs['codeSecuriteMandatory'] or erreurs['codeSecuriteIncorrectLength'] %} border-danger {% endif %}}" placeholder="CVC" required>
 						{% if erreurs['dateExpirationMandatory'] %}
 							<p class="text-danger small">Le code de sécurité est obligatoire.</p>
 						{% endif %}
@@ -79,68 +78,27 @@
 			</div>
 
 			<!-- Récapitulatif -->
-			<div class="col-md-6">
-				<div class="bg-light mt-2 border border-2 rounded shadow-sm p-3">
-					<h4 class="mb-3 fw-bold">Récapitulatif</h4>
-					<hr>
-					<div class="d-flex justify-content-between">
-						<span>
-							<strong>Titre de l'annonce</strong>
-						</span>
-						{{annonce.titre}}
-					</div>
-					<br>
-
-					<div class="d-flex justify-content-between">
-						<span>
-							<strong>Jeu</strong>
-						</span>
-						{{ jeu.nom }}
-					</div>
-					<br>
-
-					<div class="d-flex justify-content-between">
-						<span>
-							<strong>Prix de l'annonce</strong>
-						</span>
-						{{ annonce.prix }}
-						€
-					</div>
-					<br>
-
-					<div class="d-flex justify-content-between">
-						<span>
-							<strong>Ville</strong>
-						</span>
-						{{ville}}
-					</div>
-					<br>
-
-					<div class="d-flex justify-content-between">
-						<span>
-							<strong>Code Postal</strong>
-						</span>
-						{{codePostal}}
-					</div>
-					<br>
-
-					<div class="d-flex justify-content-between">
-						<span>
-							<strong>Adresse</strong>
-						</span>
-						{{adresse}}
-					</div>
-					<br>
-					{% if complementAdresse %}
-						<div class="d-flex justify-content-between">
-							<span>
-								<strong>Complément d'adresse</strong>
-							</span>
-							{{complementAdresse}}
-						</div>
-					{% endif %}
+			<div class="col bg-white p-3 border border-2 rounded ms-2">
+				<h3>{{ jeu.nom}}</h3>
+				<p>
+					<strong>Titre de l'annonce :</strong>
+					{{ annonce.titre }}</p>
+				<p>
+					<strong>Prix :</strong>
+					{{ annonce.prix }}
+					€</p>
+				<p>
+					<strong>Etat du jeu :</strong>
+					{{ annonce.etatJeu }}</p>
+				<p>
+					<strong>Description :</strong>
+					{{annonce.description}}</p>
+			</div>
 				</div>
 			</div>
 		</div>
 	</form>
+
+	<script src="JS/paiement.js" defer></script>
+
 {% endblock %}

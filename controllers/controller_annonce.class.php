@@ -31,7 +31,6 @@ class ControllerAnnonce extends controller
     {
         $dao = new AnnonceDao($this->getPdo());
         $annonces = $dao->findAll();
-
         $template = $this->getTwig()->load('annonces.html.twig');
         echo $template->render([
             'annonces' => $annonces,
@@ -49,7 +48,6 @@ class ControllerAnnonce extends controller
         $id = isset($_GET['id']) ? intval($_GET['id']) : null;
         $dao = new AnnonceDao($this->getPdo());
         $annonce = $dao->find($id);
-
         $idVendeur = $annonce->getIdCompteVendeur();
         $daoCompte = new CompteDao($this->getPdo());
         $compteVendeur = $daoCompte->find($idVendeur);
@@ -57,7 +55,15 @@ class ControllerAnnonce extends controller
         $nom = $compteVendeur->getPrenom();
         $prenom = $compteVendeur->getNom();
         $idVendeur = $compteVendeur->getIdCompte();
-
+        
+        if (!$annonce || $annonce->getEtatVente() === 'vendu') {
+            $template = $this->getTwig()->load('erreur.html.twig'); 
+            echo $template->render([
+                'message' => 'Cette annonce n\'est plus disponible.',
+                'menu' => 'annonces'
+            ]);
+            return;
+        }
         $template = $this->getTwig()->load('annonce.html.twig');
         echo $template->render([
             'annonce' => $annonce,

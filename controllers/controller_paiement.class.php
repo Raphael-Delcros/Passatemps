@@ -13,7 +13,8 @@
 class ControllerPaiement extends controller
 {
 
-    public array $reglesValidation;
+    public array $reglesValidationLivraisonAchat;
+    public array $reglesValidationPaiement;
 
     /**
      * Constructeur de la classe ControllerPaiement
@@ -25,6 +26,45 @@ class ControllerPaiement extends controller
     {
         parent::__construct($twig, $loader);
         $config = Config::get();
+
+        $this->reglesValidationLivraisonAchat = [
+            'ville' => [
+                'obligatoire' => true,
+                'type' => 'string',
+                'format' => $config['regex']['texte']
+            ],
+            'codePostal' => [
+                'obligatoire' => true,
+                'type' => 'integer',
+                'longueurExacte' => 5
+            ],
+            'adresse' => [
+                'obligatoire' => true,
+                'type' => 'string'
+            ]
+        ];
+
+        $this->reglesValidationPaiement = [
+            'numCarte' => [
+                'obligatoire' => true,
+                'type' => 'string',
+                'longueurExacte' => 19,
+                'format' => '/^\d{4} \d{4} \d{4} \d{4}$/'
+            ],
+            'dateExpiration' => [
+                'obligatoire' => true,
+                'longueurExacte' => 5
+            ],
+            'codeSecurite' => [
+                'obligatoire' => true,
+                'type' => 'integer',
+                'longueurExacte' => 3
+            ],
+            'nomCarte' => [
+                'obligatoire' => true,
+                'type' => 'string',
+            ]
+        ];
     }
 
     /**
@@ -68,23 +108,6 @@ class ControllerPaiement extends controller
 
         $config = Config::get();
 
-        $this->reglesValidation = [
-            'ville' => [
-                'obligatoire' => true,
-                'type' => 'string',
-                'format' => $config['regex']['texte']
-            ],
-            'codePostal' => [
-                'obligatoire' => true,
-                'type' => 'integer',
-                'longueurExacte' => 5
-            ],
-            'adresse' => [
-                'obligatoire' => true,
-                'type' => 'string'
-            ]
-        ];
-
         if (!isset($_SESSION['idCompte'])) {
             $template = $this->getTwig()->load('connexion.html.twig');
             echo $template->render(['menu' => 'compte']);
@@ -100,7 +123,7 @@ class ControllerPaiement extends controller
             $daoJeu = new JeuDao($this->getPdo());
             $jeu = $daoJeu->find($annonce->getIdJeu());
 
-            $validator = new Validator($this->reglesValidation);
+            $validator = new Validator($this->reglesValidationLivraisonAchat);
             $donnesValides = $validator->valider($data);
             $messagesErreurs = $validator->getMessagesErreurs();
             
@@ -185,27 +208,6 @@ class ControllerPaiement extends controller
     {
         $data = $_POST;
 
-        $this->reglesValidation = [
-            'numCarte' => [
-                'obligatoire' => true,
-                'type' => 'integer',
-                'longueurExacte' => 16
-            ],
-            'dateExpiration' => [
-                'obligatoire' => true,
-                'longueurExacte' => 5
-            ],
-            'codeSecurite' => [
-                'obligatoire' => true,
-                'type' => 'integer',
-                'longueurExacte' => 3
-            ],
-            'nomCarte' => [
-                'obligatoire' => true,
-                'type' => 'string',
-            ]
-        ];
-
         $id = isset($_POST['idAnnonce']) ? (int) $_POST['idAnnonce'] : null;
         $dao = new AnnonceDao($this->getPdo());
         $annonce = $dao->findAssoc($id);
@@ -222,11 +224,19 @@ class ControllerPaiement extends controller
             'numeroDeSuivi'      => null,
             'status'             => null
         ];
-        $dao = new LivraisonDao($this->getPdo());
-        $livraison = $dao->hydrate($array);
-        $dao->insertIntoDatabase($livraison);
-
-        $validator = new Validator($this->reglesValidation);
+        $livraisonDao = new LivraisonDao($this->getPdo());
+        $livraison = $livraisonDao->hydrate($array);
+        $livraisonDao->insertIntoDatabase($livraison);
+        
+        // On passe l'annonce de enVente à vendu
+        $annonceDao = new AnnonceDao($this->getPdo());
+        $annonceDao->changeToSold($id);
+        
+        // Recup info jeu
+        $jeuDao = new JeuDao($this->getPdo());
+        $jeu = $jeuDao->findNameWithId($_POST['idAnnonce'])[0];
+        
+        $validator = new Validator($this->reglesValidationPaiement);
         $donnesValides = $validator->valider($data);
         $messagesErreurs = $validator->getMessagesErreurs();
 
@@ -252,7 +262,8 @@ class ControllerPaiement extends controller
         echo $template->render([
             'annonce' => $annonce,
             'livraison' => $livraison,
-            'menu' => 'annonce'
+            'menu' => 'annonce',
+            'jeu' => $jeu
         ]);
         unset($_SESSION['livraison']);
     }

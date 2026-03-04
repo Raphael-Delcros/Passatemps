@@ -99,6 +99,8 @@ class AnnonceDao
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         return $stmt->fetch() ?: null;
     }
+
+
     /**
      * Renvoie toutes les annonces sous forme de tableau associatif
      *
@@ -137,6 +139,7 @@ class AnnonceDao
         $annonce->setUrlPhoto($tableauAssoc['url'] ?? null);
         $annonce->setNomVendeur($tableauAssoc['nom'] ?? null);
         $annonce->setPrenomVendeur($tableauAssoc['prenom'] ?? null);
+        
         return $annonce;
     }
     /**
@@ -202,16 +205,14 @@ class AnnonceDao
      */
     public function findByJeu(int $idJeu): array
     {
-        $sql = "
-        SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub,
+        $sql = "SELECT a.idAnnonce, a.titre, a.description, a.prix, a.datePub,
                a.etatJeu, a.etatVente, a.idJeu, a.idCompteVendeur, p.url, C.nom, C.prenom
         FROM annonce a
         LEFT JOIN photo p ON p.idAnnonce = a.idAnnonce
         LEFT JOIN compte C ON C.idCompte = a.idCompteVendeur
         WHERE a.idJeu = :idJeu
-          
-        ORDER BY a.datePub DESC
-    ";
+        AND a.etatVente != 'vendu'  
+        ORDER BY a.datePub DESC";
         //AND a.etatVente = 'en Vente'
 
         $stmt = $this->pdo->prepare($sql);
@@ -305,16 +306,28 @@ class AnnonceDao
   
   
      /**
-     * Compte le nombre d4qnnonce lié au jeux
+     * Compte le nombre d'annonces liées aux jeux
      *
      * @return int Le nombre total d'annonce
      */
     public function countAnnonceByJeu(int $id)
     {
-        $sql = "SELECT COUNT(*) FROM annonce WHERE idJeu = :id";
+        $sql = "SELECT COUNT(*) FROM annonce WHERE idJeu = :id AND etatVente != 'vendu'";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         return (int) $stmt->fetchColumn();
+    }
+    
+    /**
+     * Change l'etatVente du jeu à Vendu s'il est enVente
+     * 
+     * @return boolean True si OK, false si Erreur
+     */
+    public function changeToSold(int $id)
+    {
+        $sql = "UPDATE annonce SET etatVente = 'vendu' WHERE idAnnonce = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['id' => $id]);
     }
     
 }
